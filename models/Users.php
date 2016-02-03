@@ -12,8 +12,11 @@ use Yii;
  * @property string $last_name
  * @property string $hash_password
  * @property string $email
+ * @property string $phone
+ * @property string $company_name
  *
  * @property Comments[] $comments
+ * @property Events[] $events
  * @property Itinerario[] $itinerarios
  */
 class Users extends \yii\db\ActiveRecord
@@ -34,7 +37,8 @@ class Users extends \yii\db\ActiveRecord
         return [
             [['first_name', 'last_name', 'hash_password', 'email'], 'required'],
             [['first_name', 'last_name'], 'string', 'max' => 120],
-            [['hash_password', 'email'], 'string', 'max' => 100]
+            [['hash_password', 'email', 'company_name'], 'string', 'max' => 100],
+            [['phone'], 'string', 'max' => 20]
         ];
     }
 
@@ -49,6 +53,8 @@ class Users extends \yii\db\ActiveRecord
             'last_name' => 'Last Name',
             'hash_password' => 'Hash Password',
             'email' => 'Email',
+            'phone' => 'Phone',
+            'company_name' => 'Company Name',
         ];
     }
 
@@ -58,6 +64,14 @@ class Users extends \yii\db\ActiveRecord
     public function getComments()
     {
         return $this->hasMany(Comments::className(), ['user_id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEvents()
+    {
+        return $this->hasMany(Events::className(), ['user_id' => 'user_id']);
     }
 
     /**
