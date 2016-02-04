@@ -41,7 +41,10 @@ class Users extends \yii\db\ActiveRecord
             [['user_type_id'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 120],
             [['hash_password', 'email', 'company_name'], 'string', 'max' => 100],
-            [['phone'], 'string', 'max' => 20]
+            [['phone'], 'string', 'max' => 20],
+            [['email'], 'unique'],
+            [['email'], 'email'],  
+            [['phone'], 'integer']                      
         ];
     }
 
@@ -52,13 +55,13 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'user_type_id' => 'User Type ID',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'hash_password' => 'Hash Password',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'company_name' => 'Company Name',
+            'user_type_id' => 'Tipo de usuario',
+            'first_name' => 'Name',
+            'last_name' => 'Apellido',
+            'hash_password' => 'Contraseña',
+            'email' => 'E-mail',
+            'phone' => 'Teléfono',
+            'company_name' => 'Nombre de compañía',
         ];
     }
 
