@@ -68,7 +68,7 @@ use app\models\UserType;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'phone')->textInput(['minlength' => true, 'maxlength' => true]) ?>
 
     <?= $form->field($model, 'company_name')->textInput(['maxlength' => true]) ?>
 
