@@ -67,6 +67,27 @@ class Users extends \yii\db\ActiveRecord
             'company_name' => 'Nombre de compañía',
         ];
     }
+    public function beforeSave($insert)
+    {
+        if(parent::beforeSave($insert))
+        {
+            if($this->isNewRecord)
+            {
+                $this->hash_password = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
+                //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
+                //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
+            }
+            else
+            {
+                if(!empty($this->hash_password))
+                {
+                    $this->hash_password = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @return \yii\db\ActiveQuery
