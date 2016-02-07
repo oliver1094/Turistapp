@@ -21,7 +21,7 @@ use Yii;
  * @property Itinerario[] $itinerarios
  * @property UserType $userType
  */
-class Users extends \yii\db\ActiveRecord
+class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
@@ -65,6 +65,8 @@ class Users extends \yii\db\ActiveRecord
             'email' => 'E-mail',
             'phone' => 'Teléfono con lada (opcional)',
             'company_name' => 'Nombre de compañía',
+            
+
         ];
     }
     public function beforeSave($insert)
@@ -120,4 +122,40 @@ class Users extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UserType::className(), ['id' => 'user_type_id']);
     }
+    
+    //--------Estos dos metodos utilice para el Login (Elías)---------
+    
+     public static function findByEmail($email){
+        return self::findOne(['email'=>$email]);
+    }
+    
+    public function validatePassword($password){
+        return $this->hash_password ===$password;
+    }
+    
+    //---------------
+    
+    //-------Estos metodos son los que se tienen que implementar por la interface Identity
+    public function getAuthKey() {
+        
+    }
+
+    public function getId() {
+        return $this-> user_id;
+    }
+    
+
+    public function validateAuthKey($authKey) {
+        
+    }
+
+    public static function findIdentity($id) {
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null) {
+        throw new \yii\base\NotSupportedException();
+    }
+    
+    //-----------------
 }
