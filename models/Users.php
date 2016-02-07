@@ -130,11 +130,12 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     
     public function validatePassword($password){
-        return $this->hash_password ===$password;
+        //return $this->hash_password ===$password;
+        return Yii::$app->getSecurity()->validatePassword($password,$this->hash_password);
     }
     
     //---------------
-    
+
     //-------Estos metodos son los que se tienen que implementar por la interface Identity
     public function getAuthKey() {
         
