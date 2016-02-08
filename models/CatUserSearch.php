@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\UserType;
+use app\models\CatUser;
 
 /**
- * UserTypeSearch represents the model behind the search form about `app\models\UserType`.
+ * CatUserSearch represents the model behind the search form about `app\models\CatUser`.
  */
-class UserTypeSearch extends UserType
+class CatUserSearch extends CatUser
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class UserTypeSearch extends UserType
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['i_Pk_User', 'i_Fk_UserType'], 'integer'],
+            [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email', 'vc_Phone', 'vc_CompanyName'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class UserTypeSearch extends UserType
      */
     public function search($params)
     {
-        $query = UserType::find();
+        $query = CatUser::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,10 +56,16 @@ class UserTypeSearch extends UserType
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'i_Pk_User' => $this->i_Pk_User,
+            'i_Fk_UserType' => $this->i_Fk_UserType,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'vc_FirstName', $this->vc_FirstName])
+            ->andFilterWhere(['like', 'vc_LastName', $this->vc_LastName])
+            ->andFilterWhere(['like', 'vc_HashPassword', $this->vc_HashPassword])
+            ->andFilterWhere(['like', 'vc_Email', $this->vc_Email])
+            ->andFilterWhere(['like', 'vc_Phone', $this->vc_Phone])
+            ->andFilterWhere(['like', 'vc_CompanyName', $this->vc_CompanyName]);
 
         return $dataProvider;
     }

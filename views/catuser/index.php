@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\UsersSearch */
+/* @var $searchModel app\models\CatUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Cat Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="users-index">
+<div class="cat-user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Users', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Cat User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,14 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'user_id',
-            'user_type_id',
-            'first_name',
-            'last_name',
-            'hash_password',
-            // 'email:email',
-            // 'phone',
-            // 'company_name',
+            'i_Pk_User',
+            'i_Fk_UserType',
+            'vc_FirstName',
+            'vc_LastName',
+            'vc_HashPassword',
+            // 'vc_Email:email',
+            // 'vc_Phone',
+            // 'vc_CompanyName',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

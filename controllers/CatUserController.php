@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\UserType;
-use app\models\UserTypeSearch;
+use app\models\CatUser;
+use app\models\CatUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserTypeController implements the CRUD actions for UserType model.
+ * CatUserController implements the CRUD actions for CatUser model.
  */
-class UserTypeController extends Controller
+class CatUserController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class UserTypeController extends Controller
     }
 
     /**
-     * Lists all UserType models.
+     * Lists all CatUser models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserTypeSearch();
+        $searchModel = new CatUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,7 +42,7 @@ class UserTypeController extends Controller
     }
 
     /**
-     * Displays a single UserType model.
+     * Displays a single CatUser model.
      * @param string $id
      * @return mixed
      */
@@ -54,16 +54,16 @@ class UserTypeController extends Controller
     }
 
     /**
-     * Creates a new UserType model.
+     * Creates a new CatUser model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new UserType();
+        $model = new CatUser();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -72,7 +72,7 @@ class UserTypeController extends Controller
     }
 
     /**
-     * Updates an existing UserType model.
+     * Updates an existing CatUser model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -82,7 +82,7 @@ class UserTypeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -91,7 +91,7 @@ class UserTypeController extends Controller
     }
 
     /**
-     * Deletes an existing UserType model.
+     * Deletes an existing CatUser model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -104,15 +104,15 @@ class UserTypeController extends Controller
     }
 
     /**
-     * Finds the UserType model based on its primary key value.
+     * Finds the CatUser model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return UserType the loaded model
+     * @return CatUser the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UserType::findOne($id)) !== null) {
+        if (($model = CatUser::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
