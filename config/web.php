@@ -20,7 +20,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\Users',
+            'identityClass' => 'app\models\CatUser',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [

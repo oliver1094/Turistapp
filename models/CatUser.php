@@ -23,7 +23,7 @@ use Yii;
  * @property UsrItinerary[] $usrItineraries
  * @property CatEvent[] $iFkTblEvents0
  */
-class Catuser extends \yii\db\ActiveRecord
+class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
@@ -111,4 +111,41 @@ class Catuser extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CatEvent::className(), ['i_Pk_Event' => 'i_FkTbl_Event'])->viaTable('usr_itinerary', ['i_FkTbl_User' => 'i_Pk_User']);
     }
+
+    //metodos de la interfaz idenity
+    public function getAuthKey() {
+        
+    }
+
+    public function getId() {
+        
+    }
+
+    public function validateAuthKey($authKey) {
+        
+    }
+
+    public static function findIdentity($id) {
+        
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null) {
+        
+    }
+    //fin metodos de la interfaz identity
+    
+    //--------Estos dos metodos utilice para el Login (ElÃ­as)---------
+    
+     public static function findByEmail($email){
+        return self::findOne(['vc_Email'=>$email]);
+    }
+    
+    public function validatePassword($password){
+        //return $this->hash_password ===$password;
+        return Yii::$app->getSecurity()->validatePassword($password,$this->vc_HashPassword);
+    }
+    
+    //---------------
+
+
 }
