@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\CatUser;
-use app\models\CatUserSearch;
+use app\models\Catuser;
+use app\models\CatuserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CatUserController implements the CRUD actions for CatUser model.
+ * CatuserController implements the CRUD actions for Catuser model.
  */
-class CatUserController extends Controller
+class CatuserController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class CatUserController extends Controller
     }
 
     /**
-     * Lists all CatUser models.
+     * Lists all Catuser models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CatUserSearch();
+        $searchModel = new CatuserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,7 +42,7 @@ class CatUserController extends Controller
     }
 
     /**
-     * Displays a single CatUser model.
+     * Displays a single Catuser model.
      * @param string $id
      * @return mixed
      */
@@ -54,13 +54,13 @@ class CatUserController extends Controller
     }
 
     /**
-     * Creates a new CatUser model.
+     * Creates a new Catuser model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new CatUser();
+        $model = new Catuser();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
@@ -72,7 +72,7 @@ class CatUserController extends Controller
     }
 
     /**
-     * Updates an existing CatUser model.
+     * Updates an existing Catuser model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -91,7 +91,7 @@ class CatUserController extends Controller
     }
 
     /**
-     * Deletes an existing CatUser model.
+     * Deletes an existing Catuser model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -104,15 +104,15 @@ class CatUserController extends Controller
     }
 
     /**
-     * Finds the CatUser model based on its primary key value.
+     * Finds the Catuser model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return CatUser the loaded model
+     * @return Catuser the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = CatUser::findOne($id)) !== null) {
+        if (($model = Catuser::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

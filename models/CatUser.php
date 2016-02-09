@@ -23,7 +23,7 @@ use Yii;
  * @property UsrItinerary[] $usrItineraries
  * @property CatEvent[] $iFkTblEvents0
  */
-class CatUser extends \yii\db\ActiveRecord
+class Catuser extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CatUser;
+use app\models\Catuser;
 
 /**
- * CatUserSearch represents the model behind the search form about `app\models\CatUser`.
+ * CatuserSearch represents the model behind the search form about `app\models\Catuser`.
  */
-class CatUserSearch extends CatUser
+class CatuserSearch extends Catuser
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class CatUserSearch extends CatUser
      */
     public function search($params)
     {
-        $query = CatUser::find();
+        $query = Catuser::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

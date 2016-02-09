@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CatUser */
+/* @var $model app\models\Catuser */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="cat-user-form">
+<div class="catuser-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
