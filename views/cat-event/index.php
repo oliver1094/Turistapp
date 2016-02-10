@@ -36,8 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'vc_EventName', 
                                                     ArrayHelper::map(CatEvent::find()->asArray()->all(),
                                                                     'vc_EventName',
-                                                                    'vc_EventName'),
-                                                                ['class'=>'form-control','prompt'=>'--All--']),
+                                                                    'vc_EventName'
+                                                                    ),
+                                                                ['class'=>'form-control','prompt'=>'--All--']
+                                                    ),
             ],
             'vc_EventAddress',
             [
@@ -47,8 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'vc_EventCity', 
                                                     ArrayHelper::map(CatEvent::find()->asArray()->all(),
                                                                      'vc_EventCity',
-                                                                     'vc_EventCity'),
-                                                                ['class'=>'form-control','prompt'=>'--All--']),
+                                                                     'vc_EventCity'
+                                                                    ),
+                                                                ['class'=>'form-control','prompt'=>'--All--']
+                                                    ),
             ],
             // 'dt_EventStart',
             // 'dt_EventEnd',
