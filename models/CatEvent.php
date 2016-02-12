@@ -39,7 +39,7 @@ class CatEvent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['i_FkTbl_User', 'vc_EventName', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd', 'dc_EventCost'], 'required'],
+            [[ 'vc_EventName', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd', 'dc_EventCost'], 'required'],
             [['i_FkTbl_User'], 'integer'],
             [['dt_EventStart', 'dt_EventEnd'], 'safe'],
             [['dc_EventCost'], 'number'],
@@ -95,6 +95,11 @@ class CatEvent extends \yii\db\ActiveRecord
     public function getEvtMaps()
     {
         return $this->hasMany(EvtMap::className(), ['i_FkTbl_Event' => 'i_Pk_Event']);
+    }
+
+    public function getEvtMap()
+    {
+        return $this->hasOne(EvtMap::className(), ['i_FkTbl_Event' => 'i_Pk_Event']);
     }
 
     /**

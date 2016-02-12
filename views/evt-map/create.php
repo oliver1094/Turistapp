@@ -4,19 +4,18 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CatEvent */
+/* @var $model app\models\EvtMap */
 
-$this->title = 'Create Cat Event';
-$this->params['breadcrumbs'][] = ['label' => 'Cat Events', 'url' => ['index']];
+$this->title = 'Create Evt Map';
+$this->params['breadcrumbs'][] = ['label' => 'Evt Maps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="cat-event-create">
+<div class="evt-map-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
-        'evtmap' => $evtmap,
     ]) ?>
 
 </div>
