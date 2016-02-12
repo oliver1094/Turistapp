@@ -8,26 +8,95 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="cat-event-form">
+<?php
+    $this->registerJsFile('http://maps.googleapis.com/maps/api/js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>
 
-    <?php $form = ActiveForm::begin(); ?>    
+<?php $this->registerJs('
+    $(".field-evtmap-vc_latitude").hide();
+    $(".field-evtmap-vc_longitude").hide();
 
-    <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>
+    var map;
+    var myCenter=new google.maps.LatLng(20.9663671,-89.6067274);
 
-    <?= $form->field($model, 'vc_EventAddress')->textInput(['maxlength' => true]) ?>
+    function initialize()
+    {
+    var mapProp = {
+      center:myCenter,
+      zoom:13,
+      mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
 
-    <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
+      map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-    <?= $form->field($model, 'dt_EventStart')->textInput() ?>
+      google.maps.event.addListener(map, "click", function(event) {
+        addMarker(event.latLng);
+      });
+    }
 
-    <?= $form->field($model, 'dt_EventEnd')->textInput() ?>
+    var id;
+    var markers = {};
+    var addMarker = function (location) {
+        marker = new google.maps.Marker({ 
+            position: location,
+            map: map,
+            draggable: true
+        });
+        id = marker.__gm_id
+        markers[id] = marker; 
 
-    <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
+        var infowindow = new google.maps.InfoWindow({
+            content: "Latitude: " + location.lat() + "<br>Longitude: " + location.lng()
+        });
+        infowindow.open(map,marker);
+        $("#evtmap-vc_latitude").val(location.lat());
+        $("#evtmap-vc_longitude").val(location.lng());
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
+    }
+
+    var delMarker = function (id) {
+        marker = markers[id]; 
+        marker.setMap(null);
+    }
+
+    google.maps.event.addDomListener(window, "load", initialize);
+
+'); ?>
+<?php if($model->isNewRecord): ?>
+<div class="col-md-6">
+<?php endif ?>
+    <div class="cat-event-form">
+
+        <?php $form = ActiveForm::begin(); ?>
+
+        <?= $form->field($model, 'i_FkTbl_User')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>   
+
+        <?= $form->field($model, 'vc_EventAddress')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'dt_EventStart')->textInput() ?>
+
+        <?= $form->field($model, 'dt_EventEnd')->textInput() ?>
+
+        <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($evtmap, 'vc_Latitude')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($evtmap, 'vc_Longitude')->textInput(['maxlength' => true]) ?>
+
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>
+<?php if($model->isNewRecord): ?>
+<div id="googleMap" class="col-md-6" style="width:500px;height:380px;">
+</div>
+<?php endif ?>

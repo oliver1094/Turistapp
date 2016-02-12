@@ -3,32 +3,20 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\CatEvent;
-use app\models\CatEventSearch;
 use app\models\EvtMap;
+use app\models\EvtMapSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CatEventController implements the CRUD actions for CatEvent model.
+ * EvtMapController implements the CRUD actions for EvtMap model.
  */
-class CatEventController extends Controller
+class EvtMapController extends Controller
 {
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => 'yii\filters\AccessControl',
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['view', 'create'],
-                        'roles' => ['@', '?'],
-                    ],
-                    
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -39,12 +27,12 @@ class CatEventController extends Controller
     }
 
     /**
-     * Lists all CatEvent models.
+     * Lists all EvtMap models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CatEventSearch();
+        $searchModel = new EvtMapSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -54,54 +42,37 @@ class CatEventController extends Controller
     }
 
     /**
-     * Displays a single CatEvent model.
+     * Displays a single EvtMap model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $gps = new EvtMap();
-        $model = $this->findModel($id);
-        //$gps = EvtMap::find()->where(['i_FkTbl_Event' => $model->i_Pk_Event])->one();
         return $this->render('view', [
-            'model' => $model,
-            //'gps' => $gps,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new CatEvent model.
+     * Creates a new EvtMap model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new CatEvent();
-        $evtmap = new EvtMap();
+        $model = new EvtMap();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $valid = true;
-            $valid = $valid && $model->validate();
-            if($valid){
-                $model->save(false);
-                if($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)){
-                    $evtmap->i_FkTbl_Event = $model->i_Pk_Event;
-                    $evtmap->save();
-                    return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
-                }
-            }
-            return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-            'evtmap' => $evtmap,
-        ]);
-        
     }
 
     /**
-     * Updates an existing CatEvent model.
+     * Updates an existing EvtMap model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -109,19 +80,18 @@ class CatEventController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $evtmap = new EvtMap();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
+            return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'evtmap' => $evtmap,
             ]);
         }
     }
 
     /**
-     * Deletes an existing CatEvent model.
+     * Deletes an existing EvtMap model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -134,15 +104,15 @@ class CatEventController extends Controller
     }
 
     /**
-     * Finds the CatEvent model based on its primary key value.
+     * Finds the EvtMap model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return CatEvent the loaded model
+     * @return EvtMap the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = CatEvent::findOne($id)) !== null) {
+        if (($model = EvtMap::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

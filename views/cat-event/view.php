@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
+use dosamigos\google\maps\LatLng;
+use dosamigos\google\maps\overlays\Marker;
+use dosamigos\google\maps\Map;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\CatEvent */
 
@@ -10,6 +14,9 @@ $this->title = $model->i_Pk_Event;
 $this->params['breadcrumbs'][] = ['label' => 'Cat Events', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php if(!empty ($model->evtMaps)): ?>
+<div class="col-md-6">
+<?php endif ?>
 <div class="cat-event-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -40,3 +47,35 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+</div>
+<?php if(!empty ($model->evtMaps)): ?>
+<div class="col-md-6">
+<div>
+    <?php
+        $lat;
+        $lng;
+        if(!empty ($model->evtMaps)){
+            foreach($model->evtMaps as $evtMap){
+                $lat = (float)$evtMap->vc_Latitude;
+                $lng = (float)$evtMap->vc_Longitude;
+            }
+            $coord = new LatLng(['lat' => $lat, 'lng' => $lng ]);
+            $map = new Map([
+                'center' => $coord,
+                'zoom' => 13,
+            ]);    
+            $marker = new Marker([
+                'position' => $coord,
+                'title' => $model->vc_EventName,
+            ]);
+            // Add marker to the map
+            $map->addOverlay($marker);    
+            echo $map->display();    
+        }
+
+
+        
+    ?>
+</div>
+</div>
+<?php endif ?>
