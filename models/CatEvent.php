@@ -54,14 +54,14 @@ class CatEvent extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'i_Pk_Event' => 'I  Pk  Event',
-            'i_FkTbl_User' => 'I  Fk Tbl  User',
-            'vc_EventName' => 'Vc  Event Name',
-            'vc_EventAddress' => 'Vc  Event Address',
-            'vc_EventCity' => 'Vc  Event City',
-            'dt_EventStart' => 'Dt  Event Start',
-            'dt_EventEnd' => 'Dt  Event End',
-            'dc_EventCost' => 'Dc  Event Cost',
+            'i_Pk_Event' => 'id evento',
+            'i_FkTbl_User' => 'id Usuario',
+            'vc_EventName' => 'Nombre de evento',
+            'vc_EventAddress' => 'Dirección de evento',
+            'vc_EventCity' => 'Ciudad',
+            'dt_EventStart' => 'Fecha de inicio',
+            'dt_EventEnd' => 'Fecha de finalización',
+            'dc_EventCost' => 'Costo',
         ];
     }
 
@@ -111,5 +111,18 @@ class CatEvent extends \yii\db\ActiveRecord
     public function getIFkTblUsers0()
     {
         return $this->hasMany(CatUser::className(), ['i_Pk_User' => 'i_FkTbl_User'])->viaTable('usr_itinerary', ['i_FkTbl_Event' => 'i_Pk_Event']);
+    }
+
+    public function beforeSave($insert){
+        if(parent::beforeSave($insert)) {
+
+            $user = User::findOne(\Yii::$app->user->identity->id);
+            $this->i_FkTbl_User = $user->id;
+
+            return true;
+
+        }
+
+        return false;
     }
 }

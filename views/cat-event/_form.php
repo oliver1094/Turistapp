@@ -10,9 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="cat-event-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'i_FkTbl_User')->textInput(['maxlength' => true]) ?>
+    <?php $form = ActiveForm::begin(); ?>    
 
     <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>
 

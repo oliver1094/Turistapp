@@ -42,8 +42,14 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['i_Fk_UserType', 'vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required'],
             [['i_Fk_UserType'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
+            [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
             [['vc_HashPassword', 'vc_Email', 'vc_CompanyName'], 'string', 'max' => 100],
-            [['vc_Phone'], 'string', 'max' => 20]
+            [['vc_HashPassword'], 'string', 'min'=>6,'max' => 25],
+            [['vc_Email'], 'unique'],
+            [['vc_Email'], 'email'],  
+            ['vc_Email', 'filter', 'filter' => 'trim'],
+            [['vc_Phone'], 'string', 'min'=>10,'max' => 10],
+            [['vc_Phone'], 'integer']  
         ];
     }
 
@@ -53,15 +59,37 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function attributeLabels()
     {
         return [
-            'i_Pk_User' => 'I  Pk  User',
-            'i_Fk_UserType' => 'I  Fk  User Type',
-            'vc_FirstName' => 'Vc  First Name',
-            'vc_LastName' => 'Vc  Last Name',
-            'vc_HashPassword' => 'Vc  Hash Password',
-            'vc_Email' => 'Vc  Email',
-            'vc_Phone' => 'Vc  Phone',
-            'vc_CompanyName' => 'Vc  Company Name',
+            'i_Pk_User' => 'id Usuario',
+            'i_Fk_UserType' => 'Tipo de usuario',
+            'vc_FirstName' => 'Nombre',
+            'vc_LastName' => 'Apellido',
+            'vc_HashPassword' => 'Contraseña',
+            'vc_Email' => 'E-mail',
+            'vc_Phone' => 'Teléfono',
+            'vc_CompanyName' => 'Nombre de compañía',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if(parent::beforeSave($insert))
+        {
+            if($this->isNewRecord)
+            {
+                $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
+                //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
+                //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
+            }
+            else
+            {
+                if(!empty($this->vc_HashPassword))
+                {
+                    $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
