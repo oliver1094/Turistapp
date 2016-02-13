@@ -63,7 +63,7 @@ use yii\widgets\ActiveForm;
     google.maps.event.addDomListener(window, "load", initialize);
 
 '); ?>
-<?php if($model->isNewRecord): ?>
+<?php if ($model->isNewRecord): ?>
 <div class="col-md-6">
 <?php endif ?>
     <div class="cat-event-form">
@@ -96,7 +96,7 @@ use yii\widgets\ActiveForm;
 
     </div>
 </div>
-<?php if($model->isNewRecord): ?>
+<?php if ($model->isNewRecord): ?>
 <div id="googleMap" class="col-md-6" style="width:500px;height:380px;">
 </div>
 <?php endif ?>
