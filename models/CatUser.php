@@ -142,22 +142,31 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     //metodos de la interfaz idenity
     public function getAuthKey() {
-        
+        return $this->vc_HashPassword;   
     }
 
     public function getId() {
-        
+        return $this->i_Pk_User;
     }
 
     public function validateAuthKey($authKey) {
+        return $this->getAuthKey() === $authKey;
         
     }
 
     public static function findIdentity($id) {
-        
+        return self::findOne($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null) {
+
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
         
     }
     //fin metodos de la interfaz identity

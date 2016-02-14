@@ -18,8 +18,9 @@
         "yiisoft/yii2": ">=2.0.5",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-		"2amigos/yii2-google-maps-library": "*",
-		"2amigos/yii2-google-places-library": "*"
+        "yiisoft/yii2-jui": "*",     
+		"2amigos/yii2-google-maps-library": "^1.0",
+		"2amigos/yii2-google-places-library": "*"        
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

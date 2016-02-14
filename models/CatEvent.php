@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+
 use Yii;
 
 /**
@@ -121,8 +122,15 @@ class CatEvent extends \yii\db\ActiveRecord
     public function beforeSave($insert){
         if(parent::beforeSave($insert)) {
 
-            $user = User::findOne(\Yii::$app->user->identity->id);
+            $user = CatUser::findOne(\Yii::$app->user->identity->id);
             $this->i_FkTbl_User = $user->id;
+
+            if($this->isNewRecord){
+                $formatedDateTime = date_format(date_create(),"Y/m/d H:i:s");
+                $this->dt_EventStart = $formatedDateTime;
+                $this->dt_EventEnd = $formatedDateTime;
+              
+            }
 
             return true;
 

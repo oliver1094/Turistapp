@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\jui\DatePicker;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CatEvent */
@@ -70,7 +72,7 @@ use yii\widgets\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'i_FkTbl_User')->textInput(['maxlength' => true]) ?>
+        
 
         <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>   
 
@@ -78,9 +80,15 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'dt_EventStart')->textInput() ?>
+        <?= $form->field($model, 'dt_EventStart')->widget(\yii\jui\DatePicker::classname(), [
+        'dateFormat' => 'yyyy-MM-dd',
+        ]) ?>
 
-        <?= $form->field($model, 'dt_EventEnd')->textInput() ?>
+        <?= $form->field($model, 'dt_EventEnd')->widget(\yii\jui\DatePicker::classname(), [
+        'dateFormat' => 'yyyy-MM-dd',
+        ]) ?>
+
+        
 
         <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
 
@@ -89,7 +97,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($evtmap, 'vc_Longitude')->textInput(['maxlength' => true]) ?>
 
         <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($model->isNewRecord ? 'Registrar Evento' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -26,6 +26,11 @@ class CatEventController extends Controller
                         'actions' => ['view', 'create'],
                         'roles' => ['@', '?'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['@', '?'],
+                    ],
                     
                 ],
             ],
