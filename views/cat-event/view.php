@@ -14,7 +14,7 @@ $this->title = $model->i_Pk_Event;
 $this->params['breadcrumbs'][] = ['label' => 'Cat Events', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php if(!empty ($model->evtMaps)): ?>
+<?php if (!empty ($model->evtMaps)): ?>
 <div class="col-md-6">
 <?php endif ?>
 <div class="cat-event-view">
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 </div>
-<?php if(!empty ($model->evtMaps)): ?>
+<?php if (!empty ($model->evtMaps)): ?>
 <div class="col-md-6">
 <div>
     <?php

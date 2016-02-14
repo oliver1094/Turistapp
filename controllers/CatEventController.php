@@ -87,9 +87,9 @@ class CatEventController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $valid = true;
             $valid = $valid && $model->validate();
-            if($valid){
+            if ($valid) {
                 $model->save(false);
-                if($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)){
+                if ($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)) {
                     $evtmap->i_FkTbl_Event = $model->i_Pk_Event;
                     $evtmap->save();
                     return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
