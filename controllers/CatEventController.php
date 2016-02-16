@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\CatEvent;
 use app\models\CatEventSearch;
+use app\models\CatUser;
 use app\models\EvtMap;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -23,12 +24,12 @@ class CatEventController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['view', 'create'],
+                        'actions' => ['view', 'create', 'my-events'],
                         'roles' => ['@', '?'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index'],
+                        'actions' => ['index', 'my-events'],
                         'roles' => ['@', '?'],
                     ],
                     
@@ -53,6 +54,22 @@ class CatEventController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionMyEvents()
+    {
+        $queryParams = array_merge(array(),Yii::$app->request->getQueryParams());
+        
+        //Ver solo los eventos del Organizador
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
+        $queryParams["CatEventSearch"]["i_FkTbl_User"] = $userID;
+        $searchModel = new CatEventSearch();
+        $dataProvider = $searchModel->search($queryParams);
+        
+        return $this->render('my-events', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
