@@ -32,6 +32,13 @@ class CatEventController extends Controller
                         'actions' => ['index', 'my-events'],
                         'roles' => ['@', '?'],
                     ],
+
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'update', 'delete'],
+                        'roles' => ['@', '?'],
+                    ],
+                    
                     
                 ],
             ],
@@ -109,7 +116,10 @@ class CatEventController extends Controller
                 if ($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)) {
                     $evtmap->i_FkTbl_Event = $model->i_Pk_Event;
                     $evtmap->save();
-                    return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
+                    Yii::$app->session->setFlash('eventFormSubmitted');
+
+                    return $this->refresh();
+                    //return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
                 }
             }
             return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
@@ -133,7 +143,8 @@ class CatEventController extends Controller
         $model = $this->findModel($id);
         $evtmap = new EvtMap();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
+            Yii::$app->session->setFlash('eventFormSubmitted');
+                    return $this->refresh();
         } else {
             return $this->render('update', [
                 'model' => $model,

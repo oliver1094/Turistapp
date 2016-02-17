@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
+use kartik\datetime\DateTimePicker;
 
 
 /* @var $this yii\web\View */
@@ -70,6 +71,18 @@ use yii\jui\DatePicker;
 <?php endif ?>
     <div class="cat-event-form">
 
+    <?php if (Yii::$app->session->hasFlash('eventFormSubmitted')): ?>
+
+        <div class="alert alert-success">
+            El evento se ha creado/actualizado correctamente.
+        </div>
+
+        <?= Html::a('Volver a mis eventos', 'my-events', ['title' => 'Go']) ?>
+
+        
+            
+            <?php else: ?>
+
         <?php $form = ActiveForm::begin(); ?>
 
         
@@ -79,15 +92,25 @@ use yii\jui\DatePicker;
         <?= $form->field($model, 'vc_EventAddress')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
+        
 
-        <?= $form->field($model, 'dt_EventStart')->widget(\yii\jui\DatePicker::classname(), [
-        'dateFormat' => 'yyyy-MM-dd',
+        <?= $form->field($model, 'dt_EventStart')->widget(DateTimePicker::classname(), [
+        'options' => ['placeholder' => 'Enter event time ...'],
+        'pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'yyyy-mm-dd hh:ii:ss'
+        ]
         ]) ?>
 
-        <?= $form->field($model, 'dt_EventEnd')->widget(\yii\jui\DatePicker::classname(), [
-        'dateFormat' => 'yyyy-MM-dd',
+        <?= $form->field($model, 'dt_EventEnd')->widget(DateTimePicker::classname(), [
+        'options' => ['placeholder' => 'Enter event time ...'],
+        'pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'yyyy-mm-dd hh:ii:ss'
+        ]
         ]) ?>
 
+   
         
 
         <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
@@ -108,3 +131,5 @@ use yii\jui\DatePicker;
 <div id="googleMap" class="col-md-6" style="width:500px;height:380px;">
 </div>
 <?php endif ?>
+<?php endif ?>
+
