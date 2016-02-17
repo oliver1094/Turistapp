@@ -4,6 +4,7 @@ namespace app\models;
 
 
 use Yii;
+use yii\i18n\Formatter;
 
 /**
  * This is the model class for table "cat_event".
@@ -42,10 +43,13 @@ class CatEvent extends \yii\db\ActiveRecord
         return [
             [[ 'vc_EventName', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd', 'dc_EventCost'], 'required'],
             [['i_FkTbl_User'], 'integer'],
+            ['vc_EventName', 'match', 'pattern' => "/^[0-9A-Záéíóúñ” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            ['vc_EventAddress', 'match', 'pattern' => "/^[0-9A-Záéíóúñ#” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
             [['dt_EventStart', 'dt_EventEnd'], 'safe'],
             [['dc_EventCost'], 'number'],
-            [['vc_EventName'], 'string', 'max' => 120],
-            [['vc_EventAddress', 'vc_EventCity'], 'string', 'max' => 150]
+            [['vc_EventName'], 'string', 'max' => 120],            
+            [['vc_EventAddress', 'vc_EventCity'], 'string', 'max' => 150],
+            [['vc_EventCity'], 'match', 'pattern' => '/^[a-zA-Záéíóúñ” “]+$/', 'message' => 'Sólo se aceptan letras']
         ];
     }
 
@@ -124,13 +128,8 @@ class CatEvent extends \yii\db\ActiveRecord
 
             $user = CatUser::findOne(\Yii::$app->user->identity->id);
             $this->i_FkTbl_User = $user->id;
-
-            if($this->isNewRecord){
-                $formatedDateTime = date_format(date_create(),"Y/m/d H:i:s");
-                $this->dt_EventStart = $formatedDateTime;
-                $this->dt_EventEnd = $formatedDateTime;
-              
-            }
+            
+            
 
             return true;
 

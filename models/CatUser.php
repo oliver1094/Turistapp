@@ -39,7 +39,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['i_Fk_UserType', 'vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required'],
+            [['i_Fk_UserType', 'vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
             [['i_Fk_UserType'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
             [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
