@@ -20,8 +20,9 @@
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-jui": "*",     
 		"2amigos/yii2-google-maps-library": "^1.0",
-		"philippfrenzel/yii2fullcalendar":"*",
-		"2amigos/yii2-google-places-library": "*"        
+		"2amigos/yii2-google-places-library": "*",
+                "kartik-v/yii2-widget-datetimepicker": "^1.4",
+                "philippfrenzel/yii2fullcalendar":"*"        
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
