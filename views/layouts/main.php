@@ -42,12 +42,32 @@ AppAsset::register($this);
             !Yii::$app->user->isGuest ?
             [
                 'label' => Yii::t('app', 'Mis eventos'),
-                'url' => ['/cat-event/my-events']
+                
+                'url' => ['/cat-event/my-events'] 
+               
             ]:
             [
                 'label' => Yii::t('app', 'Eventos'),
+                
                 'url' => ['/cat-event/index']
             ],
+            
+            //Itinerario
+            !Yii::$app->user->isGuest ?
+            [
+                'label' => Yii::t('app', 'Itinerario'),
+                
+                'url' => ['/itinerary/index'] 
+               
+            ]:
+            [
+                'label' => Yii::t('app', 'Eventos2xD'),
+                
+                'url' => ['/cat-event/index']
+            ],
+            
+            //
+            
             Yii::$app->user->isGuest ?
                 ['label' => 'Login', 'url' => ['/site/login']] :
                 [
