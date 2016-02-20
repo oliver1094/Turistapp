@@ -18,8 +18,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vc_Longitude')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'vc_EventTag')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'vc_TransportTag')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'vc_LatitudeTransport')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'vc_LongitudeTransport')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

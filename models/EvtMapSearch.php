@@ -19,7 +19,7 @@ class EvtMapSearch extends EvtMap
     {
         return [
             [['i_Pk_Map', 'i_FkTbl_Event'], 'integer'],
-            [['vc_Latitude', 'vc_Longitude'], 'safe'],
+            [['vc_Latitude', 'vc_Longitude', 'vc_EventTag', 'vc_TransportTag', 'vc_LatitudeTransport', 'vc_LongitudeTransport'], 'safe'],
         ];
     }
 
@@ -61,7 +61,11 @@ class EvtMapSearch extends EvtMap
         ]);
 
         $query->andFilterWhere(['like', 'vc_Latitude', $this->vc_Latitude])
-            ->andFilterWhere(['like', 'vc_Longitude', $this->vc_Longitude]);
+            ->andFilterWhere(['like', 'vc_Longitude', $this->vc_Longitude])
+            ->andFilterWhere(['like', 'vc_EventTag', $this->vc_EventTag])
+            ->andFilterWhere(['like', 'vc_TransportTag', $this->vc_TransportTag])
+            ->andFilterWhere(['like', 'vc_LatitudeTransport', $this->vc_LatitudeTransport])
+            ->andFilterWhere(['like', 'vc_LongitudeTransport', $this->vc_LongitudeTransport]);
 
         return $dataProvider;
     }

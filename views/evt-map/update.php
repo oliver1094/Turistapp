@@ -5,10 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\EvtMap */
 
-$this->title = 'Update Evt Map: ' . ' ' . $model->i_Pk_Map;
-$this->params['breadcrumbs'][] = ['label' => 'Evt Maps', 'url' => ['index']];
+$this->title = Yii::t('app', 'Update {modelClass}: ', [
+    'modelClass' => 'Evt Map',
+]) . ' ' . $model->i_Pk_Map;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Evt Maps'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->i_Pk_Map, 'url' => ['view', 'id' => $model->i_Pk_Map]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="evt-map-update">
 

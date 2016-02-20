@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\EvtMap */
 
-$this->title = 'Create Evt Map';
-$this->params['breadcrumbs'][] = ['label' => 'Evt Maps', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Evt Map');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Evt Maps'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="evt-map-create">

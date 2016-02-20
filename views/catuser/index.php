@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\CatuserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Catusers';
+$this->title = Yii::t('app', 'Catusers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catuser-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Catuser', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Catuser'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

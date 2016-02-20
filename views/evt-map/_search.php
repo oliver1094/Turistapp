@@ -23,9 +23,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vc_Longitude') ?>
 
+    <?= $form->field($model, 'vc_EventTag') ?>
+
+    <?php // echo $form->field($model, 'vc_TransportTag') ?>
+
+    <?php // echo $form->field($model, 'vc_LatitudeTransport') ?>
+
+    <?php // echo $form->field($model, 'vc_LongitudeTransport') ?>
+
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

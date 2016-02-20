@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\EvtMapSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Evt Maps';
+$this->title = Yii::t('app', 'Evt Maps');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="evt-map-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Evt Map', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Evt Map'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -29,6 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'i_FkTbl_Event',
             'vc_Latitude',
             'vc_Longitude',
+            'vc_EventTag',
+            // 'vc_TransportTag',
+            // 'vc_LatitudeTransport',
+            // 'vc_LongitudeTransport',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
