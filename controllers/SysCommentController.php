@@ -63,7 +63,7 @@ class SysCommentController extends Controller
     public function actionCreate()
     {
         //Obtengo el id del usuario logueado y verifico que sea un turista
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
         
         $model = new SysComment();
 
