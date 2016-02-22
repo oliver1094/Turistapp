@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'i_Pk_Event',
             'i_FkTbl_User',
+
             [
                 'attribute'=>'Name',
                 'value'=> 'vc_EventName',
@@ -41,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 ['class'=>'form-control','prompt'=>'--All--']
                                                     ),
             ],
+            'tx_DescriptionEvent:ntext',
             'vc_EventAddress',
             //'dt_EventStart',
             [
