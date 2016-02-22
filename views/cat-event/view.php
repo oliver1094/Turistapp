@@ -38,11 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'i_Pk_Event',
             'i_FkTbl_User',
             'vc_EventName',
+            'tx_DescriptionEvent:ntext',
             'vc_EventAddress',
             'vc_EventCity',
             'dt_EventStart',
             'dt_EventEnd',
             'dc_EventCost',
+            'dc_TransportCost', 
         ],
     ]) ?>
 

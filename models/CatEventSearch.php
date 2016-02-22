@@ -19,8 +19,8 @@ class CatEventSearch extends CatEvent
     {
         return [
             [['i_Pk_Event', 'i_FkTbl_User'], 'integer'],
-            [['vc_EventName', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd'], 'safe'],
-            [['dc_EventCost'], 'number'],
+            [['vc_EventName', 'tx_DescriptionEvent','vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd'], 'safe'],
+            [['dc_EventCost', 'dc_TransportCost'], 'number'],
         ];
     }
 
@@ -62,9 +62,11 @@ class CatEventSearch extends CatEvent
             'dt_EventStart' => $this->dt_EventStart,
             'dt_EventEnd' => $this->dt_EventEnd,
             'dc_EventCost' => $this->dc_EventCost,
+            'dc_TransportCost' => $this->dc_TransportCost,
         ]);
 
         $query->andFilterWhere(['like', 'vc_EventName', $this->vc_EventName])
+            ->andFilterWhere(['like', 'tx_DescriptionEvent', $this->tx_DescriptionEvent])
             ->andFilterWhere(['like', 'vc_EventAddress', $this->vc_EventAddress])
             ->andFilterWhere(['like', 'vc_EventCity', $this->vc_EventCity]);
 

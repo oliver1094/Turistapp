@@ -2,9 +2,7 @@
 
 namespace app\models;
 
-
 use Yii;
-use yii\i18n\Formatter;
 
 /**
  * This is the model class for table "cat_event".
@@ -12,15 +10,18 @@ use yii\i18n\Formatter;
  * @property string $i_Pk_Event
  * @property string $i_FkTbl_User
  * @property string $vc_EventName
+ * @property string $tx_DescriptionEvent
  * @property string $vc_EventAddress
  * @property string $vc_EventCity
  * @property string $dt_EventStart
  * @property string $dt_EventEnd
  * @property string $dc_EventCost
+ * @property string $dc_TransportCost
  *
  * @property CatUser $iFkTblUser
  * @property EvtComment[] $evtComments
  * @property CatUser[] $iFkTblUsers
+ * @property EvtImage[] $evtImages
  * @property EvtMap[] $evtMaps
  * @property UsrItinerary[] $usrItineraries
  * @property CatUser[] $iFkTblUsers0
@@ -41,14 +42,15 @@ class CatEvent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'vc_EventName', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd', 'dc_EventCost'], 'required'],
+            [[ 'vc_EventName','tx_DescriptionEvent', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd', 'dc_EventCost'], 'required'],
             [['i_FkTbl_User'], 'integer'],
             ['vc_EventName', 'match', 'pattern' => "/^[0-9A-Záéíóúñ” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
-            ['vc_EventAddress', 'match', 'pattern' => "/^[0-9A-Záéíóúñ#” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
-            [['dt_EventStart', 'dt_EventEnd'], 'safe'],
-            [['dc_EventCost'], 'number'],
+            [['vc_EventAddress','tx_DescriptionEvent'],'match', 'pattern' => "/^[0-9A-Záéíóúñ#” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            [['dt_EventStart', 'dt_EventEnd'], 'safe'],        
+            [['dc_EventCost', 'dc_TransportCost'], 'number'],
             [['vc_EventName'], 'string', 'max' => 120],            
             [['vc_EventAddress', 'vc_EventCity'], 'string', 'max' => 150],
+            [['tx_DescriptionEvent'], 'string'],
             [['vc_EventCity'], 'match', 'pattern' => '/^[a-zA-Záéíóúñ” “]+$/', 'message' => 'Sólo se aceptan letras']
         ];
     }
@@ -62,11 +64,13 @@ class CatEvent extends \yii\db\ActiveRecord
             'i_Pk_Event' => 'id evento',
             'i_FkTbl_User' => 'id Usuario',
             'vc_EventName' => 'Nombre de evento',
+            'tx_DescriptionEvent' => 'Descripción del evento',
             'vc_EventAddress' => 'Dirección de evento',
             'vc_EventCity' => 'Ciudad',
             'dt_EventStart' => 'Fecha de inicio',
             'dt_EventEnd' => 'Fecha de finalización',
-            'dc_EventCost' => 'Costo',
+            'dc_EventCost' => 'Costo de evento',
+            'dc_TransportCost' => 'Costo de transporte',
         ];
     }
 
@@ -97,14 +101,17 @@ class CatEvent extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getEvtImages()
+    {
+        return $this->hasMany(EvtImage::className(), ['i_FkTbl_Event' => 'i_Pk_Event']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getEvtMaps()
     {
         return $this->hasMany(EvtMap::className(), ['i_FkTbl_Event' => 'i_Pk_Event']);
-    }
-
-    public function getEvtMap()
-    {
-        return $this->hasOne(EvtMap::className(), ['i_FkTbl_Event' => 'i_Pk_Event']);
     }
 
     /**
@@ -121,20 +128,5 @@ class CatEvent extends \yii\db\ActiveRecord
     public function getIFkTblUsers0()
     {
         return $this->hasMany(CatUser::className(), ['i_Pk_User' => 'i_FkTbl_User'])->viaTable('usr_itinerary', ['i_FkTbl_Event' => 'i_Pk_Event']);
-    }
-
-    public function beforeSave($insert){
-        if(parent::beforeSave($insert)) {
-
-            $user = CatUser::findOne(\Yii::$app->user->identity->id);
-            $this->i_FkTbl_User = $user->id;
-            
-            
-
-            return true;
-
-        }
-
-        return false;
     }
 }
