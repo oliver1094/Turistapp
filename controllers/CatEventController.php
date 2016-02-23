@@ -6,6 +6,7 @@ use Yii;
 use app\models\CatEvent;
 use app\models\CatEventSearch;
 use app\models\CatUser;
+use app\models\Itinerary;
 use app\models\EvtMap;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -89,11 +90,28 @@ class CatEventController extends Controller
      */
     public function actionView($id)
     {
+        $itinerary=new Itinerary();
         $gps = new EvtMap();
         $model = $this->findModel($id);
+        //Obtengo el id del usuario logueado y verifico que sea un turista (esto para que pueda agregar el evento al itinerario)
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
         //$gps = EvtMap::find()->where(['i_FkTbl_Event' => $model->i_Pk_Event])->one();
+
+        try{
+            if($itinerary->load(Yii::$app->request->post()) && $itinerary->save()){
+?> 
+                <?= '<script> alert("Event added to itinerary")</script>'?>
+<?php    
+            }
+        }catch (\yii\db\IntegrityException $integrityException){
+?> 
+            <?= '<script> alert("You already have this event")</script>' ?>
+<?php       
+        }
+        
         return $this->render('view', [
             'model' => $model,
+            'userID' => $userID
             //'gps' => $gps,
         ]);
     }

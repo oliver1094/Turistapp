@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
             'i_Pk_Event',
             [
                 'attribute'=>'Name',
@@ -41,6 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                     ),
                                                                 ['class'=>'form-control','prompt'=>'--All--']
                                                     ),
+            ],
+            [
+                'attribute'=>'Description',
+                'value'=> 'tx_DescriptionEvent',
             ],
             'vc_EventAddress',
             //'dt_EventStart',
@@ -95,6 +99,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 ['class'=>'form-control','prompt'=>'--All--']
                                                     ),
             ],
+            [
+                'attribute'=>'Transport Cost',
+                'value'=> 'dc_TransportCost',
+                'filter'=> Html::activeDropDownList($searchModel, 
+                                                    'dc_TransportCost', 
+                                                    ArrayHelper::map(CatEvent::find()->asArray()->all(),
+                                                                     'dc_TransportCost',
+                                                                     'dc_TransportCost'
+                                                                    ),
+                                                                ['class'=>'form-control','prompt'=>'--All--']
+                                                    ),
+            ]
+            
             // 'dt_EventStart',
             // 'dt_EventEnd',
             // 'dc_EventCost',

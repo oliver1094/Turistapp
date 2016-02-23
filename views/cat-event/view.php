@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\models\Itinerary;
 use dosamigos\google\maps\LatLng;
 use dosamigos\google\maps\overlays\Marker;
 use dosamigos\google\maps\Map;
@@ -14,13 +14,24 @@ $this->title = $model->i_Pk_Event;
 $this->params['breadcrumbs'][] = ['label' => 'Cat Events', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php $this->registerJs("
+    $('.field-itinerary-i_fktbl_user').hide();
+    $('.field-itinerary-i_fktbl_event').hide();
+    $('#itinerary-i_fktbl_event').val('".$model->i_Pk_Event."');
+    "); 
+?>
+
 <?php if (!empty ($model->evtMaps)): ?>
+
 <div class="col-md-6">
+    
 <?php endif ?>
+    
 <div class="cat-event-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->i_Pk_Event], [
@@ -29,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]) ?> 
     </p>
 
     <?= DetailView::widget([
@@ -47,7 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'dc_TransportCost', 
         ],
     ]) ?>
-
+    
+    <?= $this->render('..\itinerary\_form', [
+        'model' => new Itinerary(),
+        'userID' =>$userID    
+    ]) ?>
+    
 </div>
 </div>
 <?php if (!empty ($model->evtMaps)): ?>
