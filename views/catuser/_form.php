@@ -39,6 +39,7 @@ use yii\helpers\ArrayHelper;
      $("input[type=radio][name=\'Catuser[i_Fk_UserType]\']").change(function(){
             toggleStudentId();
      });
+     
 
     
 
@@ -49,13 +50,18 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'i_Fk_UserType')->radioList(
+    
+
+        <?= $form->field($model, 'i_Fk_UserType')->radioList(
         ArrayHelper::map(
             UsrUsertype::find()->all(),
             'i_Pk_UserType',
             'vc_NameUserType'
         )
     ) ?>
+    
+
+    
 
     
 

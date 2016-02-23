@@ -20,6 +20,19 @@ class ItineraryController extends Controller
     public function behaviors()
     {
         return [
+        'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['admin','turista'],
+                    ],
+                                        
+                    
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

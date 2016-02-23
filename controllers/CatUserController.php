@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Catuser;
+use app\models\Au;
 use app\models\CatuserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -17,6 +18,24 @@ class CatuserController extends Controller
     public function behaviors()
     {
         return [
+        'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','update','delete','create'],
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['register'],
+                        'roles' => ['?','admin'],
+                    ],
+                                        
+                    
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -60,12 +79,44 @@ class CatuserController extends Controller
      */
     public function actionCreate()
     {
+        if (!\Yii::$app->user->isGuest) {
+            return $this->render('../site/index');
+        }
+
         $model = new Catuser();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
             return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionRegister()
+    {
+
+        if (!\Yii::$app->user->isGuest) {
+            return $this->render('../site/index');
+        }
+            
+            $model = new Catuser();
+            $modelAu = new Au();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $userid = $model->userlastid();
+            $id = $userid + 1;
+            $modelAu->item_name = "turista";
+            $modelAu->user_id = $id;
+            
+            if($modelAu->save()){
+                return $this->redirect('../site/index');    
+            }
+            
+        } else {
+            
+            return $this->render('register', [
                 'model' => $model,
             ]);
         }

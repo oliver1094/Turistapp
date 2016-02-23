@@ -24,20 +24,20 @@ class CatEventController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['view', 'create', 'my-events'],
-                        'roles' => ['@', '?'],
+                        'actions' => ['create', 'my-events'],
+                        'roles' => ['empresa','admin'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'my-events'],
-                        'roles' => ['@', '?'],
+                        'actions' => ['index','view'],
+                        'roles' => ['turista','admin','empresa'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update','delete'],
+                        'roles' => ['admin','empresa'],
                     ],
 
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'update', 'delete'],
-                        'roles' => ['@', '?'],
-                    ],
                     
                     
                 ],
