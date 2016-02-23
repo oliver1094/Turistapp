@@ -32,9 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //['class' => 'yii\grid\ActionColumn'],
         ],
        ]); ?>
-
+    
 <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
       'events'=> $events,
   ));
-    ?>       
+    ?> 
 </div>

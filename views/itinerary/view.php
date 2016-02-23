@@ -28,14 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'i_FkTbl_User',
-            'i_FkTbl_Event',
+            //'i_FkTbl_User',
+            //'i_FkTbl_Event',
             'iFkTblEvent.vc_EventName',
+            'iFkTblEvent.tx_DescriptionEvent',
             'iFkTblEvent.vc_EventAddress',
             'iFkTblEvent.vc_EventCity',
             'iFkTblEvent.dt_EventStart',
             'iFkTblEvent.dt_EventEnd',
-            'iFkTblEvent.dc_EventCost'
+            'iFkTblEvent.dc_EventCost',
+            'iFkTblEvent.dc_TransportCost'
         ],
     ]) ?>
 
