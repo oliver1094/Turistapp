@@ -106,7 +106,7 @@ class CatuserController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $userid = $model->userlastid();
-            $id = $userid + 1;
+            $id = $userid;
             $modelAu->item_name = "turista";
             $modelAu->user_id = $id;
             
