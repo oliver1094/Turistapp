@@ -39,7 +39,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['i_Fk_UserType', 'vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
+            [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
             [['i_Fk_UserType'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
             [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
@@ -74,8 +74,20 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         if(parent::beforeSave($insert))
         {
+
+            if (Yii::$app->user->isGuest) {
+                    $this->i_Fk_UserType = 1;
+                }
+                
+
+
+
+
             if($this->isNewRecord)
             {
+                
+
+
                 $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
                 //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
                 //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
@@ -169,6 +181,21 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return null;
         
     }
+
+    public function userlastid(){
+
+        $lastUsurio = self::find()    
+    ->orderBy('i_Pk_User Desc')
+    ->one();
+    $id = $lastUsurio->i_Pk_User;
+        return $id;
+
+    }
+
+
+  //  SELECT TOP 1 *
+//FROM Pedido
+//ORDER BY Fecha DESC
     //fin metodos de la interfaz identity
     
     //--------Estos dos metodos utilice para el Login (ElÃ­as)---------

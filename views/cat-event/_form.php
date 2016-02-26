@@ -89,6 +89,8 @@ use kartik\datetime\DateTimePicker;
 
         <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>   
 
+        <?= $form->field($model, 'tx_DescriptionEvent')->textarea(['rows' => 6]) ?>
+
         <?= $form->field($model, 'vc_EventAddress')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
@@ -114,6 +116,8 @@ use kartik\datetime\DateTimePicker;
         
 
         <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'dc_TransportCost')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($evtmap, 'vc_Latitude')->textInput(['maxlength' => true]) ?>
 

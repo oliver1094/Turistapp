@@ -21,9 +21,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vc_EventName') ?>
 
+    <?= $form->field($model, 'tx_DescriptionEvent') ?>
+
     <?= $form->field($model, 'vc_EventAddress') ?>
 
     <?= $form->field($model, 'vc_EventCity') ?>
+
+    <?php // echo $form->field($model, 'dc_TransportCost') ?> 
 
     <?php // echo $form->field($model, 'dt_EventStart') ?>
 

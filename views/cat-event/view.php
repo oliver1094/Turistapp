@@ -2,15 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\models\Itinerary;
+use app\models\EvtComment;
 use dosamigos\google\maps\LatLng;
 use dosamigos\google\maps\overlays\Marker;
 use dosamigos\google\maps\Map;
-use dosamigos\google\maps\overlays\InfoWindow;
-use dosamigos\google\maps\services\TravelMode;
-use dosamigos\google\maps\overlays\PolylineOptions;
-use dosamigos\google\maps\services\DirectionsRenderer;
-use dosamigos\google\maps\services\DirectionsService;
+use yii\widgets\ActiveForm;
+use kartik\rating\StarRating;   
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CatEvent */
@@ -193,9 +191,21 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <div>
+<?php $this->registerJs("
+    $('.field-itinerary-i_fktbl_user').hide();
+    $('.field-itinerary-i_fktbl_event').hide();
+    
+    $('#itinerary-i_fktbl_event').val('".$model->i_Pk_Event."');
+    "); 
+?>
+
+
 <?php if (!empty ($model->evtMaps)): ?>
+
 <div class="col-md-6">
+    
 <?php endif ?>
+    
 <div class="cat-event-view">
 
     
@@ -207,12 +217,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
+
         ]) ?>
 
         <?php if (empty ($model->evtMaps)): ?>
             <?= Html::a(Yii::t('app', 'Create Evt Map'), ['evt-map/create', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-success']) ?>
         <?php endif ?>
     
+
+        ]) ?> 
+
     </p>
 
     <?= DetailView::widget([
@@ -221,14 +235,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'i_Pk_Event',
             'i_FkTbl_User',
             'vc_EventName',
+            'tx_DescriptionEvent:ntext',
             'vc_EventAddress',
             'vc_EventCity',
             'dt_EventStart',
             'dt_EventEnd',
             'dc_EventCost',
+            'dc_TransportCost', 
         ],
     ]) ?>
-
+    
+    <?= $this->render('..\itinerary\_form', [
+        'model' => new Itinerary(),
+        'userID' =>$userID    
+    ]) ?>
+    <?= $this->render('..\evt-comment\_form', [
+        'model' => new EvtComment(),
+        'userID' => $userID, //Le paso al formulario el id del usuario logueado
+        'eventID'=>$model->i_Pk_Event//'eventID'=>$eventID
+    ])?>
 </div>
 </div>
 
@@ -248,11 +273,32 @@ $this->params['breadcrumbs'][] = $this->title;
         <div id = "text"><p>Buscando...<span id="status"></span></p></div>
     <?php endif ?>
 
+
     <?php if (!empty ($model->evtMaps)): ?>
 </p>
 <div id="viewMap" style="width:500px;height:380px;">
     
+        
+    ?>
+    <?= $this->render('..\evt-comment\_form', [
+        'model' => new EvtComment()
+       // 'userID' => $userID, //Le paso al formulario el id del usuario logueado
+        //'eventID'=>$eventID
+    ]) ?>
+
+       
+
 </div>
+
 </div>
+
 <?php endif ?>
 </div>
+
+    <?php endif ?>
+
+<?php
+
+
+
+

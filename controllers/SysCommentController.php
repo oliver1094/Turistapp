@@ -3,39 +3,22 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Catuser;
-use app\models\Au;
-use app\models\CatuserSearch;
+use app\models\SysComment;
+use app\models\SysCommentSearch;
+use app\models\CatUser;
+use app\models\CatUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CatuserController implements the CRUD actions for Catuser model.
+ * SysCommentController implements the CRUD actions for SysComment model.
  */
-class CatuserController extends Controller
+class SysCommentController extends Controller
 {
     public function behaviors()
     {
         return [
-        'access' => [
-                'class' => 'yii\filters\AccessControl',
-                'rules' => [
-                    
-                    [
-                        'allow' => true,
-                        'actions' => ['index','view','update','delete','create'],
-                        'roles' => ['admin'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['register'],
-                        'roles' => ['?','admin'],
-                    ],
-                                        
-                    
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -46,12 +29,12 @@ class CatuserController extends Controller
     }
 
     /**
-     * Lists all Catuser models.
+     * Lists all SysComment models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CatuserSearch();
+        $searchModel = new SysCommentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -61,7 +44,7 @@ class CatuserController extends Controller
     }
 
     /**
-     * Displays a single Catuser model.
+     * Displays a single SysComment model.
      * @param string $id
      * @return mixed
      */
@@ -73,57 +56,29 @@ class CatuserController extends Controller
     }
 
     /**
-     * Creates a new Catuser model.
+     * Creates a new SysComment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->render('../site/index');
-        }
-
-        $model = new Catuser();
+        //Obtengo el id del usuario logueado y verifico que sea un turista
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
+        
+        $model = new SysComment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+            return $this->redirect(['view', 'id' => $model->i_Pk_Score]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionRegister()
-    {
-
-        if (!\Yii::$app->user->isGuest) {
-            return $this->render('../site/index');
-        }
-            
-            $model = new Catuser();
-            $modelAu = new Au();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $userid = $model->userlastid();
-            $id = $userid;
-            $modelAu->item_name = "turista";
-            $modelAu->user_id = $id;
-            
-            if($modelAu->save()){
-                return $this->redirect('../site/index');    
-            }
-            
-        } else {
-            
-            return $this->render('register', [
-                'model' => $model,
+                'userID'=>$userID //Paso el Id del usuario logueado
             ]);
         }
     }
 
     /**
-     * Updates an existing Catuser model.
+     * Updates an existing SysComment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -133,7 +88,7 @@ class CatuserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+            return $this->redirect(['view', 'id' => $model->i_Pk_Score]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -142,7 +97,7 @@ class CatuserController extends Controller
     }
 
     /**
-     * Deletes an existing Catuser model.
+     * Deletes an existing SysComment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -155,15 +110,15 @@ class CatuserController extends Controller
     }
 
     /**
-     * Finds the Catuser model based on its primary key value.
+     * Finds the SysComment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Catuser the loaded model
+     * @return SysComment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Catuser::findOne($id)) !== null) {
+        if (($model = SysComment::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

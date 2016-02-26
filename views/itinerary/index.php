@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Add event', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Add event', ['/cat-event/index'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -30,11 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
             
             ['class' => yii\grid\ActionColumn::className(),'template'=>'{view} {delete}']
             //['class' => 'yii\grid\ActionColumn'],
+            
         ],
+        'emptyText' => 'You dont have events'
        ]); ?>
-
+    
 <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
       'events'=> $events,
   ));
-    ?>       
+    ?> 
 </div>

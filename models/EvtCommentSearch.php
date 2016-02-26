@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CatEvent;
+use app\models\EvtComment;
 
 /**
- * CatEventSearch represents the model behind the search form about `app\models\CatEvent`.
+ * EvtCommentSearch represents the model behind the search form about `app\models\EvtComment`.
  */
-class CatEventSearch extends CatEvent
+class EvtCommentSearch extends EvtComment
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class CatEventSearch extends CatEvent
     public function rules()
     {
         return [
-            [['i_Pk_Event', 'i_FkTbl_User'], 'integer'],
-            [['vc_EventName', 'tx_DescriptionEvent','vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd'], 'safe'],
-            [['dc_EventCost', 'dc_TransportCost'], 'number'],
+            [['i_FkTbl_Event', 'i_FkTbl_User', 'i_Score'], 'integer'],
+            [['txt_EventComment'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class CatEventSearch extends CatEvent
      */
     public function search($params)
     {
-        $query = CatEvent::find();
+        $query = EvtComment::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,18 +56,12 @@ class CatEventSearch extends CatEvent
         }
 
         $query->andFilterWhere([
-            'i_Pk_Event' => $this->i_Pk_Event,
+            'i_FkTbl_Event' => $this->i_FkTbl_Event,
             'i_FkTbl_User' => $this->i_FkTbl_User,
-            'dt_EventStart' => $this->dt_EventStart,
-            'dt_EventEnd' => $this->dt_EventEnd,
-            'dc_EventCost' => $this->dc_EventCost,
-            'dc_TransportCost' => $this->dc_TransportCost,
+            'i_Score' => $this->i_Score,
         ]);
 
-        $query->andFilterWhere(['like', 'vc_EventName', $this->vc_EventName])
-            ->andFilterWhere(['like', 'tx_DescriptionEvent', $this->tx_DescriptionEvent])
-            ->andFilterWhere(['like', 'vc_EventAddress', $this->vc_EventAddress])
-            ->andFilterWhere(['like', 'vc_EventCity', $this->vc_EventCity]);
+        $query->andFilterWhere(['like', 'txt_EventComment', $this->txt_EventComment]);
 
         return $dataProvider;
     }

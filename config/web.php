@@ -6,7 +6,10 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'components' => [        
+    'components' => [  
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],      
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
