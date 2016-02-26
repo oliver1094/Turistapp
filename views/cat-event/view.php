@@ -225,8 +225,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif ?>
     
 
-        ]) ?> 
-
     </p>
 
     <?= DetailView::widget([
@@ -276,17 +274,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if (!empty ($model->evtMaps)): ?>
 </p>
-<div id="viewMap" style="width:500px;height:380px;">
-    
-        
-    ?>
-    <?= $this->render('..\evt-comment\_form', [
-        'model' => new EvtComment()
-       // 'userID' => $userID, //Le paso al formulario el id del usuario logueado
-        //'eventID'=>$eventID
-    ]) ?>
-
-       
+<div id="viewMap" style="width:500px;height:380px;">     
 
 </div>
 
@@ -294,9 +282,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php endif ?>
 </div>
-
-    <?php endif ?>
-
 <?php
 
 
