@@ -58,12 +58,14 @@ class EvtMapController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new EvtMap();
+        $model->i_FkTbl_Event = $id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
+            //return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
+            return $this->redirect(['cat-event/view', 'id' => $id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -82,11 +84,13 @@ class EvtMapController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
+            //return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
+            return $this->redirect(['cat-event/view', 'id' => $model->i_FkTbl_Event]);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
+            //return $this->redirect(['cat-event/view', 'id' => $model->i_FkTbl_Event]);
         }
     }
 
@@ -98,9 +102,11 @@ class EvtMapController extends Controller
      */
     public function actionDelete($id)
     {
+        $idEvent = $this->findModel($id)->i_FkTbl_Event;
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        //return $this->redirect(['index']);
+        return $this->redirect(['cat-event/view', 'id' => $idEvent]);
     }
 
     /**

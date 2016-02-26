@@ -30,7 +30,7 @@ use kartik\datetime\DateTimePicker;
       mapTypeId:google.maps.MapTypeId.ROADMAP
       };
 
-      map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+      map = new google.maps.Map(document.getElementById("googleMa"),mapProp);
 
       google.maps.event.addListener(map, "click", function(event) {
         addMarker(event.latLng);
