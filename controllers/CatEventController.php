@@ -11,6 +11,7 @@ use app\models\EvtMap;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * CatEventController implements the CRUD actions for CatEvent model.
@@ -127,17 +128,20 @@ class CatEventController extends Controller
         $evtmap = new EvtMap();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
             $valid = true;
             $valid = $valid && $model->validate();
             if ($valid) {
                 $model->save(false);
+                if ($valid && !empty($model->eventFile)) {
+                        $model->upload();
+                }
+
                 if ($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)) {
                     $evtmap->i_FkTbl_Event = $model->i_Pk_Event;
                     $evtmap->save();
                     Yii::$app->session->setFlash('eventFormSubmitted');
-
                     return $this->refresh();
-                    //return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
                 }
             }
             return $this->redirect(['view', 'id' => $model->i_Pk_Event]);

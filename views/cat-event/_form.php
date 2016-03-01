@@ -11,6 +11,32 @@ use kartik\datetime\DateTimePicker;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php
+$this->registerJs('
+    var MaxInputs       = 8; //Número Maximo de Campos
+    var contenedor       = $("#contenedor"); //ID del contenedor
+    var AddButton       = $("#agregarCampo"); //ID del Botón
+    //var x = número de campos existentes en el contenedor
+    var x = $("#contenedor div").length + 1;
+    var FieldCount = x-1; //para el seguimiento de los campos
+    $(AddButton).click(function (e) {
+        if(x <= MaxInputs) //max input box allowed
+        {
+            FieldCount++;
+            //agregar campo
+            $(contenedor).append(\'<div><button id="eliminar" type="button" class="btn btn-danger">&times;</button><input type="file" name="CatEvent[eventFile][]"></div>\');
+            x++; //text box increment
+        }
+        });
+     $("body").on("click",".btn-danger", function(e){ //click en eliminar campo
+        if( x > 1 ) {
+            $(this).parent("div").remove(); //eliminar el campo
+            x--;
+        }
+        return false;
+    });
+');
+?>
 
 <?php if ($model->isNewRecord): ?>
 <div class="col-md-6">
@@ -29,9 +55,9 @@ use kartik\datetime\DateTimePicker;
             
             <?php else: ?>
 
-        <?php $form = ActiveForm::begin(); ?>
-
-        
+        <?php $form = ActiveForm::begin([
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
 
         <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>   
 
@@ -40,7 +66,6 @@ use kartik\datetime\DateTimePicker;
         <?= $form->field($model, 'vc_EventAddress')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
-        
 
         <?= $form->field($model, 'dt_EventStart')->widget(DateTimePicker::classname(), [
         'options' => ['placeholder' => 'Enter event time ...'],
@@ -56,14 +81,18 @@ use kartik\datetime\DateTimePicker;
         'autoclose' => true,
         'format' => 'yyyy-mm-dd hh:ii:ss'
         ]
-        ]) ?>
-
-   
-        
+        ]) ?>       
 
         <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'dc_TransportCost')->textInput(['maxlength' => true]) ?>
+
+        <a id="agregarCampo" class="btn btn-info" >Agregar Archivo</a>
+        <div id="contenedor">
+            <div class="added">
+            </div>
+        </div>
+        <br>
 
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Registrar Evento' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
