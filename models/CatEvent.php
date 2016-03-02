@@ -137,18 +137,13 @@ class CatEvent extends \yii\db\ActiveRecord
         return $this->hasMany(CatUser::className(), ['i_Pk_User' => 'i_FkTbl_User'])->viaTable('usr_itinerary', ['i_FkTbl_Event' => 'i_Pk_Event']);
     }
 
-    public function beforeSave($insert){
+    public function beforeSave($insert)
+    {
          if(parent::beforeSave($insert)) {
- 
              $user = CatUser::findOne(\Yii::$app->user->identity->id);
              $this->i_FkTbl_User = $user->id;
-             
-             
- 
              return true;
- 
          }
- 
          return false;
      }
 
