@@ -11,6 +11,7 @@ use app\models\ItinerarySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * ItineraryController implements the CRUD actions for Itinerary model.
@@ -64,6 +65,7 @@ class ItineraryController extends Controller
             $event->title = CatEvent::findOne($eve->i_FkTbl_Event)->vc_EventName;
             $event->start = CatEvent::findOne($eve->i_FkTbl_Event)->dt_EventStart;
             //$event->end = CatEvent::findOne($eve->i_FkTbl_Event)->dt_EventEnd;
+            $event->url  = Url::to(['cat-event/view','id'=> CatEvent::findOne($eve->i_FkTbl_Event)->i_Pk_Event]);
             $tasks[] = $event;
         }
         return $this->render('index', [
