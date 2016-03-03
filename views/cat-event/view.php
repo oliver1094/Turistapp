@@ -191,6 +191,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <div>
+    <p>
+
+<?php
+    if(!empty($model->evtImages)){
+        echo yii\bootstrap\Carousel::widget(['items'=>$images]);
+    }
+    
+?>
+</p>
+</div>
+
+<div>
 <?php $this->registerJs("
     $('.field-itinerary-i_fktbl_user').hide();
     $('.field-itinerary-i_fktbl_event').hide();

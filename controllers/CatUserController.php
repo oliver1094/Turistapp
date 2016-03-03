@@ -24,7 +24,7 @@ class CatuserController extends Controller
                     
                     [
                         'allow' => true,
-                        'actions' => ['index','view','update','delete','create'],
+                        'actions' => ['index','view','update','delete','create','update-pass'],
                         'roles' => ['admin'],
                     ],
                     [
@@ -79,9 +79,10 @@ class CatuserController extends Controller
      */
     public function actionCreate()
     {
-        if (!\Yii::$app->user->isGuest) {
+        //Nota de Javier: No sé que hace este código aquí, quitenlo si no lo usan.
+        /*if (!\Yii::$app->user->isGuest) {
             return $this->render('../site/index');
-        }
+        }*/
 
         $model = new Catuser();
 
@@ -96,10 +97,10 @@ class CatuserController extends Controller
 
     public function actionRegister()
     {
-
-        if (!\Yii::$app->user->isGuest) {
+        //Nota de Javier: No sé que hace este código aquí, quitenlo si no lo usan.S
+        /*if (!\Yii::$app->user->isGuest) {
             return $this->render('../site/index');
-        }
+        }*/
             
             $model = new Catuser();
             $modelAu = new Au();
@@ -136,6 +137,25 @@ class CatuserController extends Controller
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
             return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionUpdatePass($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Catuser::SCENARIO_PASSCHANGE;
+
+        if (Yii::$app->request->isAjax && $model->load($_POST)) {
+            Yii::$app->response->format = 'json';
+            return \yii\widgets\ActiveForm::validate($model);
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+        } else {
+            return $this->render('password', [
                 'model' => $model,
             ]);
         }

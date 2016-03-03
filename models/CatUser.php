@@ -25,6 +25,20 @@ use Yii;
  */
 class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+
+    public $vc_ActualPass;
+    public $vc_NewPass;
+    public $vc_RepeatPass;
+
+    const SCENARIO_PASSCHANGE = 'passchange';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_PASSCHANGE] = ['vc_ActualPass', 'vc_NewPass', 'vc_RepeatPass'];
+        return $scenarios;
+    }
+
     /**
      * @inheritdoc
      */
@@ -40,11 +54,15 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
+            [['vc_NewPass', 'vc_RepeatPass', 'vc_ActualPass'], 'required', 'on' => self::SCENARIO_PASSCHANGE , 'message' => 'Campo requerido'],
             [['i_Fk_UserType'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
             [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
             [['vc_HashPassword', 'vc_Email', 'vc_CompanyName'], 'string', 'max' => 100],
             [['vc_HashPassword'], 'string', 'min'=>6,'max' => 25],
+            [['vc_NewPass'], 'string', 'min'=>6,'max' => 25, 'on' => self::SCENARIO_PASSCHANGE ],
+            ['vc_ActualPass','findPasswords', 'on' => self::SCENARIO_PASSCHANGE ],
+            ['vc_RepeatPass','compare','compareAttribute'=>'vc_NewPass', 'on' => self::SCENARIO_PASSCHANGE ],
             [['vc_Email'], 'unique'],
             [['vc_Email'], 'email'],  
             ['vc_Email', 'filter', 'filter' => 'trim'],
@@ -67,6 +85,9 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'vc_Email' => 'E-mail',
             'vc_Phone' => 'Teléfono',
             'vc_CompanyName' => 'Nombre de compañía',
+            'vc_NewPass' => 'Nueva contraseña',
+            'vc_RepeatPass' => 'Repetir nueva contraseña',
+            'vc_ActualPass' => 'Contraseña actual',
         ];
     }
 
@@ -77,26 +98,16 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
             if (Yii::$app->user->isGuest) {
                     $this->i_Fk_UserType = 1;
-                }
+            }
                 
-
-
-
-
-            if($this->isNewRecord)
-            {
-                
-
-
+            if ($this->isNewRecord) {
                 $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
                 //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
                 //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
-            }
-            else
-            {
-                if(!empty($this->vc_HashPassword))
-                {
-                    $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
+            } else {
+                //if(!empty($this->vc_HashPassword))//Ya no se debe de poder actualizar contraseña normalmente
+                if (!empty($this->vc_NewPass)) {
+                    $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_NewPass);
                 }
             }
             return true;
@@ -170,26 +181,23 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return self::findOne($id);
     }
 
-    public static function findIdentityByAccessToken($token, $type = null) {
-
+    public static function findIdentityByAccessToken($token, $type = null) 
+    {
         foreach (self::$users as $user) {
             if ($user['accessToken'] === $token) {
                 return new static($user);
             }
         }
-
         return null;
-        
     }
 
-    public function userlastid(){
-
+    public function userlastid()
+    {
         $lastUsurio = self::find()    
-    ->orderBy('i_Pk_User Desc')
-    ->one();
-    $id = $lastUsurio->i_Pk_User;
+        ->orderBy('i_Pk_User Desc')
+        ->one();
+        $id = $lastUsurio->i_Pk_User;
         return $id;
-
     }
 
 
@@ -200,16 +208,25 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     
     //--------Estos dos metodos utilice para el Login (ElÃ­as)---------
     
-     public static function findByEmail($email){
+     public static function findByEmail($email)
+     {
         return self::findOne(['vc_Email'=>$email]);
     }
     
-    public function validatePassword($password){
+    public function validatePassword($password)
+    {
         //return $this->hash_password ===$password;
         return Yii::$app->getSecurity()->validatePassword($password,$this->vc_HashPassword);
     }
     
     //---------------
 
-
+    public function findPasswords($attribute, $params)
+    {
+        $actualPass = self::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->vc_HashPassword;
+        $matchPass = Yii::$app->getSecurity()->validatePassword($this->vc_ActualPass, $actualPass);
+        if (!$matchPass) {
+            $this->addError($attribute,'La contraseña actual es incorrecta');
+        }
+    }
 }
