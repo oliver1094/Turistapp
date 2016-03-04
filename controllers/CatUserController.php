@@ -25,12 +25,17 @@ class CatuserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index','view','update','delete','create'],
-                        'roles' => ['admin'],
+                        'roles' => ['?'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['register'],
                         'roles' => ['?','admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['confirm'],
+                        'roles' => ['?'],
                     ],
                                         
                     
@@ -67,6 +72,7 @@ class CatuserController extends Controller
      */
     public function actionView($id)
     {
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -94,6 +100,39 @@ class CatuserController extends Controller
         }
     }
 
+    public function actionConfirm($id,$token){        
+
+        $user = Catuser::findOne($id);
+
+        if(Yii::$app->user->isGuest && !empty($user->vc_Token) && $token == $user->vc_Token )
+        {
+            //$user = Catuser::findOne($id);            
+            //var_dump($user->i_isActive);            
+
+            $user->i_isActive = 1;
+            //$params = ['i_isActive'=>1];
+            //$sql = $user->update('cat_user', ['i_isActive' => 0], 'i_Pk_User='.$id, $params);
+
+            if($user->update()){
+                Yii::$app->session->setFlash('confirmUserRegister');
+                return $this->render('confirmRegister');    
+            }else{
+                
+                ?> 
+            <?= '<script> alert("Error al confirmar el registro")</script>' ?>
+                <?php   
+
+            }
+            
+
+            
+            
+                    
+        }
+    }
+
+    
+
     public function actionRegister()
     {
 
@@ -108,10 +147,28 @@ class CatuserController extends Controller
             $userid = $model->userlastid();
             $id = $userid;
             $modelAu->item_name = "turista";
-            $modelAu->user_id = $id;
+            $modelAu->user_id = $id;            
+            if(Yii::$app->user->isGuest){
+                            
+                            $idUser = urlencode($model->i_Pk_User);
+                            $token = urlencode($model->vc_Token);                            
+                            $subject = "Confirmar Registro";
+                            $body = "<p>Gracias por registrarse en Turistapp, para acompletar su registro siga las siguientes instrucciones: </p>";                            
+                            $body .= "<p>Haga click en el siguiente enlace para poder confirmar su registro en la plataforma Turistapp </p>";                               
+                            $body .= "<br><a href='http://localhost/Turistapp/web/catuser/confirm?id=".$idUser."&token=".$token."'>Confirmar registro</a>";
+
+                            //Enviamos el correo
+                            Yii::$app->mailer->compose()
+                             ->setTo($model->vc_Email)
+                             ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])
+                             ->setSubject($subject)
+                             ->setHtmlBody($body)
+                             ->send();
+                        }
             
             if($modelAu->save()){
-                return $this->redirect('../site/index');    
+                Yii::$app->session->setFlash('userFormSubmitted');
+                    return $this->refresh();                                        
             }
             
         } else {

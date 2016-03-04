@@ -15,6 +15,8 @@ use Yii;
  * @property string $vc_Email
  * @property string $vc_Phone
  * @property string $vc_CompanyName
+ * @property integer $i_isActive 
+ * @property string $vc_Token 
  *
  * @property CatEvent[] $catEvents
  * @property UsrUsertype $iFkUserType
@@ -25,6 +27,8 @@ use Yii;
  */
 class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+
+    public $repeatpass;
     /**
      * @inheritdoc
      */
@@ -40,16 +44,18 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
-            [['i_Fk_UserType'], 'integer'],
+            [['i_Fk_UserType','i_isActive'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
             [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
             [['vc_HashPassword', 'vc_Email', 'vc_CompanyName'], 'string', 'max' => 100],
-            [['vc_HashPassword'], 'string', 'min'=>6,'max' => 25],
+            [['vc_HashPassword'], 'string', 'min'=>6],
             [['vc_Email'], 'unique'],
             [['vc_Email'], 'email'],  
             ['vc_Email', 'filter', 'filter' => 'trim'],
             [['vc_Phone'], 'string', 'min'=>10,'max' => 10],
-            [['vc_Phone'], 'integer']  
+            [['vc_Phone'], 'integer'],
+            [['vc_Token'], 'string', 'max' => 150],
+            ['repeatpass','compare','compareAttribute'=>'vc_HashPassword'] 
         ];
     }
 
@@ -67,6 +73,9 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'vc_Email' => 'E-mail',
             'vc_Phone' => 'Teléfono',
             'vc_CompanyName' => 'Nombre de compañía',
+            'i_isActive' => 'Perfil activo',
+            'vc_Token' => 'Token usuario',
+            'repeatpass' => 'Confirmar contraseña'
         ];
     }
 
@@ -75,29 +84,28 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         if(parent::beforeSave($insert))
         {
 
-            if (Yii::$app->user->isGuest) {
-                    $this->i_Fk_UserType = 1;
-                }
-                
-
-
-
-
             if($this->isNewRecord)
             {
                 
 
-
+                $this->i_Fk_UserType = 1;
+                $this->i_isActive = 0;
+                $this->vc_Token = Yii::$app->getSecurity()->generateRandomString();
                 $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
                 //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
                 //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
             }
             else
             {
-                if(!empty($this->vc_HashPassword))
+                
+                    if(!empty($this->vc_HashPassword))
                 {
                     $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
                 }
+                
+                
+
+                
             }
             return true;
         }
@@ -193,6 +201,8 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
 
+
+
   //  SELECT TOP 1 *
 //FROM Pedido
 //ORDER BY Fecha DESC
@@ -201,7 +211,8 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     //--------Estos dos metodos utilice para el Login (ElÃ­as)---------
     
      public static function findByEmail($email){
-        return self::findOne(['vc_Email'=>$email]);
+        return self::findOne(['vc_Email'=>$email,'i_isActive' => 1]);
+        
     }
     
     public function validatePassword($password){
