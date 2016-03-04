@@ -13,12 +13,16 @@ use yii\helpers\ArrayHelper;
 
 
 <div class="catuser-form">
+          
+        <?php if (Yii::$app->session->hasFlash('userFormSubmitted')): ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+        <div class="alert alert-success">
+            Se le ha enviado un correo para confirmar su correo y poder completar el registro.
+        </div>
 
-    
-    
-    
+        <?php else: ?>
+
+    <?php $form = ActiveForm::begin(); ?>            
 
     <?= $form->field($model, 'vc_FirstName')->textInput(['maxlength' => true]) ?>
 
@@ -26,9 +30,12 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'vc_HashPassword')->passwordInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'repeatpass')->passwordInput(['maxlength' => true,'inputOptions'=>['placeholder'=>'Repita la contraseña']]) ?>    
+
     <?= $form->field($model, 'vc_Email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vc_Phone')->textInput(['maxlength' => true]) ?>
+
 
     
     
@@ -41,3 +48,5 @@ use yii\helpers\ArrayHelper;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php endif ?>
+
