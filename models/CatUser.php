@@ -91,8 +91,8 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'vc_CompanyName' => 'Nombre de compañía',
             'i_isActive' => 'Perfil activo',
             'vc_Token' => 'Token usuario',
-            'repeatpass' => 'Confirmar contraseña'
-             'vc_NewPass' => 'Nueva contraseña',
+            'repeatpass' => 'Confirmar contraseña',
+            'vc_NewPass' => 'Nueva contraseña',
             'vc_RepeatPass' => 'Repetir nueva contraseña',
             'vc_ActualPass' => 'Contraseña actual',
         ];
