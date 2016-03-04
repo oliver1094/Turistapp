@@ -12,60 +12,32 @@ use kartik\datetime\DateTimePicker;
 ?>
 
 <?php
-    $this->registerJsFile('http://maps.googleapis.com/maps/api/js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJs('
+    var MaxInputs       = 8; //Número Maximo de Campos
+    var contenedor       = $("#contenedor"); //ID del contenedor
+    var AddButton       = $("#agregarCampo"); //ID del Botón
+    //var x = número de campos existentes en el contenedor
+    var x = $("#contenedor div").length + 1;
+    var FieldCount = x-1; //para el seguimiento de los campos
+    $(AddButton).click(function (e) {
+        if(x <= MaxInputs) //max input box allowed
+        {
+            FieldCount++;
+            //agregar campo
+            $(contenedor).append(\'<div><button id="eliminar" type="button" class="btn btn-danger">&times;</button><input type="file" name="CatEvent[eventFile][]"></div>\');
+            x++; //text box increment
+        }
+        });
+     $("body").on("click",".btn-danger", function(e){ //click en eliminar campo
+        if( x > 1 ) {
+            $(this).parent("div").remove(); //eliminar el campo
+            x--;
+        }
+        return false;
+    });
+');
 ?>
 
-<?php $this->registerJs('
-    $(".field-evtmap-vc_latitude").hide();
-    $(".field-evtmap-vc_longitude").hide();
-
-    var map;
-    var myCenter=new google.maps.LatLng(20.9663671,-89.6067274);
-
-    function initialize()
-    {
-    var mapProp = {
-      center:myCenter,
-      zoom:13,
-      mapTypeId:google.maps.MapTypeId.ROADMAP
-      };
-
-      map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-
-      google.maps.event.addListener(map, "click", function(event) {
-        addMarker(event.latLng);
-      });
-    }
-
-    var id;
-    var markers = {};
-    var addMarker = function (location) {
-        marker = new google.maps.Marker({ 
-            position: location,
-            map: map,
-            draggable: true
-        });
-        id = marker.__gm_id
-        markers[id] = marker; 
-
-        var infowindow = new google.maps.InfoWindow({
-            content: "Latitude: " + location.lat() + "<br>Longitude: " + location.lng()
-        });
-        infowindow.open(map,marker);
-        $("#evtmap-vc_latitude").val(location.lat());
-        $("#evtmap-vc_longitude").val(location.lng());
-
-        google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
-    }
-
-    var delMarker = function (id) {
-        marker = markers[id]; 
-        marker.setMap(null);
-    }
-
-    google.maps.event.addDomListener(window, "load", initialize);
-
-'); ?>
 <?php if ($model->isNewRecord): ?>
 <div class="col-md-6">
 <?php endif ?>
@@ -83,9 +55,9 @@ use kartik\datetime\DateTimePicker;
             
             <?php else: ?>
 
-        <?php $form = ActiveForm::begin(); ?>
-
-        
+        <?php $form = ActiveForm::begin([
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
 
         <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>   
 
@@ -94,7 +66,6 @@ use kartik\datetime\DateTimePicker;
         <?= $form->field($model, 'vc_EventAddress')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'vc_EventCity')->textInput(['maxlength' => true]) ?>
-        
 
         <?= $form->field($model, 'dt_EventStart')->widget(DateTimePicker::classname(), [
         'options' => ['placeholder' => 'Enter event time ...'],
@@ -110,18 +81,18 @@ use kartik\datetime\DateTimePicker;
         'autoclose' => true,
         'format' => 'yyyy-mm-dd hh:ii:ss'
         ]
-        ]) ?>
-
-   
-        
+        ]) ?>       
 
         <?= $form->field($model, 'dc_EventCost')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'dc_TransportCost')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($evtmap, 'vc_Latitude')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($evtmap, 'vc_Longitude')->textInput(['maxlength' => true]) ?>
+        <a id="agregarCampo" class="btn btn-info" >Agregar Archivo</a>
+        <div id="contenedor">
+            <div class="added">
+            </div>
+        </div>
+        <br>
 
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Registrar Evento' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -131,9 +102,6 @@ use kartik\datetime\DateTimePicker;
 
     </div>
 </div>
-<?php if ($model->isNewRecord): ?>
-<div id="googleMap" class="col-md-6" style="width:500px;height:380px;">
-</div>
-<?php endif ?>
+
 <?php endif ?>
 

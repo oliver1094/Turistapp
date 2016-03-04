@@ -1,53 +1,68 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use app\models\CatEvent;
+use yii\helpers\Html;
+use yii\helpers\Url;
 $this->title = 'My Yii Application';
+
+//echo $arrayMainEvents[0]->i_Score;
+//echo $arrayMainEvents[1]->i_Score;
+//echo $arr//echo $arrayMainEvents[0]->i_Score;ayMainEvents[2]->i_Score;
+//echo $arrayMainEvents[3]->i_Score;
+//echo $arrayMainEvents[4]->i_Score;
+//echo $arrayMainEvents[5]->i_Score;
+//echo $arrayMainEvents[6]->i_Score;
+//echo $arrayMainEvents[7]->i_Score;
+//echo $arrayMainEvents[8]->i_Score;
+//echo $arrayMainEvents[9]->i_Score;
+
+
+//foreach ($arrayMainEvents as $value) {
+//    echo $value->i_Score;
+//}
+
 ?>
+
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <h1>Eventos principales</h1>
     </div>
 
-    <div class="body-content">
+    <div class="body-content" align="center">
 
         <div class="row">
+            
+            <?php 
+                $contador=1;
+                foreach ($arrayMainEvents as $value) { ?>
+                
             <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                
+                <h2>Evento <?php echo $contador." - ".$value->vc_EventName ?></h2>
+                
+                <?php 
+                         //echo  $arrayMainEvents[$contador-1]->evtImages[0]->vc_DirectoryName
+                         if($value->evtImages!=null){
+                             //echo $value->evtImages[0]->vc_DirectoryName
+                             echo Html::img("@web/files/".$value->evtImages[0]->vc_DirectoryName,['width'=>'340px','height'=>'225px','align'=>'center']);
+                         }else{
+                             echo Html::img("@web/files/imagenNoDisponible.png",['width'=>'340px','height'=>'225px','align'=>'center']);
+                         }
+                         
+                         ?>
+                <p><textarea rows="4" cols="40" readonly style="overflow: hidden; resize: none; border: none; outline: none" ><?php echo  $value->tx_DescriptionEvent;?></textarea></p>
+                <p><a class="btn" href="<?php echo Url::to(['cat-event/view','id'=> $value->i_Pk_Event]);?>">Ver más</a></p>
+                
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            
+            <?php 
+                $contador++;
+                } ?>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
         </div>
 
     </div>
 </div>
+    

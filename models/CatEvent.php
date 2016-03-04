@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\FileHelper;
+use app\models\EvtImage;
 
 /**
  * This is the model class for table "cat_event".
@@ -28,6 +30,10 @@ use Yii;
  */
 class CatEvent extends \yii\db\ActiveRecord
 {
+
+    public $eventFile;
+    public $fileNameAttached;
+
     /**
      * @inheritdoc
      */
@@ -48,10 +54,11 @@ class CatEvent extends \yii\db\ActiveRecord
             [['vc_EventAddress','tx_DescriptionEvent'],'match', 'pattern' => "/^[0-9A-Záéíóúñ#” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
             [['dt_EventStart', 'dt_EventEnd'], 'safe'],        
             [['dc_EventCost', 'dc_TransportCost'], 'number'],
-            [['vc_EventName'], 'string', 'max' => 120],            
+            [['vc_EventName', 'fileNameAttached'], 'string', 'max' => 120],            
             [['vc_EventAddress', 'vc_EventCity'], 'string', 'max' => 150],
             [['tx_DescriptionEvent'], 'string'],
-            [['vc_EventCity'], 'match', 'pattern' => '/^[a-zA-Záéíóúñ” “]+$/', 'message' => 'Sólo se aceptan letras']
+            [['vc_EventCity'], 'match', 'pattern' => '/^[a-zA-Záéíóúñ” “]+$/', 'message' => 'Sólo se aceptan letras'],
+            [['eventFile'], 'file', 'skipOnEmpty' => true, 'extensions'=>'png,jpg,jpeg,bmp', 'maxFiles' => 500]
         ];
     }
 
@@ -130,19 +137,26 @@ class CatEvent extends \yii\db\ActiveRecord
         return $this->hasMany(CatUser::className(), ['i_Pk_User' => 'i_FkTbl_User'])->viaTable('usr_itinerary', ['i_FkTbl_Event' => 'i_Pk_Event']);
     }
 
-    public function beforeSave($insert){
+    public function beforeSave($insert)
+    {
          if(parent::beforeSave($insert)) {
- 
              $user = CatUser::findOne(\Yii::$app->user->identity->id);
              $this->i_FkTbl_User = $user->id;
-             
-             
- 
              return true;
- 
          }
- 
          return false;
      }
+
+    public function upload(){
+        foreach ($this->eventFile as $file){
+            $this->fileNameAttached = uniqid() . '.' . $file->extension;
+            FileHelper::createDirectory ( 'files/', $mode = 509, $recursive = false );
+            $file->saveAs('files/'.$this->fileNameAttached);
+            $evtImages = new EvtImage();
+            $evtImages->i_FkTbl_Event = $this->i_Pk_Event;
+            $evtImages->vc_DirectoryName = $this->fileNameAttached;
+            $evtImages->save();
+        }
+    }
  
 }

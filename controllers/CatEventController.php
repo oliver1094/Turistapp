@@ -11,6 +11,7 @@ use app\models\EvtMap;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * CatEventController implements the CRUD actions for CatEvent model.
@@ -91,28 +92,34 @@ class CatEventController extends Controller
     public function actionView($id)
     {
         $itinerary=new Itinerary();
-        $gps = new EvtMap();
         $model = $this->findModel($id);
         //Obtengo el id del usuario logueado y verifico que sea un turista (esto para que pueda agregar el evento al itinerario)
         $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
-        //$gps = EvtMap::find()->where(['i_FkTbl_Event' => $model->i_Pk_Event])->one();
+        $images=null;
+        if(!empty($model->evtImages)){
+            foreach ($model->evtImages as $image) {
+                $images[]= '<a href="../files/'.$image->vc_DirectoryName .'">
+                    <img src="../files/' .$image->vc_DirectoryName . '"/ width="560"  height="445" style="margin:auto; max-height: 445px"></a>';
+            }
+        }
+        
 
         try{
             if($itinerary->load(Yii::$app->request->post()) && $itinerary->save()){
 ?> 
-                <?= '<script> alert("Event added to itinerary")</script>'?>
+<?= '<script> alert("Event added to itinerary")</script>'?>
 <?php    
             }
         }catch (\yii\db\IntegrityException $integrityException){
 ?> 
-            <?= '<script> alert("You already have this event")</script>' ?>
+<?= '<script> alert("You already have this event")</script>' ?>
 <?php       
         }
         
         return $this->render('view', [
             'model' => $model,
-            'userID' => $userID
-            //'gps' => $gps,
+            'userID' => $userID,
+            'images'=> $images
         ]);
     }
 
@@ -127,17 +134,20 @@ class CatEventController extends Controller
         $evtmap = new EvtMap();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
             $valid = true;
             $valid = $valid && $model->validate();
             if ($valid) {
                 $model->save(false);
+                if ($valid && !empty($model->eventFile)) {
+                        $model->upload();
+                }
+
                 if ($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)) {
                     $evtmap->i_FkTbl_Event = $model->i_Pk_Event;
                     $evtmap->save();
                     Yii::$app->session->setFlash('eventFormSubmitted');
-
                     return $this->refresh();
-                    //return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
                 }
             }
             return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
@@ -161,6 +171,10 @@ class CatEventController extends Controller
         $model = $this->findModel($id);
         $evtmap = new EvtMap();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
+            if (!empty($model->eventFile)) {
+                        $model->upload();
+                }
             Yii::$app->session->setFlash('eventFormSubmitted');
                     return $this->refresh();
         } else {
@@ -179,8 +193,14 @@ class CatEventController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $event= $this->findModel($id);
+        if (!empty($event->evtImages)) {
+            foreach ($event->evtImages as $image) {
+                unlink(getcwd().'/files/' .$image->vc_DirectoryName);
+            }
+        }
+        $event->delete();
+        //$this->findModel($id)->delete();
         return $this->redirect(['index']);
     }
 

@@ -20,6 +20,10 @@ use Yii;
  */
 class EvtMap extends \yii\db\ActiveRecord
 {
+
+    public $searchbox;
+    public $searchboxTransport;
+
     /**
      * @inheritdoc
      */
@@ -34,7 +38,7 @@ class EvtMap extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['i_FkTbl_Event'], 'required'],
+            [['i_FkTbl_Event', 'vc_EventTag','vc_Latitude', 'vc_Longitude'], 'required'],
             [['i_FkTbl_Event'], 'integer'],
             [['vc_Latitude', 'vc_Longitude'], 'string', 'max' => 40],
             [['vc_EventTag', 'vc_TransportTag', 'vc_LatitudeTransport', 'vc_LongitudeTransport'], 'string', 'max' => 150]
@@ -51,10 +55,12 @@ class EvtMap extends \yii\db\ActiveRecord
             'i_FkTbl_Event' => Yii::t('app', 'I  Fk Tbl  Event'),
             'vc_Latitude' => Yii::t('app', 'Vc  Latitude'),
             'vc_Longitude' => Yii::t('app', 'Vc  Longitude'),
-            'vc_EventTag' => Yii::t('app', 'Vc  Event Tag'),
-            'vc_TransportTag' => Yii::t('app', 'Vc  Transport Tag'),
+            'vc_EventTag' => Yii::t('app', 'Event Tag'),
+            'vc_TransportTag' => Yii::t('app', 'Transport Tag'),
             'vc_LatitudeTransport' => Yii::t('app', 'Vc  Latitude Transport'),
             'vc_LongitudeTransport' => Yii::t('app', 'Vc  Longitude Transport'),
+            'searchbox' => Yii::t('app', 'Place'),
+            'searchboxTransport' => Yii::t('app', 'Transport'),
         ];
     }
 
