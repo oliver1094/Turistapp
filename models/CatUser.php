@@ -57,6 +57,8 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
+            [['vc_NewPass', 'vc_RepeatPass', 'vc_ActualPass'], 'required', 'on' => self::SCENARIO_PASSCHANGE , 'message' => 'Campo requerido'],
+            [['i_Fk_UserType'], 'integer'],
             [['i_Fk_UserType','i_isActive'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
             [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
