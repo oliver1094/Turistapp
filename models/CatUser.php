@@ -115,7 +115,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 
 
                 $this->i_Fk_UserType = 1;
-                $this->i_isActive = 0;
+                $this->i_isActive = 1;//Lo cambie para que fuera facil de probar
                 $this->vc_Token = Yii::$app->getSecurity()->generateRandomString();
                 $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
                 //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);

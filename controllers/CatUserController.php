@@ -144,6 +144,10 @@ class CatuserController extends Controller
             $model = new Catuser();
             $modelAu = new Au();
 
+            //Verificación activada, borrar más adelante
+            $model->i_isActive = 1;
+
+        //if ($model->load(Yii::$app->request->post()) && $model->save()) {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $userid = $model->userlastid();
             $id = $userid;
@@ -159,12 +163,13 @@ class CatuserController extends Controller
                             $body .= "<br><a href='http://localhost/Turistapp/web/catuser/confirm?id=".$idUser."&token=".$token."'>Confirmar registro</a>";
 
                             //Enviamos el correo
+                            /*
                             Yii::$app->mailer->compose()
                              ->setTo($model->vc_Email)
                              ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])
                              ->setSubject($subject)
                              ->setHtmlBody($body)
-                             ->send();
+                             ->send();*/
                         }
             
             if($modelAu->save()){
