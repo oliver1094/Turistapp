@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="catuser-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (Yii::$app->user->can('empresa')): ?>
+    <?php if (Yii::$app->user->can('admin')): ?>
     <p>
 
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
@@ -26,6 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'i_Pk_User',
+            'i_Fk_UserType',
+            'vc_FirstName',
+            'vc_LastName',
+            'vc_HashPassword',
+            'vc_Email:email',
+            'vc_Phone',
+            'vc_CompanyName',
+        ],
+    ]) ?>
     <?php else: ?>
 
     <?= DetailView::widget([
