@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 
 use app\models\CatEvent;
+use app\models\CatUser;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CatEventSearch */
@@ -23,12 +24,25 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     
     <?= GridView::widget([
+
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'i_Pk_Event',
-            'i_FkTbl_User',
+            
+            [
+                'attribute' => 'vc_NameUser',
+                //'value' => 'iFkTblUser.vc_FirstName',                
+                'label' => 'Nombre del creador',
+                'format' => 'raw',
+     'value'=>function ($data) {
+        return Html::a(Html::encode($data['iFkTblUser']['vc_FirstName']),'../catuser/view?id='.$data['i_FkTbl_User']);
+    },
+
+
+
+            ],
+            
 
             [
                 'attribute'=>'Name',

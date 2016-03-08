@@ -13,8 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="catuser-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?php if (Yii::$app->user->can('empresa')): ?>
     <p>
+
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Cambiar contraseña'), ['update-pass', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->i_Pk_User], [
@@ -25,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+    <?php else: ?>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -41,3 +43,4 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+<?php endif ?>

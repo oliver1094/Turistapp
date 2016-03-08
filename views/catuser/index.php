@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\UsrUsertype;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CatuserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -24,9 +25,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'vc_NameUserType',
+                'value' => 'iFkUserType.vc_NameUserType',
+                'filter'=> Html::activeDropDownList($searchModel, 
+                                                    'vc_NameUserType', 
+                                                    ArrayHelper::map(UsrUsertype::find()->asArray()->all(),
+                                                                    'vc_NameUserType',
+                                                                    'vc_NameUserType'
+                                                                    ),
+                                                                ['class'=>'form-control','prompt'=>'--All--']
+                                                    ),                
+            ],
 
             'i_Pk_User',
-            'i_Fk_UserType',
+            
             'vc_FirstName',
             'vc_LastName',
             'vc_HashPassword',

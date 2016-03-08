@@ -15,11 +15,12 @@ class CatuserSearch extends Catuser
     /**
      * @inheritdoc
      */
+    public $vc_NameUserType;
     public function rules()
     {
         return [
             [['i_Pk_User', 'i_Fk_UserType'], 'integer'],
-            [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email', 'vc_Phone', 'vc_CompanyName'], 'safe'],
+            [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email', 'vc_Phone', 'vc_CompanyName','vc_NameUserType'], 'safe'],
         ];
     }
 
@@ -47,6 +48,13 @@ class CatuserSearch extends Catuser
             'query' => $query,
         ]);
 
+        $query->joinWith(['iFkUserType']);
+
+        $dataProvider->sort->attributes['vc_NameUserType'] = [
+            'asc' => ['usr_usertype.vc_NameUserType' => SORT_ASC],
+            'desc' => ['usr_usertype.vc_NameUserType' => SORT_DESC],
+        ];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -56,8 +64,8 @@ class CatuserSearch extends Catuser
         }
 
         $query->andFilterWhere([
-            'i_Pk_User' => $this->i_Pk_User,
-            'i_Fk_UserType' => $this->i_Fk_UserType,
+            'i_Pk_User' => $this->i_Pk_User            
+
         ]);
 
         $query->andFilterWhere(['like', 'vc_FirstName', $this->vc_FirstName])
@@ -65,6 +73,7 @@ class CatuserSearch extends Catuser
             ->andFilterWhere(['like', 'vc_HashPassword', $this->vc_HashPassword])
             ->andFilterWhere(['like', 'vc_Email', $this->vc_Email])
             ->andFilterWhere(['like', 'vc_Phone', $this->vc_Phone])
+            ->andFilterWhere(['like', 'usr_usertype.vc_NameUserType', $this->vc_NameUserType])
             ->andFilterWhere(['like', 'vc_CompanyName', $this->vc_CompanyName]);
 
         return $dataProvider;

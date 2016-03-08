@@ -24,13 +24,18 @@ class CatuserController extends Controller
                     
                     [
                         'allow' => true,
-                        'actions' => ['index','view','update','delete','create','update-pass'],
+                        'actions' => ['index','update','delete','create','update-pass'],
                         'roles' => ['admin'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['register'],
                         'roles' => ['?','admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['@','admin'],
                     ],
                     [
                         'allow' => true,

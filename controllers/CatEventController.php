@@ -61,11 +61,12 @@ class CatEventController extends Controller
     {
         $searchModel = new CatEventSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+
     }
 
     public function actionMyEvents()
