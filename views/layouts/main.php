@@ -39,36 +39,31 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            !Yii::$app->user->isGuest ?
             [
-                'label' => Yii::t('app', 'Mis eventos'),
-                
-                'url' => ['/cat-event/my-events'] 
-               
-            ]:
+                'label' => Yii::t('app', 'Usuarios'),
+                'url' => ['/catuser/index'],
+                'visible' => Yii::$app->user->can('admin')
+            ],
             [
                 'label' => Yii::t('app', 'Eventos'),
-                
                 'url' => ['/cat-event/index']
             ],
-            
-            //Itinerario
-            !Yii::$app->user->isGuest ?
+            [
+                'label' => Yii::t('app', 'Mis eventos'),
+                'url' => ['/cat-event/my-events'],
+                'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
+            ],
             [
                 'label' => Yii::t('app', 'Itinerario'),
-                
-                'url' => ['/itinerary/index'] 
-               
-            ]:
-            [
-                'label' => Yii::t('app', 'Eventos2xD'),
-                
-                'url' => ['/cat-event/index']
+                'url' => ['/itinerary/index'],
+                'visible' => !Yii::$app->user->isGuest
             ],
-            
-            //
-            
-            Yii::$app->user->isGuest ?
+            [
+                'label' => Yii::t('app', 'Perfil'),
+                'url' => ['/catuser/view', 'id' => Yii::$app->user->getId()],
+                'visible' => !Yii::$app->user->isGuest
+            ],
+             Yii::$app->user->isGuest ?
                 ['label' => 'Login', 'url' => ['/site/login']] :
                 [
                     'label' => 'Salir (' . Yii::$app->user->identity->vc_Email . ')',
