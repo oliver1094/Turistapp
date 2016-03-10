@@ -6,6 +6,7 @@ use Yii;
 use app\models\EvtImage;
 use app\models\EvtImageSearch;
 use app\models\CatEvent;
+use app\controllers\CatEventController;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,6 +16,7 @@ use yii\filters\VerbFilter;
  */
 class EvtImageController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -42,7 +44,8 @@ class EvtImageController extends Controller
      * @return mixed
      */
     public function actionIndex($id)
-    {        
+    {   
+        CatEventController::allowed($id);     
         $queryParams = array_merge(array(),Yii::$app->request->getQueryParams());
         $eventID = CatEvent::findOne(['i_Pk_Event'=>$id])->i_Pk_Event;
         $queryParams["EvtImageSearch"]["i_FkTbl_Event"] = $eventID;
@@ -95,7 +98,7 @@ class EvtImageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        CatEventController::allowed($model->i_FkTbl_Event);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->i_Pk_Image]);
         } else {
@@ -115,6 +118,7 @@ class EvtImageController extends Controller
     {
         $image = $this->findModel($id);
         $eventID = $image->i_FkTbl_Event;
+        CatEventController::allowed($eventID);
         unlink(getcwd().'/files/' .$image->vc_DirectoryName);
         $this->findModel($id)->delete();
 
@@ -122,6 +126,7 @@ class EvtImageController extends Controller
     }
 
     public function actionDeleteAll($id){
+        CatEventController::allowed($id);
         $images = EvtImage::findAll(['i_FkTbl_Event'=>$id]);
         foreach ($images as $image) {
             unlink(getcwd().'/files/' .$image->vc_DirectoryName);

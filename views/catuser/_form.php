@@ -46,6 +46,12 @@ use yii\helpers\ArrayHelper;
 
 '); ?>
 
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger">
+        <b>Sucedió algo inesperado:</b> No se ha podido cambiar la información correctamente, intentelo más tarde.
+    </div>
+<?php endif ?>
+
 <div class="catuser-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -69,7 +75,11 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'vc_LastName')->textInput(['maxlength' => true]) ?>
 
+<?php if ($model->isNewRecord): ?>
+
     <?= $form->field($model, 'vc_HashPassword')->passwordInput(['maxlength' => true]) ?>
+
+<?php endif ?>
 
     <?= $form->field($model, 'vc_Email')->textInput(['maxlength' => true]) ?>
 

@@ -8,6 +8,12 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-success">
+        <b>Sucedió algo inesperado:</b> No se ha podido cambiar la contraseña correctamente.
+    </div>
+<?php endif ?>
+
 <div class="catuser-form">
 
     <?php $form = ActiveForm::begin(['enableAjaxValidation' => true]); ?>    

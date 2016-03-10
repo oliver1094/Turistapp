@@ -276,8 +276,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-md-6">
 <p>
     <?php if ($model->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')): ?>
-        <?= Html::a(Yii::t('app', 'Update Map'), ['evt-map/update', 'id' =>$model->evtMaps[0]->i_Pk_Map], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete Map'), ['evt-map/delete', 'id' =>$model->evtMaps[0]->i_Pk_Map], [
+        <?= Html::a(Yii::t('app', 'Modificar mapa'), ['evt-map/update', 'id' =>$model->evtMaps[0]->i_Pk_Map], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Eliminar mapa'), ['evt-map/delete', 'id' =>$model->evtMaps[0]->i_Pk_Map], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', '¿Seguro que deseas eliminar el mapa?'),
@@ -285,8 +285,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?> 
     <?php endif ?>      
-        <?= Html::button(Yii::t('app', 'Route'), ['class' => 'btn btn-primary', 'id'=>"route"]) ?>
-        <?= Html::button(Yii::t('app', 'Current location'), ['class' => 'btn btn-primary', 'id'=>"currentLocation"]) ?>
+        <?= Html::button(Yii::t('app', 'Ruta'), ['class' => 'btn btn-primary', 'id'=>"route"]) ?>
+        <?= Html::button(Yii::t('app', 'Ubicación actual'), ['class' => 'btn btn-primary', 'id'=>"currentLocation"]) ?>
         <div id = "text"><p>Buscando...<span id="status"></span></p></div>
     <?php endif ?>
 
