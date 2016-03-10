@@ -29,6 +29,11 @@ class CatuserController extends Controller
                     ],
                     [
                         'allow' => true,
+                        'actions' => ['view','update','delete','update-pass'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
                         'actions' => ['register'],
                         'roles' => ['?','admin'],
                     ],
@@ -77,7 +82,6 @@ class CatuserController extends Controller
      */
     public function actionView($id)
     {
-        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -223,13 +227,12 @@ class CatuserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->scenario = Catuser::SCENARIO_UPDATE;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('userUpdateSubmitted');
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model,]);
         }
     }
 
@@ -237,19 +240,17 @@ class CatuserController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = Catuser::SCENARIO_PASSCHANGE;
-
         if (Yii::$app->request->isAjax && $model->load($_POST)) {
             Yii::$app->response->format = 'json';
             return \yii\widgets\ActiveForm::validate($model);
         }
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->sendMailConfirmationPassChange($model);
+            Yii::$app->session->setFlash('userUpdatePassSubmitted');
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
-            return $this->render('password', [
-                'model' => $model,
-            ]);
-        }
+            return $this->render('password', ['model' => $model,]);
+        }        
     }
 
     public function actionChangePermission($id)
@@ -322,7 +323,7 @@ class CatuserController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('userDeleteSubmitted');
         return $this->redirect(['index']);
     }
 
@@ -349,5 +350,19 @@ class CatuserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    private function sendMailConfirmationPassChange($model){
+        $subject = "Confirmación de cambio de contraseña";
+        $body = "<p>Se ha cambiado de forma éxitosa su contraseña </p>";                            
+        $body .= "<p>Si usted no ha realizado este cambio, pongase en contacto con nosotros en el siguiente enlace</p>";                               
+        $body .= "<br><a href='http://localhost/Turistapp/web/site/contact'>Contacta con un administrador</a>";
+
+        Yii::$app->mailer->compose()
+            ->setTo($model->vc_Email)
+            ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])
+            ->setSubject($subject)
+            ->setHtmlBody($body)
+            ->send();
     }
 }

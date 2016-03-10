@@ -24,18 +24,23 @@ class CatuserController extends Controller
                     
                     [
                         'allow' => true,
-<<<<<<< HEAD
-                        'actions' => ['index','view','update','delete','create'],
-                        'roles' => ['?'],
-=======
-                        'actions' => ['index','view','update','delete','create','update-pass'],
+                        'actions' => ['index','update','delete','create','update-pass','change-permission'],
                         'roles' => ['admin'],
->>>>>>> 676a802bc3990a49a0d8250a0007a284a8f0f39f
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view','update','delete','update-pass'],
+                        'roles' => ['@'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['register'],
                         'roles' => ['?','admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['@','admin'],
                     ],
                     [
                         'allow' => true,
@@ -77,7 +82,6 @@ class CatuserController extends Controller
      */
     public function actionView($id)
     {
-        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -96,9 +100,38 @@ class CatuserController extends Controller
         }*/
 
         $model = new Catuser();
-
+        $modelAu = new Au();
+        $userid = Yii::$app->user->id;
+        $userAdmin = $this->findModel($userid);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+            $modelAu->user_id = $model->i_Pk_User;            
+            $modelAu->created_at = $userAdmin->vc_Email;
+            switch ($model->i_Fk_UserType) {
+                case 1:
+                $modelAu->item_name = 'turista';
+                if($modelAu->save()){
+                    return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                }
+                break;
+                case 2:
+                $modelAu->item_name = 'empresa';
+                if($modelAu->save()){
+                    return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                }
+                break;
+                case 3:
+                $modelAu->item_name = 'admin';
+                if($modelAu->save()){
+                    return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                }
+                break;
+                
+                default:
+                    # code...
+                    break;
+            }
+            
+            
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -194,13 +227,12 @@ class CatuserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->scenario = Catuser::SCENARIO_UPDATE;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('userUpdateSubmitted');
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model,]);
         }
     }
 
@@ -208,19 +240,78 @@ class CatuserController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = Catuser::SCENARIO_PASSCHANGE;
-
         if (Yii::$app->request->isAjax && $model->load($_POST)) {
             Yii::$app->response->format = 'json';
             return \yii\widgets\ActiveForm::validate($model);
         }
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->sendMailConfirmationPassChange($model);
+            Yii::$app->session->setFlash('userUpdatePassSubmitted');
             return $this->redirect(['view', 'id' => $model->i_Pk_User]);
         } else {
-            return $this->render('password', [
+            return $this->render('password', ['model' => $model,]);
+        }        
+    }
+
+    public function actionChangePermission($id)
+    {
+        $model = $this->findModel($id);
+        $modelAu = $this->findModelAu($id);        
+        $modelAu->created_at = $model->vc_Email;
+        $item_name = $modelAu->item_name;
+
+        if ($modelAu->load(Yii::$app->request->post()) && $modelAu->item_name!==$item_name && $modelAu->save()) {
+            
+            switch ($modelAu->item_name) {
+                case 'admin':
+                    $model->i_Fk_UserType = 3;
+                    if($model->update()){
+                        return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                    }                    
+                    break;
+                case 'turista':
+                    $model->i_Fk_UserType = 1;
+                    if($model->update()){
+                        return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                    }
+                    break;
+                case 'empresa':
+                    $model->i_Fk_UserType = 2;
+                    if($model->update()){
+                        return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                    }
+                break;
+                
+                default:
+                    
+                    break;
+            }
+        
+            
+                  
+            
+            
+        } else {
+                
+            if($modelAu->item_name==$item_name && $modelAu->load(Yii::$app->request->post())){
+                ?> 
+                <?= '<script> alert("El usuario ya cuenta con el permiso seleccionado, intente de nuevo")</script>' ?>
+                <?php
+                return $this->render('permission', [
+                'modelAu' => $modelAu,
                 'model' => $model,
             ]);
+            }else{
+                return $this->render('permission', [
+                'modelAu' => $modelAu,
+                'model' => $model,
+            ]);
+            }
+            
+
+            
         }
+
     }
 
     /**
@@ -232,7 +323,7 @@ class CatuserController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('userDeleteSubmitted');
         return $this->redirect(['index']);
     }
 
@@ -250,5 +341,29 @@ class CatuserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+<<<<<<< HEAD
+    protected function findModelAu($id)
+    {
+        if (($model = Au::findone(['user_id'=>$id])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+=======
+    private function sendMailConfirmationPassChange($model){
+        $subject = "Confirmación de cambio de contraseña";
+        $body = "<p>Se ha cambiado de forma éxitosa su contraseña </p>";                            
+        $body .= "<p>Si usted no ha realizado este cambio, pongase en contacto con nosotros en el siguiente enlace</p>";                               
+        $body .= "<br><a href='http://localhost/Turistapp/web/site/contact'>Contacta con un administrador</a>";
+
+        Yii::$app->mailer->compose()
+            ->setTo($model->vc_Email)
+            ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])
+            ->setSubject($subject)
+            ->setHtmlBody($body)
+            ->send();
+>>>>>>> de09b7e90d825c6624fcc5c07cf6c5b253f0c36f
     }
 }

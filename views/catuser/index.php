@@ -11,6 +11,12 @@ use yii\helpers\ArrayHelper;
 $this->title = Yii::t('app', 'Catusers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php if (Yii::$app->session->hasFlash('userDeleteSubmitted')): ?>
+    <div class="alert alert-success">
+        Se ha eliminado correctamente al usuario.
+    </div>
+<?php endif ?>
 <div class="catuser-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

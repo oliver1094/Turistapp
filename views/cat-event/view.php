@@ -220,21 +220,26 @@ $this->params['breadcrumbs'][] = $this->title;
     
 <div class="cat-event-view">
 
-    
+    <?php if ($model->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')): ?>
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->i_Pk_Event], [
+        <?= Html::a('Actualizar evento', ['update', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar evento', ['delete', 'id' => $model->i_Pk_Event], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '¿Seguro que deseas eliminar el evento?',
                 'method' => 'post',
             ],
 
         ]) ?>
 
-        <?php if (empty ($model->evtMaps)): ?>
-            <?= Html::a(Yii::t('app', 'Create Evt Map'), ['evt-map/create', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-success']) ?>
+        <?php if (!empty ($model->evtImages)): ?>
+            <?= Html::a(Yii::t('app', 'Eliminar imágenes'), ['evt-image/index', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-danger']) ?>
         <?php endif ?>
+
+        <?php if (empty ($model->evtMaps)): ?>
+            <?= Html::a(Yii::t('app', 'Crear mapa'), ['evt-map/create', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-success']) ?>
+        <?php endif ?>
+    <?php endif ?>
     
 
     </p>
@@ -270,16 +275,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if (!empty ($model->evtMaps)): ?>
 <div class="col-md-6">
 <p>
-        <?= Html::a(Yii::t('app', 'Update Map'), ['evt-map/update', 'id' =>$model->evtMaps[0]->i_Pk_Map], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete Map'), ['evt-map/delete', 'id' =>$model->evtMaps[0]->i_Pk_Map], [
+    <?php if ($model->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')): ?>
+        <?= Html::a(Yii::t('app', 'Modificar mapa'), ['evt-map/update', 'id' =>$model->evtMaps[0]->i_Pk_Map], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Eliminar mapa'), ['evt-map/delete', 'id' =>$model->evtMaps[0]->i_Pk_Map], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', '¿Seguro que deseas eliminar el mapa?'),
                 'method' => 'post',
             ],
-        ]) ?>       
-        <?= Html::button(Yii::t('app', 'Route'), ['class' => 'btn btn-primary', 'id'=>"route"]) ?>
-        <?= Html::button(Yii::t('app', 'Current location'), ['class' => 'btn btn-primary', 'id'=>"currentLocation"]) ?>
+        ]) ?> 
+    <?php endif ?>      
+        <?= Html::button(Yii::t('app', 'Ruta'), ['class' => 'btn btn-primary', 'id'=>"route"]) ?>
+        <?= Html::button(Yii::t('app', 'Ubicación actual'), ['class' => 'btn btn-primary', 'id'=>"currentLocation"]) ?>
         <div id = "text"><p>Buscando...<span id="status"></span></p></div>
     <?php endif ?>
 

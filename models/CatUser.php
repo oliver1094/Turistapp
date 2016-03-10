@@ -34,11 +34,13 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public $vc_ActualPass;
 
     const SCENARIO_PASSCHANGE = 'passchange';
+    const SCENARIO_UPDATE = 'update';
 
     public function scenarios()
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_PASSCHANGE] = ['vc_ActualPass', 'vc_NewPass', 'vc_RepeatPass'];
+        $scenarios[self::SCENARIO_UPDATE] = ['vc_FirstName','vc_LastName','vc_Email','vc_Phone','vc_CompanyName'];
         return $scenarios;
     }
 
@@ -57,6 +59,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
+            [['vc_FirstName', 'vc_LastName', 'vc_Email'], 'required', 'on' => self::SCENARIO_UPDATE , 'message' => 'Campo requerido'],
             [['vc_NewPass', 'vc_RepeatPass', 'vc_ActualPass'], 'required', 'on' => self::SCENARIO_PASSCHANGE , 'message' => 'Campo requerido'],
             [['i_Fk_UserType'], 'integer'],
             [['i_Fk_UserType','i_isActive'], 'integer'],
@@ -132,11 +135,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 //if(!empty($this->vc_HashPassword))//Ya no se debe de poder actualizar contraseña normalmente
                 if (!empty($this->vc_NewPass)) {
                     $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_NewPass);
-                }
-                
-                
-
-                
+                }                
             }
             return true;
         }

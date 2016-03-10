@@ -29,8 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= Html::a(Yii::t('app', 'Cambiar información'), ['update', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Cambiar contraseña'), ['update-pass', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
+<<<<<<< HEAD
         <?= Html::a(Yii::t('app', 'Cambiar permiso'), ['change-permission', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->i_Pk_User], [
+=======
         <?= Html::a(Yii::t('app', 'Eliminar cuenta'), ['delete', 'id' => $model->i_Pk_User], [
+>>>>>>> de09b7e90d825c6624fcc5c07cf6c5b253f0c36f
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', '¿Estas seguro de que deseas eliminar tu cuenta?'),

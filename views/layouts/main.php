@@ -18,7 +18,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= Html::encode("Página de inicio") ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -27,7 +27,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Turistapp',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -39,36 +39,36 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            !Yii::$app->user->isGuest ?
             [
-                'label' => Yii::t('app', 'Mis eventos'),
-                
-                'url' => ['/cat-event/my-events'] 
-               
-            ]:
+                'label' => Yii::t('app', 'Usuarios'),
+                'url' => ['/catuser/index'],
+                'visible' => Yii::$app->user->can('admin')
+            ],
             [
                 'label' => Yii::t('app', 'Eventos'),
-                
                 'url' => ['/cat-event/index']
             ],
-            
-            //Itinerario
-            !Yii::$app->user->isGuest ?
+            [
+                'label' => Yii::t('app', 'Mis eventos'),
+                'url' => ['/cat-event/my-events'],
+                'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
+            ],
             [
                 'label' => Yii::t('app', 'Itinerario'),
-                
-                'url' => ['/itinerary/index'] 
-               
-            ]:
-            [
-                'label' => Yii::t('app', 'Eventos2xD'),
-                
-                'url' => ['/cat-event/index']
+                'url' => ['/itinerary/index'],
+                'visible' => !Yii::$app->user->isGuest
             ],
-            
-            //
-            
-            Yii::$app->user->isGuest ?
+            [
+                'label' => Yii::t('app', 'Perfil'),
+                'url' => ['/catuser/view', 'id' => Yii::$app->user->getId()],
+                'visible' => !Yii::$app->user->isGuest
+            ],
+            [
+                'label' => Yii::t('app', 'Registrarse'),
+                'url' => ['/catuser/register'],
+                'visible' => Yii::$app->user->isGuest
+            ],
+             Yii::$app->user->isGuest ?
                 ['label' => 'Login', 'url' => ['/site/login']] :
                 [
                     'label' => 'Salir (' . Yii::$app->user->identity->vc_Email . ')',
@@ -90,7 +90,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Turisapp <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
