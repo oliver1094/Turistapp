@@ -31,6 +31,7 @@ use yii\helpers\ArrayHelper;
         {
             case "1": hideCompanyName(); break;
             case "2": showCompanyName(); break;
+            case "3": hideCompanyName(); break;
             
         }
     }
@@ -70,6 +71,8 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'vc_LastName')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vc_HashPassword')->passwordInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'repeatpass')->passwordInput(['maxlength' => true,'inputOptions'=>['placeholder'=>'Repita la contraseña']]) ?>
 
     <?= $form->field($model, 'vc_Email')->textInput(['maxlength' => true]) ?>
 

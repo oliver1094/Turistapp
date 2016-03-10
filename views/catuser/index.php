@@ -42,8 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'vc_FirstName',
             'vc_LastName',
-            'vc_HashPassword',
-            // 'vc_Email:email',
+            //'vc_HashPassword',
+             'vc_Email:email',
             // 'vc_Phone',
             // 'vc_CompanyName',
 

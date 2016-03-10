@@ -24,8 +24,8 @@ class CatuserController extends Controller
                     
                     [
                         'allow' => true,
-                        'actions' => ['index','update','delete','create','update-pass'],
-                        'roles' => ['@'],
+                        'actions' => ['index','update','delete','create','update-pass','change-permission'],
+                        'roles' => ['admin'],
                     ],
                     [
                         'allow' => true,
@@ -96,9 +96,38 @@ class CatuserController extends Controller
         }*/
 
         $model = new Catuser();
-
+        $modelAu = new Au();
+        $userid = Yii::$app->user->id;
+        $userAdmin = $this->findModel($userid);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+            $modelAu->user_id = $model->i_Pk_User;            
+            $modelAu->created_at = $userAdmin->vc_Email;
+            switch ($model->i_Fk_UserType) {
+                case 1:
+                $modelAu->item_name = 'turista';
+                if($modelAu->save()){
+                    return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                }
+                break;
+                case 2:
+                $modelAu->item_name = 'empresa';
+                if($modelAu->save()){
+                    return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                }
+                break;
+                case 3:
+                $modelAu->item_name = 'admin';
+                if($modelAu->save()){
+                    return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                }
+                break;
+                
+                default:
+                    # code...
+                    break;
+            }
+            
+            
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -223,6 +252,67 @@ class CatuserController extends Controller
         }
     }
 
+    public function actionChangePermission($id)
+    {
+        $model = $this->findModel($id);
+        $modelAu = $this->findModelAu($id);        
+        $modelAu->created_at = $model->vc_Email;
+        $item_name = $modelAu->item_name;
+
+        if ($modelAu->load(Yii::$app->request->post()) && $modelAu->item_name!==$item_name && $modelAu->save()) {
+            
+            switch ($modelAu->item_name) {
+                case 'admin':
+                    $model->i_Fk_UserType = 3;
+                    if($model->update()){
+                        return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                    }                    
+                    break;
+                case 'turista':
+                    $model->i_Fk_UserType = 1;
+                    if($model->update()){
+                        return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                    }
+                    break;
+                case 'empresa':
+                    $model->i_Fk_UserType = 2;
+                    if($model->update()){
+                        return $this->redirect(['view', 'id' => $model->i_Pk_User]);
+                    }
+                break;
+                
+                default:
+                    
+                    break;
+            }
+        
+            
+                  
+            
+            
+        } else {
+                
+            if($modelAu->item_name==$item_name && $modelAu->load(Yii::$app->request->post())){
+                ?> 
+                <?= '<script> alert("El usuario ya cuenta con el permiso seleccionado, intente de nuevo")</script>' ?>
+                <?php
+                return $this->render('permission', [
+                'modelAu' => $modelAu,
+                'model' => $model,
+            ]);
+            }else{
+                return $this->render('permission', [
+                'modelAu' => $modelAu,
+                'model' => $model,
+            ]);
+            }
+            
+
+            
+        }
+
+    }
+
     /**
      * Deletes an existing Catuser model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -246,6 +336,15 @@ class CatuserController extends Controller
     protected function findModel($id)
     {
         if (($model = Catuser::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findModelAu($id)
+    {
+        if (($model = Au::findone(['user_id'=>$id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -31,8 +31,9 @@ class Au extends \yii\db\ActiveRecord
     {
         return [
             [['item_name', 'user_id'], 'required'],
-            [['user_id', 'created_at'], 'integer'],
-            [['item_name'], 'string', 'max' => 64]
+            [['user_id'], 'integer'],
+            [['item_name'], 'string', 'max' => 64],            
+            [['created_at'], 'string', 'max' => 100]
         ];
     }
 
@@ -42,7 +43,7 @@ class Au extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'item_name' => 'Item Name',
+            'item_name' => 'Rol',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
         ];

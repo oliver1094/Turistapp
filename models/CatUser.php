@@ -112,12 +112,20 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
             if($this->isNewRecord)
             {
-                
 
+                if(Yii::$app->user->can('admin')){
+                    $this->i_isActive = 1;    
+                    $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);                    
+                }else{
+                    
                 $this->i_Fk_UserType = 1;
                 $this->i_isActive = 0;
                 $this->vc_Token = Yii::$app->getSecurity()->generateRandomString();
-                $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);
+                $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);                    
+                }
+                
+
+                
                 //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
                 //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
             } else {
