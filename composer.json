@@ -23,7 +23,8 @@
 		"2amigos/yii2-google-places-library": "*",
                 "kartik-v/yii2-widget-datetimepicker": "^1.4",
                 "philippfrenzel/yii2fullcalendar":"*",
-                "kartik-v/yii2-widget-rating": "*"
+                "kartik-v/yii2-widget-rating": "*",
+                "miloschuman/yii2-highcharts-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -8,6 +8,7 @@ use app\models\CatEventSearch;
 use app\models\CatUser;
 use app\models\Itinerary;
 use app\models\EvtMap;
+use app\models\EvtComment;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,7 +37,7 @@ class CatEventController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['update','delete'],
+                        'actions' => ['update','delete','report'],
                         'roles' => ['admin','empresa'],
                     ],
 
@@ -205,6 +206,51 @@ class CatEventController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionReport(){
+        $model = new CatEvent();
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User; 
+        $events = CatEvent::find()->where(['i_FkTbl_User'=> $userID])->all();
+        $namesEvents='';
+        $scoresEvents='';
+        $numberOfTourist='';
+        $namesEventsArray=[];
+        $earnings=[];
+        $totalEarnings=0;
+        
+        foreach($events as $element ){
+            
+            if(!$element->vc_EventName==null || $element->vc_EventName==''){
+                $namesEvents .= "'". $element->vc_EventName . "',";
+                $namesEventsArray[] = $element->vc_EventName;
+            }else{
+                $namesEvents .= 'Evento sin nombre,';
+                $namesEventsArray[] = 'Evento sin nombre';
+            }
+            
+            if(EvtComment::findOne(['i_FkTbl_Event'=>$element->i_Pk_Event])){
+                $scoresEvents .= EvtComment::findOne(['i_FkTbl_Event'=>$element->i_Pk_Event])->i_Score . ',';
+            }else{
+                $scoresEvents .= '0,';
+            }
+      
+            $earnings []= count(Itinerary::find()->where(['i_FkTbl_Event'=> $element->i_Pk_Event])->all()) * $element->dc_EventCost;
+            $totalEarnings += count(Itinerary::find()->where(['i_FkTbl_Event'=> $element->i_Pk_Event])->all()) * $element->dc_EventCost;
+            $numberOfTourist .= count(Itinerary::find()->where(['i_FkTbl_Event'=> $element->i_Pk_Event])->all()) .',';
+           
+        }
+        
+        return $this->render('report', [
+            'namesEventsArray' => $namesEventsArray,
+            'earnings' => $earnings,
+            'totalEarnings' => $totalEarnings,
+            'namesEvents' => $namesEvents,
+            'scoresEvents' => $scoresEvents,
+            'numberOfTourist' => $numberOfTourist
+        ]);
+        
+    }
+    
+    
     /**
      * Finds the CatEvent model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
