@@ -134,7 +134,6 @@ class CatEventController extends Controller
     {
         $model = new CatEvent();
         $evtmap = new EvtMap();
-
         if ($model->load(Yii::$app->request->post())) {
             $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
             $valid = true;
@@ -170,15 +169,16 @@ class CatEventController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->allowed($id);
         $model = $this->findModel($id);
         $evtmap = new EvtMap();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
             if (!empty($model->eventFile)) {
-                        $model->upload();
-                }
+                $model->upload();
+            }
             Yii::$app->session->setFlash('eventFormSubmitted');
-                    return $this->refresh();
+            return $this->refresh();
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -195,6 +195,7 @@ class CatEventController extends Controller
      */
     public function actionDelete($id)
     {
+        $this->allowed($id);
         $event= $this->findModel($id);
         if (!empty($event->evtImages)) {
             foreach ($event->evtImages as $image) {
@@ -202,7 +203,6 @@ class CatEventController extends Controller
             }
         }
         $event->delete();
-        //$this->findModel($id)->delete();
         return $this->redirect(['index']);
     }
 
@@ -264,6 +264,26 @@ class CatEventController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+     * Finds the CatEvent model based on its primary key value and validates
+     * that the user is the owner of the event.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function allowed($id){
+        $event = CatEventController::findModel($id);
+        if ($event == null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        if ($event->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')) {
+                return true;
+        } else {
+            return $this->redirect(['cat-event/view', 'id' => $id]);
         }
     }
 }

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
-
+use yii\helpers\Url;
 use app\models\CatEvent;
 use app\models\CatUser;
 
@@ -13,6 +13,7 @@ use app\models\CatUser;
 
 $this->title = 'Cat Events';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="cat-event-index">
 
@@ -36,7 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Nombre del creador',
                 'format' => 'raw',
      'value'=>function ($data) {
-        return Html::a(Html::encode($data['iFkTblUser']['vc_FirstName']),'../catuser/view?id='.$data['i_FkTbl_User']);
+        //return Html::a(Html::encode($data['iFkTblUser']['vc_FirstName']),'../catuser/view?id='.$data['i_FkTbl_User']);
+        return Html::a(Html::encode($data['iFkTblUser']['vc_FirstName']), Url::to(['catuser/view','id'=> $data['i_FkTbl_User']]));
+        
+
     },
 
 

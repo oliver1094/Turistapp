@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\EvtMap;
 use app\models\EvtMapSearch;
+use app\models\CatEvent;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -17,6 +18,16 @@ class EvtMapController extends Controller
     public function behaviors()
     {
         return [
+        'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['update','delete','create'],
+                        'roles' => ['admin', 'empresa'],
+                    ],                                       
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -62,14 +73,11 @@ class EvtMapController extends Controller
     {
         $model = new EvtMap();
         $model->i_FkTbl_Event = $id;
-
+        $this->allowed($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
             return $this->redirect(['cat-event/view', 'id' => $id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->render('create', ['model' => $model,]);
         }
     }
 
@@ -82,15 +90,11 @@ class EvtMapController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $this->allowed($model->i_FkTbl_Event);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->i_Pk_Map]);
             return $this->redirect(['cat-event/view', 'id' => $model->i_FkTbl_Event]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-            //return $this->redirect(['cat-event/view', 'id' => $model->i_FkTbl_Event]);
+            return $this->render('update', ['model' => $model,]);
         }
     }
 
@@ -103,9 +107,8 @@ class EvtMapController extends Controller
     public function actionDelete($id)
     {
         $idEvent = $this->findModel($id)->i_FkTbl_Event;
+        $this->allowed($idEvent);
         $this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
         return $this->redirect(['cat-event/view', 'id' => $idEvent]);
     }
 
@@ -124,4 +127,25 @@ class EvtMapController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * Finds the CatEvent model based on its primary key value and validates
+     * that the user is the owner of the event.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    private function allowed($id){
+        $event = CatEvent::findOne($id);
+        if ($event == null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        if ($event->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')) {
+                return true;
+        } else {
+            return $this->redirect(['cat-event/view', 'id' => $id]);
+        }
+    }
 }
+
