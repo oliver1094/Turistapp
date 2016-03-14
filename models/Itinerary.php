@@ -41,8 +41,8 @@ class Itinerary extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'i_FkTbl_User' => 'ID_User',
-            'i_FkTbl_Event' => 'ID_Event',
+            'i_FkTbl_User' => 'ID Usuario',
+            'i_FkTbl_Event' => 'ID Evento',
         ];
     }
 

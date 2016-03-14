@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\SysComment */
 
-$this->title = 'Rate plataform';
+$this->title = 'Calificar plataforma';
 $this->params['breadcrumbs'][] = ['label' => 'Sys Comments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

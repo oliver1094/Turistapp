@@ -56,7 +56,17 @@ AppAsset::register($this);
             [
                 'label' => Yii::t('app', 'Itinerario'),
                 'url' => ['/itinerary/index'],
+                'visible' => Yii::$app->user->can('turista') || Yii::$app->user->can('admin')
+            ],
+            [
+                'label' => Yii::t('app', 'Calificar plataforma'),
+                'url' => ['/sys-comment/create'],
                 'visible' => !Yii::$app->user->isGuest
+            ],
+            [
+                'label' => Yii::t('app', 'Ver reporte'),
+                'url' => ['/cat-event/report'],
+                'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
             ],
             [
                 'label' => Yii::t('app', 'Perfil'),

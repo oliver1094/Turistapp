@@ -42,10 +42,10 @@ class SysComment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'i_Pk_Score' => 'I  Pk  Score',
-            'i_Fk_User' => 'I  Fk  User',
-            'i_Score' => 'Score',
-            'vc_CommentSys' => 'Comments',
+            'i_Pk_Score' => 'ID Evento',
+            'i_Fk_User' => 'ID Usuario',
+            'i_Score' => 'Calificación',
+            'vc_CommentSys' => 'Comentario',
         ];
     }
 

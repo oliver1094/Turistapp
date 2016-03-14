@@ -19,6 +19,22 @@ class SysCommentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['turista','empresa'],
+                    ] 
+                    
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -62,9 +78,7 @@ class SysCommentController extends Controller
      */
     public function actionCreate()
     {
-        //Obtengo el id del usuario logueado y verifico que sea un turista
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
-        
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;     
         $model = new SysComment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

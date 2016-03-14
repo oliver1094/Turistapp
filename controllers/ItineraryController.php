@@ -23,15 +23,17 @@ class ItineraryController extends Controller
         return [
         'access' => [
                 'class' => 'yii\filters\AccessControl',
-                'rules' => [
-                    
+                'rules' => [   
                     [
                         'allow' => true,
                         'actions' => ['index','view','create','update','delete'],
-                        'roles' => ['admin','turista'],
+                        'roles' => ['admin'],
                     ],
-                                        
-                    
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','delete'],
+                        'roles' => ['turista'],
+                    ], 
                 ],
             ],
             'verbs' => [
@@ -51,23 +53,18 @@ class ItineraryController extends Controller
     {
         $searchModel = new ItinerarySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-        //Obtengo el id del usuario logueado y verifico que sea un turista
         $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
-        // Obtengo los eventos del turista logueado de la tabla itinerary
         $events = Itinerary::find()->where(['i_FkTbl_User'=> $userID])->all();
-       
-        
         $tasks = [];
+        
         foreach ($events as $eve){    
             $event = new \yii2fullcalendar\models\Event();
-            $event->id = CatEvent::findOne($eve->i_FkTbl_Event)->i_Pk_Event;
             $event->title = CatEvent::findOne($eve->i_FkTbl_Event)->vc_EventName;
             $event->start = CatEvent::findOne($eve->i_FkTbl_Event)->dt_EventStart;
-            //$event->end = CatEvent::findOne($eve->i_FkTbl_Event)->dt_EventEnd;
             $event->url  = Url::to(['cat-event/view','id'=> CatEvent::findOne($eve->i_FkTbl_Event)->i_Pk_Event]);
             $tasks[] = $event;
         }
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -98,13 +95,10 @@ class ItineraryController extends Controller
     public function actionCreate()
     {
         $model = new Itinerary();
-        
-        //Para que me muestre todos lo eventos registrados en el sistema
         $searchModel = new CatEventSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-        //Obtengo el id del usuario logueado y verifico que sea un turista
         $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
+        
         try{
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'i_FkTbl_User' => $model->i_FkTbl_User, 'i_FkTbl_Event' => $model->i_FkTbl_Event]);
@@ -120,13 +114,13 @@ class ItineraryController extends Controller
         ?> 
             <?= '<script> alert("You already have this event")</script>' ?>
         <?php
-            return $this->render('create', [
+           return $this->render('create', [
                     'model' => $model,
                     'searchModel' => $searchModel, //Datos para mostrar todos los eventos registrados
                     'dataProvider' => $dataProvider, //Datos para mostrar todos los eventos registrados
                     'userID'=>$userID //Paso el Id del usuario logueado
                     
-                ]);
+            ]);
         }
     }
 
@@ -140,8 +134,6 @@ class ItineraryController extends Controller
     public function actionUpdate($i_FkTbl_User, $i_FkTbl_Event)
     {
         $model = $this->findModel($i_FkTbl_User, $i_FkTbl_Event);
-        
-        //Obtengo el id del usuario logueado y veirifco que sea un turista
         $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
