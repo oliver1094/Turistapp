@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use app\models\CatEvent;
 use app\models\CatUser;
 
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CatEventSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -15,7 +16,7 @@ $this->title = 'Cat Events';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<div class="cat-event-index">
+<div class="cat-event-index animated fadeInDown">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -23,11 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Cat Event', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    
+    <div class="ibox-content">
     <?= GridView::widget([
 
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'tableOptions'=>['class'=>'table table-striped'],        
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             
@@ -122,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    
+    </div>
  
 
 </div>

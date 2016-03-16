@@ -1,8 +1,14 @@
 html,
 body {
     height: 100%;
-    background-color: grey;
+    background-color: #f3f3f4;
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+
+
+
+
 
 .form-control{
     background-color: #FFFFFF;
@@ -16,6 +22,71 @@ transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 width: 100%;
 font-size: 14px;
 }
+.m-b {
+    margin-bottom: 15px;
+}
+.full-width {
+    width: 100% !important;
+}
+.btn-primary {
+    background-color: #1ab394;
+    border-color: #1ab394;
+    color: #FFFFFF;
+}
+.loginscreen.middle-box {
+    width: 300px;
+}
+.middle-box {
+    max-width: 400px;
+    z-index: 100;
+    margin: 0 auto;
+    
+}
+
+.btn-white {
+    color: inherit;
+    background: white;
+    border: 1px solid #e7eaec;
+}
+.btn {
+    border-radius: 3px;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+}
+.btn-group-sm > .btn, .btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.breadcrumb {
+    
+    background-color: white;
+    
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border-top: 1px solid #e7eaec;
+    line-height: 1.42857;
+    padding: 8px;
+    vertical-align: top;
+}
+.ibox-content {
+    background-color: #ffffff;
+    color: inherit;
+    padding: 15px 20px 20px 20px;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
+}
+.ibox-content {
+    clear: both;
+}
+
+
+
 
 .wrap {
     min-height: 100%;

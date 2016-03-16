@@ -79,7 +79,7 @@ class CatEventSearch extends CatEvent
             ->andFilterWhere(['like', 'cat_user.vc_FirstName', $this->vc_NameUser])
             ->andFilterWhere(['like', 'vc_EventAddress', $this->vc_EventAddress])
             ->andFilterWhere(['like', 'vc_EventCity', $this->vc_EventCity]);
-
+        $dataProvider->pagination->pageSize=10;
         return $dataProvider;
     }
 }
