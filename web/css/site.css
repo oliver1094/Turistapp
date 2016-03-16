@@ -8,7 +8,10 @@ body {
 
 
 
-
+.navbar-inverse {
+    background-color: #f3f3f4;
+    border-color: #f3f3f4;
+}
 
 .form-control{
     background-color: #FFFFFF;
@@ -65,6 +68,26 @@ font-size: 14px;
     
     background-color: white;
     
+}
+.btn-success {
+    background-color: #1c84c6;
+    border-color: #1c84c6;
+    color: #FFFFFF;
+}
+.btn-info {
+    background-color: #23c6c8;
+    border-color: #23c6c8;
+    color: #FFFFFF;
+}
+.btn-warning {
+    background-color: #f8ac59;
+    border-color: #f8ac59;
+    color: #FFFFFF;
+}
+.btn-danger {
+    background-color: #ed5565;
+    border-color: #ed5565;
+    color: #FFFFFF;
 }
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
     border-top: 1px solid #e7eaec;
