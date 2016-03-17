@@ -42,8 +42,8 @@ $this->registerJs($transportNull, View::POS_HEAD, 'transportNull');
 <?php endif ?>
 
 <?php
-$this->title = $model->i_Pk_Event;
-$this->params['breadcrumbs'][] = ['label' => 'Cat Events', 'url' => ['index']];
+$this->title = $model->vc_EventName;
+$this->params['breadcrumbs'][] = ['label' => 'Lista de eventos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -106,8 +106,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'i_Pk_Event',
-            'i_FkTbl_User',
+            [
+                'label'=>'Organizador',
+                'value'=> $model->iFkTblUser->vc_FirstName . ' ' . $model->iFkTblUser->vc_LastName,
+            ],
             'vc_EventName',
             'tx_DescriptionEvent:ntext',
             'vc_EventAddress',

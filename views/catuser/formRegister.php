@@ -10,7 +10,10 @@ use yii\helpers\ArrayHelper;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
+<?php $this->registerJs('
+    $("[value=\'1\']").prop("checked", true);
+    $("#radioList").hide()
+'); ?>
 
 <div class="catuser-form">
           
@@ -22,7 +25,18 @@ use yii\helpers\ArrayHelper;
 
         <?php else: ?>
 
-    <?php $form = ActiveForm::begin(); ?>            
+    <?php $form = ActiveForm::begin(); ?>  
+
+<div id="radioList">
+    <?= $form->field($model, 'i_Fk_UserType')->radioList(
+        ArrayHelper::map(
+            UsrUsertype::find()->all(),
+            'i_Pk_UserType',
+            'vc_NameUserType'
+        )
+    ) ?>   
+</div>
+       
 
     <?= $form->field($model, 'vc_FirstName')->textInput(['maxlength' => true]) ?>
 

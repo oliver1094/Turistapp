@@ -94,11 +94,6 @@ class CatuserController extends Controller
      */
     public function actionCreate()
     {
-        //Nota de Javier: No sé que hace este código aquí, quitenlo si no lo usan.
-        /*if (!\Yii::$app->user->isGuest) {
-            return $this->render('../site/index');
-        }*/
-
         $model = new Catuser();
         $modelAu = new Au();
         $userid = Yii::$app->user->id;
@@ -130,8 +125,6 @@ class CatuserController extends Controller
                     # code...
                     break;
             }
-            
-            
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -145,50 +138,32 @@ class CatuserController extends Controller
 
         if(Yii::$app->user->isGuest && !empty($user->vc_Token) && $token == $user->vc_Token )
         {
-            //$user = Catuser::findOne($id);            
-            //var_dump($user->i_isActive);            
-
             $user->i_isActive = 1;
-            //$params = ['i_isActive'=>1];
-            //$sql = $user->update('cat_user', ['i_isActive' => 0], 'i_Pk_User='.$id, $params);
-
             if($user->update()){
                 Yii::$app->session->setFlash('confirmUserRegister');
                 return $this->render('confirmRegister');    
-            }else{
-                
-                ?> 
+            }else{               
+?> 
             <?= '<script> alert("Error al confirmar el registro")</script>' ?>
-                <?php   
 
-            }
-            
+<?php   
 
-            
-            
-                    
+            }        
         }
     }
 
     
 
     public function actionRegister()
-    {
-        //Nota de Javier: No sé que hace este código aquí, quitenlo si no lo usan.S
-        /*if (!\Yii::$app->user->isGuest) {
-            return $this->render('../site/index');
-        }*/
-            
-            $model = new Catuser();
-            $modelAu = new Au();
-
+    {            
+        $model = new Catuser();
+        $modelAu = new Au();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $userid = $model->userlastid();
             $id = $userid;
             $modelAu->item_name = "turista";
             $modelAu->user_id = $id;            
             if(Yii::$app->user->isGuest){
-                            
                             $idUser = urlencode($model->i_Pk_User);
                             $token = urlencode($model->vc_Token);                            
                             $subject = "Confirmar Registro";
@@ -204,14 +179,11 @@ class CatuserController extends Controller
                              ->setHtmlBody($body)
                              ->send();
                         }
-            
             if($modelAu->save()){
                 Yii::$app->session->setFlash('userFormSubmitted');
                     return $this->refresh();                                        
             }
-            
         } else {
-            
             return $this->render('register', [
                 'model' => $model,
             ]);

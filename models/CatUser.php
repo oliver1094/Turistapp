@@ -58,7 +58,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email'], 'required', 'message' => 'Campo requerido'],
+            [['vc_FirstName', 'vc_LastName', 'vc_HashPassword', 'vc_Email','i_Fk_UserType'], 'required', 'message' => 'Campo requerido'],
             [['vc_FirstName', 'vc_LastName', 'vc_Email'], 'required', 'on' => self::SCENARIO_UPDATE , 'message' => 'Campo requerido'],
             [['vc_NewPass', 'vc_RepeatPass', 'vc_ActualPass'], 'required', 'on' => self::SCENARIO_PASSCHANGE , 'message' => 'Campo requerido'],
             [['i_Fk_UserType'], 'integer'],
@@ -66,7 +66,7 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
             [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
             [['vc_HashPassword', 'vc_Email', 'vc_CompanyName'], 'string', 'max' => 100],
-            [['vc_HashPassword'], 'string', 'min'=>6],
+            [['vc_HashPassword'], 'string', 'min'=>6 ,'max' => 25],
             [['vc_NewPass'], 'string', 'min'=>6,'max' => 25, 'on' => self::SCENARIO_PASSCHANGE ],
             ['vc_ActualPass','findPasswords', 'on' => self::SCENARIO_PASSCHANGE ],
             ['vc_RepeatPass','compare','compareAttribute'=>'vc_NewPass', 'on' => self::SCENARIO_PASSCHANGE ],

@@ -5,12 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\EvtMap */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Evt Map',
-]) . ' ' . $model->i_Pk_Map;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Evt Maps'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->i_Pk_Map, 'url' => ['view', 'id' => $model->i_Pk_Map]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->title = Yii::t('app', 'Modificar mapa del evento: ' . $model->iFkTblEvent->vc_EventName);
+$this->params['breadcrumbs'][] = ['label' => 'Lista de eventos', 'url' => ['/cat-event/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Mis eventos', 'url' => ['/cat-event/my-events']];
+$this->params['breadcrumbs'][] = ['label' => $model->iFkTblEvent->vc_EventName, 'url' => ['/cat-event/view', 'id' => $model->i_FkTbl_Event]];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Modificar mapa');
 ?>
 <div class="evt-map-update">
 
