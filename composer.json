@@ -24,7 +24,8 @@
         "kartik-v/yii2-widget-datetimepicker": "^1.4",
         "philippfrenzel/yii2fullcalendar":"*",
         "kartik-v/yii2-widget-rating": "*",
-        "miloschuman/yii2-highcharts-widget": "*"
+        "miloschuman/yii2-highcharts-widget": "*",
+        "imanilchaudhari/yii2-social-share": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
