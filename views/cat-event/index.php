@@ -12,7 +12,7 @@ use app\models\CatUser;
 /* @var $searchModel app\models\CatEventSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Cat Events';
+$this->title = 'Eventos';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Cat Event', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear un Evento', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <div class="ibox-content">
     <?= GridView::widget([
@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'Name',
                 'value'=> 'vc_EventName',
+                'label'=>'Nombre Evento',
                 'filter'=> Html::activeDropDownList($searchModel, 
                                                     'vc_EventName', 
                                                     ArrayHelper::map(CatEvent::find()->asArray()->all(),
