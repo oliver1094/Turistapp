@@ -12,6 +12,7 @@ use app\models\CatUser;
 /* @var $searchModel app\models\CatEventSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+
 $this->title = 'Lista de eventos';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -22,7 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Crear evento', ['create'], ['class' => 'btn btn-success']) ?>
+
+        <?= Html::a('Crear un Evento', ['create'], ['class' => 'btn btn-success']) ?>
+
     </p>
     <div class="ibox-content">
     <?= GridView::widget([

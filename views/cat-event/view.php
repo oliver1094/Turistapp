@@ -1,3 +1,10 @@
+<div class="col-md-6" >  
+<?= \imanilchaudhari\socialshare\ShareButton::widget([
+        'style'=>'horizontal',
+        'networks' => ['facebook','googleplus','linkedin','twitter'],
+        'data_via'=>'imanilchaudhari', //twitter username (for twitter only, if exists else leave empty)
+]); ?>
+</div>
 <?php
 
 use yii\helpers\Html;
@@ -125,11 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => new Itinerary(),
         'userID' =>$userID    
     ]) ?>
-    <?= $this->render('..\evt-comment\_form', [
-        'model' => new EvtComment(),
-        'userID' => $userID, //Le paso al formulario el id del usuario logueado
-        'eventID'=>$model->i_Pk_Event//'eventID'=>$eventID
-    ])?>
+    
 </div>
 </div>
 
@@ -161,6 +164,51 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php endif ?>
+<div >    
+<?php
+if ($idUserComment!=null) {
+    foreach ($idUserComment as $value) { 
+    }
+    if ( $value!=$userID) {?>
+     <?= $this->render('..\evt-comment\_form', [
+        'model' => new EvtComment(),
+        'userID' => $userID, 
+        'eventID'=>$model->i_Pk_Event
+    ])?>  
+<?php 
+      }?>
+      <table  cellspacing="60" cellpadding="10" border="3">
+        <tr>
+    <th><h4>Nombre</h4></th >
+    <th><h4>Apellido</h4></th >     
+    <th><h4>Comentario</h4></th>        
+    <th><h4>Calificacion</h4></th>
+        </tr>
+         <tr>
+    <th><?php echo $table =implode(' <br/>', $firstName) ?></th>
+    <th><?php echo $table =implode(' <br/>', $lastName) ?></th>
+    <th><?php echo $table =implode(' <br/>', $commentsAll) ?></th>
+    <th><?php echo $table =implode(' <br/>', $score) ?></th     >    
+            </tr>
+      </table>
+<?php
+        echo StarRating::widget(['disabled'=>true,'name' => 'rating_19','value'=>$media, 
+        'pluginOptions' => [
+        'stars' => 5, 
+        'max' => 5,
+        'step' => 1.0,]
+        ]);
+    } else {?>
+     <?= $this->render('..\evt-comment\_form', [
+        'model' => new EvtComment(),
+        'userID' => $userID, 
+        'eventID'=>$model->i_Pk_Event
+    ])?>         
+<?php 
+      } ?>
+      
+</div>
+
 </div>
 <?php
 
