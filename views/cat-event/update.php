@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\CatEvent */
 
-$this->title = 'Update Cat Event: ' . ' ' . $model->i_Pk_Event;
-$this->params['breadcrumbs'][] = ['label' => 'Cat Events', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->i_Pk_Event, 'url' => ['view', 'id' => $model->i_Pk_Event]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Actualizar evento: ' . ' ' . $model->vc_EventName;
+$this->params['breadcrumbs'][] = ['label' => 'Lista de eventos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->vc_EventName, 'url' => ['view', 'id' => $model->i_Pk_Event]];
+$this->params['breadcrumbs'][] = 'Actualizar evento';
 ?>
 <div class="cat-event-update">
 

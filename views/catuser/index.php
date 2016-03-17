@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel app\models\CatuserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Catusers');
+$this->title = Yii::t('app', 'Lista de usuarios');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -23,38 +23,33 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Catuser'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Crear usuario'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'vc_NameUserType',
-                'value' => 'iFkUserType.vc_NameUserType',
-                'filter'=> Html::activeDropDownList($searchModel, 
-                                                    'vc_NameUserType', 
-                                                    ArrayHelper::map(UsrUsertype::find()->asArray()->all(),
-                                                                    'vc_NameUserType',
-                                                                    'vc_NameUserType'
-                                                                    ),
-                                                                ['class'=>'form-control','prompt'=>'--All--']
-                                                    ),                
-            ],
-
-            'i_Pk_User',
             
+            ['class' => 'yii\grid\SerialColumn'],
             'vc_FirstName',
             'vc_LastName',
-            //'vc_HashPassword',
-             'vc_Email:email',
-            // 'vc_Phone',
-            // 'vc_CompanyName',
-
+            [
+                'attribute' => 'iFkUserType.vc_NameUserType',
+                'value' => 'iFkUserType.vc_NameUserType',
+                'filter'=> Html::activeDropDownList(
+                    $searchModel, 'vc_NameUserType', ArrayHelper::map(
+                        UsrUsertype::find()->asArray()->all(),
+                        'vc_NameUserType',
+                        'vc_NameUserType'
+                    ),
+                    ['class'=>'form-control','prompt'=>'--All--']
+                ),                
+            ],
+            'i_Pk_User',
+            'vc_Email:email',
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);?>
 
 </div>

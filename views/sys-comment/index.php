@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\SysCommentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Calificaciones y Comentarios';
+$this->title = 'Lista de comentarios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-comment-index">

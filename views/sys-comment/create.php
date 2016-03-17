@@ -7,7 +7,9 @@ use yii\helpers\Html;
 /* @var $model app\models\SysComment */
 
 $this->title = 'Calificar plataforma';
-$this->params['breadcrumbs'][] = ['label' => 'Sys Comments', 'url' => ['index']];
+if(Yii::$app->user->can('admin')){
+	$this->params['breadcrumbs'][] = ['label' => 'Sys Comments', 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-comment-create">

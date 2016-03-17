@@ -10,7 +10,15 @@ use yii\helpers\ArrayHelper;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php if($model->isNewRecord){
+    $this->registerJs('
+        $("[value=\'1\']").prop("checked", true);
+    ');
+} ?>
+
 <?php $this->registerJs('
+
+    
 
     function showCompanyName()
     {
@@ -59,7 +67,7 @@ use yii\helpers\ArrayHelper;
 
     
 
-        <?= $form->field($model, 'i_Fk_UserType')->radioList(
+    <?= $form->field($model, 'i_Fk_UserType')->radioList(
         ArrayHelper::map(
             UsrUsertype::find()->all(),
             'i_Pk_UserType',
@@ -67,11 +75,6 @@ use yii\helpers\ArrayHelper;
         )
     ) ?>
     
-
-    
-
-    
-
     <?= $form->field($model, 'vc_FirstName')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vc_LastName')->textInput(['maxlength' => true]) ?>
@@ -80,9 +83,9 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'vc_HashPassword')->passwordInput(['maxlength' => true]) ?>    
 
-<?php endif ?>
-
     <?= $form->field($model, 'repeatpass')->passwordInput(['maxlength' => true,'inputOptions'=>['placeholder'=>'Repita la contraseña']]) ?>
+
+<?php endif ?>
 
     <?= $form->field($model, 'vc_Email')->textInput(['maxlength' => true]) ?>
 

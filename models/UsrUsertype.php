@@ -39,8 +39,8 @@ class UsrUsertype extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'i_Pk_UserType' => 'I  Pk  User Type',
-            'vc_NameUserType' => 'Vc  Name User Type',
+            'i_Pk_UserType' => 'id Tipo de usuario',
+            'vc_NameUserType' => 'Tipo de usuario',
         ];
     }
 
