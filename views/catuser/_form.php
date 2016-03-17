@@ -10,9 +10,15 @@ use yii\helpers\ArrayHelper;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php if($model->isNewRecord){
+    $this->registerJs('
+        $("[value=\'1\']").prop("checked", true);
+    ');
+} ?>
+
 <?php $this->registerJs('
 
-    $("[value=\'1\']").prop("checked", true);
+    
 
     function showCompanyName()
     {
