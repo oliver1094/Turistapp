@@ -69,6 +69,11 @@ AppAsset::register($this);
                 'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
             ],
             [
+                'label' => Yii::t('app', 'Ver comentarios'),
+                'url' => ['/sys-comment/index'],
+                'visible' => Yii::$app->user->can('admin')
+            ],
+            [
                 'label' => Yii::t('app', 'Perfil'),
                 'url' => ['/catuser/view', 'id' => Yii::$app->user->getId()],
                 'visible' => !Yii::$app->user->isGuest
