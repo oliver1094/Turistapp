@@ -37,7 +37,12 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
-            'verifyCode' => 'Verification Code',
+            'verifyCode' => 'Captcha',
+            'name' => 'Nombre',
+            'email' => 'E-mail',
+            'subject' => 'Asunto',
+            'body' => 'Mensaje',
+
         ];
     }
 
@@ -52,10 +57,11 @@ class ContactForm extends Model
             
             Yii::$app->mailer->compose()
                 ->setTo(Yii::$app->params['adminEmail'])
-                ->setFrom([$this->$email => $this->name])
+                ->setFrom([$email => $this->name])
                 ->setSubject($this->subject)
                 ->setTextBody($this->body)
                 ->send();
+                
 
             return true;
         }

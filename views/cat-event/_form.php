@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
 use kartik\datetime\DateTimePicker;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -39,7 +40,7 @@ $this->registerJs('
 ?>
 
 <?php if ($model->isNewRecord): ?>
-<div class="col-md-6">
+
 <?php endif ?>
     <div class="cat-event-form">
 
@@ -56,7 +57,12 @@ $this->registerJs('
             <?php else: ?>
 
         <?php $form = ActiveForm::begin([
-            'options' => ['enctype' => 'multipart/form-data']
+            'options' => ['enctype' => 'multipart/form-data', 'class' => 'form-horizontal'],
+            'fieldConfig' => [
+            'inputOptions' => ['class' => 'form-control col-sm-10'],
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'template' => "{label}\n<div class=\"col-sm-10\">{input}</div>\n<div class=\"col-lg-8 col-lg-offset-2\">{error}</div>",
+        ],
         ]); ?>
 
         <?= $form->field($model, 'vc_EventName')->textInput(['maxlength' => true]) ?>   
@@ -87,21 +93,35 @@ $this->registerJs('
 
         <?= $form->field($model, 'dc_TransportCost')->textInput(['maxlength' => true]) ?>
 
+
+        <div class="col-sm-6 col-sm-offset-2">
         <a id="agregarCampo" class="btn btn-info" >Agregar Archivo</a>
         <div id="contenedor">
             <div class="added">
             </div>
         </div>
         <br>
+        </div>
+
+        
+
 
         <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Registrar Evento' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <div class="col-sm-4 col-sm-offset-2">
+            
+        
+        <?= Html::a ( 'Cancelar', $url = Url::to('index'), $options = ['class'=>'btn btn-white'] ) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Registrar Evento' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+
         </div>
+
+
+    </div>
 
         <?php ActiveForm::end(); ?>
 
     </div>
-</div>
+
 
 <?php endif ?>
 

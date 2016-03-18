@@ -45,8 +45,8 @@ class EvtComment extends \yii\db\ActiveRecord
         return [
             'i_FkTbl_Event' => 'I  Fk Tbl  Event',
             'i_FkTbl_User' => 'I  Fk Tbl  User',
-            'txt_EventComment' => ' Event Comment',
-            'i_Score' => 'I  Score',
+            'txt_EventComment' => ' Comentario Evento',
+            'i_Score' => 'Score',
         ];
     }
 

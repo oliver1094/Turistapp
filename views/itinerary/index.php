@@ -10,15 +10,19 @@ use yii\grid\GridView;
 $this->title = 'Mi itinerario';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="itinerary-index">
+<div class="itinerary-index animated fadeInDown">
+
+<div class="ibox-content">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= 
         \yii2fullcalendar\yii2fullcalendar::widget(array('events' => $events,));
     ?> 
-    
+    </div>
     <br>
+
+    <div class="ibox-content">
     <p><h2>Mis eventos</h2></p>
 
     <?=
@@ -38,5 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Agregar evento', ['/cat-event/index'], ['class' => 'btn btn-success']) ?>
     </p>
+    </div>
     
 </div>

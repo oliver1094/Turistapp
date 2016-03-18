@@ -39,7 +39,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Acerca de', 'url' => ['/site/about']],
-            ['label' => 'Contactanos', 'url' => ['/site/contact']],
+            ['label' => 'Contáctanos', 'url' => ['/site/contact']],
             [
                 'label' => Yii::t('app', 'Calificar plataforma'),
                 'url' => ['/sys-comment/create'],

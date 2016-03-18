@@ -12,7 +12,7 @@ if(Yii::$app->user->can('admin')){
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sys-comment-create">
+<div class="sys-comment-create animated fadeInDown">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

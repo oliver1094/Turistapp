@@ -10,7 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Lista de comentarios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sys-comment-index">
+<div class="sys-comment-index animated fadeInDown ibox-content">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

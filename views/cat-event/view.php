@@ -1,10 +1,3 @@
-<div class="col-md-6" >  
-<?= \imanilchaudhari\socialshare\ShareButton::widget([
-        'style'=>'horizontal',
-        'networks' => ['facebook','googleplus','linkedin','twitter'],
-        'data_via'=>'imanilchaudhari', //twitter username (for twitter only, if exists else leave empty)
-]); ?>
-</div>
 <?php
 
 use yii\helpers\Html;
@@ -18,6 +11,17 @@ use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model app\models\CatEvent */
 ?>
+
+<?php if (Yii::$app->session->hasFlash('eventAdded')): ?>
+    <div class="alert alert-success">
+        Se ha agregado el evento al irinerario.
+    </div>
+<?php elseif (Yii::$app->session->hasFlash('eventNotAdded')): ?>
+    <div class="alert alert-danger">
+        Ya se tiene este evento en el itinerario.
+    </div>
+<?php endif ?>
+
 
 <?php if (!empty ($model->evtMaps)): ?>
 <?php
@@ -56,11 +60,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h1><?= Html::encode($this->title) ?></h1>
 
-<div>
+<div class="ibox-content animated fadeInDown" style="display: block;">
     <p>
 
 <?php
     if(!empty($model->evtImages)){
+
         echo yii\bootstrap\Carousel::widget(['items'=>$images]);
     }
     
@@ -69,23 +74,15 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div>
-<?php $this->registerJs("
-    $('.field-itinerary-i_fktbl_user').hide();
-    $('.field-itinerary-i_fktbl_event').hide();
-    
-    $('#itinerary-i_fktbl_event').val('".$model->i_Pk_Event."');
-    "); 
-?>
-
 
 <?php if (!empty ($model->evtMaps)): ?>
-
-<div class="col-md-6">
+<div class="row">
+<div class="col-md-6 ">
     
 <?php endif ?>
-    
+    <br>
 <div class="cat-event-view">
-
+    <div class="ibox-content animated fadeInDown" style="display: block;">
     <?php if ($model->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')): ?>
     <p>
         <?= Html::a('Actualizar evento', ['update', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-primary']) ?>
@@ -127,17 +124,37 @@ $this->params['breadcrumbs'][] = $this->title;
             'dc_TransportCost', 
         ],
     ]) ?>
+
+    <?= \imanilchaudhari\socialshare\ShareButton::widget([
+        'style'=>'horizontal',
+        'networks' => ['facebook','googleplus','linkedin','twitter'],
+        'data_via'=>'imanilchaudhari', //twitter username (for twitter only, if exists else leave empty)
+]); ?>
+
+<br>
+<?= Html::a(Yii::t('app', 'Agregar a itinerario'), ['itinerary/create', 'id' =>$model->i_Pk_Event], ['class' => 'btn btn-primary']) ?>
     
-    <?= $this->render('..\itinerary\_form', [
-        'model' => new Itinerary(),
-        'userID' =>$userID    
-    ]) ?>
     
-</div>
+    </div>
+    
 </div>
 
+
+
+
+
+
+
+</div>
+
+
 <?php if (!empty ($model->evtMaps)): ?>
+    
+    
 <div class="col-md-6">
+<br>
+<div class="ibox-content animated fadeInDown" style="display: block;">
+
 <p>
     <?php if ($model->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')): ?>
         <?= Html::a(Yii::t('app', 'Modificar mapa'), ['evt-map/update', 'id' =>$model->evtMaps[0]->i_Pk_Map], ['class' => 'btn btn-primary']) ?>
@@ -160,11 +177,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div id="viewMap" style="width:500px;height:380px;">     
 
 </div>
+</div>
+</div>
 
 </div>
 
 <?php endif ?>
-<div >    
+<br>
+<div class="ibox-content animated fadeInDown" style="display: block;">  
 <?php
 if ($idUserComment!=null) {
     foreach ($idUserComment as $value) { 
@@ -177,20 +197,30 @@ if ($idUserComment!=null) {
     ])?>  
 <?php 
       }?>
-      <table  cellspacing="60" cellpadding="10" border="3">
+      <div class="ibox-content">
+      <table class="table">
+      <thead>
         <tr>
     <th><h4>Nombre</h4></th >
     <th><h4>Apellido</h4></th >     
     <th><h4>Comentario</h4></th>        
     <th><h4>Calificacion</h4></th>
         </tr>
+        </thead>
+        <tbody>
+            
+        
          <tr>
-    <th><?php echo $table =implode(' <br/>', $firstName) ?></th>
-    <th><?php echo $table =implode(' <br/>', $lastName) ?></th>
-    <th><?php echo $table =implode(' <br/>', $commentsAll) ?></th>
-    <th><?php echo $table =implode(' <br/>', $score) ?></th     >    
+    <td><?php echo $table =implode(' <br/><br/>', $firstName) ?></td>
+    <td><?php echo $table =implode(' <br/><br/>', $lastName) ?></td>
+    <td><?php echo $table =implode(' <br/><br/>', $commentsAll) ?></td>
+    <td><?php echo $table =implode(' <br/><br/>', $score) ?></td>    
             </tr>
+            </tbody>
       </table>
+      </div>
+
+      <h2>Promedio de las calificaciones</h2>
 <?php
         echo StarRating::widget(['disabled'=>true,'name' => 'rating_19','value'=>$media, 
         'pluginOptions' => [
@@ -201,7 +231,7 @@ if ($idUserComment!=null) {
     } else {?>
      <?= $this->render('..\evt-comment\_form', [
         'model' => new EvtComment(),
-        'userID' => $userID, 
+        'userID' => Yii::$app->user->getId(), 
         'eventID'=>$model->i_Pk_Event
     ])?>         
 <?php 

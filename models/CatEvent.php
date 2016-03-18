@@ -51,7 +51,7 @@ class CatEvent extends \yii\db\ActiveRecord
             [[ 'vc_EventName','tx_DescriptionEvent', 'vc_EventAddress', 'vc_EventCity', 'dt_EventStart', 'dt_EventEnd', 'dc_EventCost'], 'required'],
             [['i_FkTbl_User'], 'integer'],
             ['vc_EventName', 'match', 'pattern' => "/^[0-9A-Záéíóúñ” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
-            [['vc_EventAddress','tx_DescriptionEvent'],'match', 'pattern' => "/^[0-9A-Záéíóúñ#” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            [['vc_EventAddress'],'match', 'pattern' => "/^[0-9A-Záéíóúñ#” “]+$/i", 'message' => 'Sólo se aceptan letras y números'],
             [['dt_EventStart', 'dt_EventEnd'], 'safe'],        
             [['dc_EventCost', 'dc_TransportCost'], 'number'],
             [['vc_EventName', 'fileNameAttached'], 'string', 'max' => 120],            

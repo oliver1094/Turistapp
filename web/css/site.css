@@ -20,6 +20,18 @@ body {
     height: 1px;
     margin: 20px 0;
 }
+.icheckbox_square-green, .iradio_square-green {
+  display: inline-block;
+  *display: inline;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  background: url(green.png) no-repeat;
+  border: none;
+  cursor: pointer;
+}
 
 
 .navbar-inverse {

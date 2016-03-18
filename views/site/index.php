@@ -4,7 +4,7 @@
 use app\models\CatEvent;
 use yii\helpers\Html;
 use yii\helpers\Url;
-$this->title = 'My Yii Application';
+$this->title = 'Turistapp | Home';
 
 //echo $arrayMainEvents[0]->i_Score;
 //echo $arrayMainEvents[1]->i_Score;
@@ -21,17 +21,17 @@ $this->title = 'My Yii Application';
 //foreach ($arrayMainEvents as $value) {
 //    echo $value->i_Score;
 //}
-
+  
 ?>
 
 <div class="site-index">
 
-    <div class="jumbotron">
+    <div class="jumbotron animated fadeInDown">
         <h1>Eventos principales</h1>
     </div>
 
     <div class="body-content" align="center">
-
+<div class="ibox-content animated fadeInDown" style="display: block;">
         <div class="row">
             
             <?php 
@@ -60,6 +60,7 @@ $this->title = 'My Yii Application';
             <?php 
                 $contador++;
                 } ?>
+                </div>
 
         </div>
 

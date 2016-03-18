@@ -7,62 +7,87 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use yii\helpers\Url;
 
 $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-contact">
-    <h1><?= Html::encode($this->title) ?></h1>
+
+<div class="site-contact animated fadeInDown">
+
+<div class="row">
+<div class="col-lg-12">
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+    <h3>Contacto</h3>
+    </div>
+    <div class="ibox-content" style="display: block;">
 
     <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
         <div class="alert alert-success">
-            Thank you for contacting us. We will respond to you as soon as possible.
+            Gracias por contactarnos, le responderemos a la brevedad posible
         </div>
-
-        <p>
-            Note that if you turn on the Yii debugger, you should be able
-            to view the mail message on the mail panel of the debugger.
-            <?php if (Yii::$app->mailer->useFileTransport): ?>
-                Because the application is in development mode, the email is not sent but saved as
-                a file under <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
-                Please configure the <code>useFileTransport</code> property of the <code>mail</code>
-                application component to be false to enable email sending.
-            <?php endif; ?>
-        </p>
+        
 
     <?php else: ?>
 
-        <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
-        </p>
+        
 
-        <div class="row">
-            <div class="col-lg-5">
 
-                <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+                <?php $form = ActiveForm::begin(['id' => 'contact-form',
+                    'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+            'inputOptions' => ['class' => 'form-control col-sm-10'],
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'template' => "{label}\n<div class=\"col-sm-10\">{input}</div>\n<div class=\"col-lg-8 col-lg-offset-2\">{error}</div>",
+        ],
+                ]); ?>
 
-                    <?= $form->field($model, 'name') ?>
+                    
+                    <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+
+                    <div class="hr-line-dashed"></div>
 
                     <?= $form->field($model, 'email') ?>
 
+                    <div class="hr-line-dashed"></div>
+
                     <?= $form->field($model, 'subject') ?>
+
+                    <div class="hr-line-dashed"></div>
 
                     <?= $form->field($model, 'body')->textArea(['rows' => 6]) ?>
 
+                    <div class="hr-line-dashed"></div>
+
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                        'template' => '<div class="row"><div class="col-lg-2">{image}</div><div class="col-lg-3">{input}</div></div>',
                     ]) ?>
 
+                    <div class="hr-line-dashed"></div>
+                    
+
                     <div class="form-group">
-                        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                    </div>
+        <div class="col-sm-4 col-sm-offset-2">
+            
+        
+        <?= Html::a ( 'Cancelar', $url = Url::to('index'), $options = ['class'=>'btn btn-white'] ) ?>
+        <?= Html::submitButton('Enviar', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+
+        </div>
+
+
+    </div>
 
                 <?php ActiveForm::end(); ?>
 
-            </div>
+           
         </div>
+        </div>
+        </div>
+        </div>
+        
 
     <?php endif; ?>
 </div>

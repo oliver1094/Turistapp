@@ -13,7 +13,7 @@ use app\models\CatEvent;
 $this->title = 'Mis eventos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="cat-event-index">
+<div class="cat-event-index animated fadeInDown">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Crrear evento', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    
+    <div class="ibox-content">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -88,4 +88,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    </div>
 </div>

@@ -13,7 +13,7 @@ if(Yii::$app->user->can('admin')){
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="catuser-create  animated fadeInDown">
+<div class="catuser-create animated fadeInDown">
 <div class="row">
 <div class="col-lg-12">
 <div class="ibox float-e-margins">

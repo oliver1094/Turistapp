@@ -76,6 +76,8 @@ class CatuserSearch extends Catuser
             ->andFilterWhere(['like', 'usr_usertype.vc_NameUserType', $this->vc_NameUserType])
             ->andFilterWhere(['like', 'vc_CompanyName', $this->vc_CompanyName]);
 
+            $dataProvider->pagination->pageSize=10;
+
         return $dataProvider;
     }
 }

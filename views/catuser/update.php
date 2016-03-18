@@ -12,7 +12,7 @@ if(Yii::$app->user->can('admin')){
 $this->params['breadcrumbs'][] = ['label' => $model->vc_FirstName, 'url' => ['view', 'id' => $model->i_Pk_User]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="catuser-update">
+<div class="catuser-update animated fadeInDown ibox-content">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
