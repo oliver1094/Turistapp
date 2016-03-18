@@ -10,7 +10,7 @@ $this->title = Yii::t('app', 'Registro');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Usuarios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="catuser-create">
+<div class="catuser-create  animated fadeInDown">
 <div class="row">
 <div class="col-lg-12">
 <div class="ibox float-e-margins">

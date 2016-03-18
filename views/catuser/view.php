@@ -11,6 +11,8 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Catusers'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<div class="ibox-content" style="display: block;">
+
 <?php if (Yii::$app->session->hasFlash('userUpdatePassSubmitted')): ?>
     <div class="alert alert-success">
         Se ha cambiado la contraseña correctamente.
@@ -68,5 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+</div>
 </div>
 <?php endif ?>
