@@ -228,6 +228,7 @@ class CatuserController extends Controller
     public function actionChangePermission($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Catuser::SCENARIO_UPDATE;
         $modelAu = $this->findModelAu($id);        
         $modelAu->created_at = $model->vc_Email;
         $item_name = $modelAu->item_name;
