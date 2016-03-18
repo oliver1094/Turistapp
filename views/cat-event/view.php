@@ -189,7 +189,7 @@ $this->params['breadcrumbs'][] = $this->title;
 if ($idUserComment!=null) {
     foreach ($idUserComment as $value) { 
     }
-    if ( $value!=$userID) {?>
+    if ( $value!=Yii::$app->user->getId()) {?>
      <?= $this->render('..\evt-comment\_form', [
         'model' => new EvtComment(),
         'userID' => $userID, 
