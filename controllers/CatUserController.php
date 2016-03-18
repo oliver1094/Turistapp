@@ -15,6 +15,10 @@ use yii\filters\VerbFilter;
  */
 class CatuserController extends Controller
 {
+    /**
+     * behavoirs of the model.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [
@@ -132,6 +136,11 @@ class CatuserController extends Controller
         }
     }
 
+    /**
+     * Change a CatUser to active.
+     * @param string $id, string $token
+     * @return mixed
+     */
     public function actionConfirm($id,$token){        
 
         $user = Catuser::findOne($id);
@@ -153,7 +162,11 @@ class CatuserController extends Controller
     }
 
     
-
+    /**
+     * Registration of a Catuser model.
+     * @param string $id
+     * @return mixed
+     */
     public function actionRegister()
     {            
         $model = new Catuser();
@@ -208,6 +221,11 @@ class CatuserController extends Controller
         }
     }
 
+    /**
+     * Update the password of a Catuser model.
+     * @param string $id
+     * @return mixed
+     */
     public function actionUpdatePass($id)
     {
         $model = $this->findModel($id);
@@ -225,9 +243,15 @@ class CatuserController extends Controller
         }        
     }
 
+     /**
+     * Change the permissions of a Catuser model.
+     * @param string $id
+     * @return mixed
+     */
     public function actionChangePermission($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Catuser::SCENARIO_UPDATE;
         $modelAu = $this->findModelAu($id);        
         $modelAu->created_at = $model->vc_Email;
         $item_name = $modelAu->item_name;
@@ -258,14 +282,8 @@ class CatuserController extends Controller
                     
                     break;
             }
-        
-            
-                  
-            
-            
-        } else {
-                
-            if($modelAu->item_name==$item_name && $modelAu->load(Yii::$app->request->post())){
+        } else {   
+            if ($modelAu->item_name==$item_name && $modelAu->load(Yii::$app->request->post())) {
                 ?> 
                 <?= '<script> alert("El usuario ya cuenta con el permiso seleccionado, intente de nuevo")</script>' ?>
                 <?php
@@ -273,17 +291,13 @@ class CatuserController extends Controller
                 'modelAu' => $modelAu,
                 'model' => $model,
             ]);
-            }else{
+            } else {
                 return $this->render('permission', [
-                'modelAu' => $modelAu,
-                'model' => $model,
-            ]);
+                    'modelAu' => $modelAu,
+                    'model' => $model,
+                ]);
             }
-            
-
-            
         }
-
     }
 
     /**
@@ -315,6 +329,13 @@ class CatuserController extends Controller
         }
     }
 
+    /**
+     * Finds the Au model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return Au the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findModelAu($id)
     {
         if (($model = Au::findone(['user_id'=>$id])) !== null) {
@@ -324,12 +345,15 @@ class CatuserController extends Controller
         }
     }
 
+    /**
+     * Sends an email confirming the change of the password
+     * @param CatUser $model
+     */
     private function sendMailConfirmationPassChange($model){
         $subject = "Confirmación de cambio de contraseña";
         $body = "<p>Se ha cambiado de forma éxitosa su contraseña </p>";                            
         $body .= "<p>Si usted no ha realizado este cambio, pongase en contacto con nosotros en el siguiente enlace</p>";                               
         $body .= "<br><a href='http://localhost/Turistapp/web/site/contact'>Contacta con un administrador</a>";
-
         Yii::$app->mailer->compose()
             ->setTo($model->vc_Email)
             ->setFrom([Yii::$app->params["adminEmail"] => Yii::$app->params["title"]])

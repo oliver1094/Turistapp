@@ -24,12 +24,12 @@ class SysCommentController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index','view','create','update','delete'],
+                        'actions' => ['index','create','update','delete'],
                         'roles' => ['admin'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['create'],
+                        'actions' => ['create','view'],
                         'roles' => ['turista','empresa'],
                     ] 
                     

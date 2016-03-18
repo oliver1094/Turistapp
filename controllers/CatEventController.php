@@ -88,14 +88,15 @@ class CatEventController extends Controller
         $itinerary=new Itinerary();
         $model = $this->findModel($id);
         //Obtengo el id del usuario logueado y verifico que sea un turista (esto para que pueda agregar el evento al itinerario)
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
+        //$userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
         $images=null;
         if(!empty($model->evtImages)){
             foreach ($model->evtImages as $image) {
                 $images[]= '<a href="../files/'.$image->vc_DirectoryName .'">
                     <img src="../files/' .$image->vc_DirectoryName . '"/ width="560"  height="445" style="margin:auto; max-height: 445px"></a>';
             }
-        } $commentsAll=null;
+        } 
+        $commentsAll=null;
         $score=null;
         $idUserComment=null;
         $cont=0;
@@ -117,24 +118,10 @@ class CatEventController extends Controller
         foreach ($users as $name) {
             $firstName[]=$name->vc_FirstName;
             $lastName[]=$name->vc_LastName;   
-            }
-        
-
-        try{
-            if($itinerary->load(Yii::$app->request->post()) && $itinerary->save()){
-?> 
-<?= '<script> alert("Event added to itinerary")</script>'?>
-<?php    
-            }
-        }catch (\yii\db\IntegrityException $integrityException){
-?> 
-<?= '<script> alert("You already have this event")</script>' ?>
-<?php       
         }
-        
+
         return $this->render('view', [
             'model' => $model,
-            'userID' => $userID,
             'images'=> $images,
             'commentsAll'=>$commentsAll,
             'score'=>$score,
