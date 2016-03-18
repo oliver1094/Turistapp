@@ -11,7 +11,9 @@ use kartik\rating\StarRating;
 
 <div class="evt-comment-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+     <?php $form = ActiveForm::begin([
+      'action' => ['evt-comment/create'],
+  ]); ?>
 
     <?= $form->field($model, 'i_FkTbl_Event')->hiddenInput(['value'=>$eventID])->label(false) ?>
 

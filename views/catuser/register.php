@@ -6,8 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Catuser */
 
-$this->title = Yii::t('app', 'Registro');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Usuarios'), 'url' => ['index']];
+
+$this->title = Yii::t('app', 'Registraro');
+if(Yii::$app->user->can('admin')){
+	$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lista de usuarios'), 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catuser-create  animated fadeInDown">

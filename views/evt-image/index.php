@@ -7,8 +7,10 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\EvtImageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Evt Images');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('app', 'Eliminar imágenes ');
+$this->params['breadcrumbs'][] = ['label' => 'Lista de eventos', 'url' => ['/cat-event/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Mis eventos', 'url' => ['/cat-event/my-events']];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Eliminar imágenes');
 ?>
 <div class="evt-image-index">
 

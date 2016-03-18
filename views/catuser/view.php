@@ -6,8 +6,10 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Catuser */
 
-$this->title = $model->i_Pk_User;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Catusers'), 'url' => ['index']];
+$this->title = $model->vc_FirstName . ' ' . $model->vc_LastName;
+if(Yii::$app->user->can('admin')){
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lista de usuarios'), 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -44,14 +46,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'i_Pk_User',
-            'i_Fk_UserType',
+            [                      
+                'label' => 'Tipo de usuario',
+                'value' => $model->iFkUserType->vc_NameUserType
+            ],
             'vc_FirstName',
             'vc_LastName',
-            'vc_HashPassword',
             'vc_Email:email',
             'vc_Phone',
-            'vc_CompanyName',
+            [                      
+                'label' => 'Nombre de la compañía',
+                'value' => $model->vc_CompanyName,
+                'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
+            ],
         ],
     ]) ?>
     <?php else: ?>

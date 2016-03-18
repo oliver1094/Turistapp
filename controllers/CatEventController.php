@@ -27,22 +27,14 @@ class CatEventController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'my-events'],
+                        'actions' => ['create', 'my-events','update','delete','report'],
                         'roles' => ['empresa','admin'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['index','view'],
-                        'roles' => ['turista','admin','empresa'],
+                        'roles' => ['turista','admin','empresa','@','?'],
                     ],
-                    [
-                        'allow' => true,
-                        'actions' => ['update','delete','report'],
-                        'roles' => ['admin','empresa'],
-                    ],
-
-                    
-                    
                 ],
             ],
             'verbs' => [
@@ -103,7 +95,29 @@ class CatEventController extends Controller
                 $images[]= '<a href="../files/'.$image->vc_DirectoryName .'">
                     <img src="../files/' .$image->vc_DirectoryName . '"/ width="560"  height="445" style="margin:auto; max-height: 445px"></a>';
             }
-        }
+        } $commentsAll=null;
+        $score=null;
+        $idUserComment=null;
+        $cont=0;
+        $plus=0;
+        $media=0;
+        $comments=$model->evtComments;
+        foreach ($comments as $value) {
+            $commentsAll[]=$value->txt_EventComment;
+            $score[]=$value->i_Score;
+            $plusStarts=$value->i_Score;
+            $plus=$plus+$plusStarts;
+            $cont=$cont+1;
+            $media=$plus/$cont;
+            $idUserComment[]=$value->i_FkTbl_User;  
+            }
+        $firstName=null;
+        $lastName=null;
+        $users=$model->iFkTblUsers;
+        foreach ($users as $name) {
+            $firstName[]=$name->vc_FirstName;
+            $lastName[]=$name->vc_LastName;   
+            }
         
 
         try{
@@ -121,7 +135,13 @@ class CatEventController extends Controller
         return $this->render('view', [
             'model' => $model,
             'userID' => $userID,
-            'images'=> $images
+            'images'=> $images,
+            'commentsAll'=>$commentsAll,
+            'score'=>$score,
+            'firstName'=>$firstName,
+            'idUserComment'=>$idUserComment,
+            'lastName'=>$lastName,
+            'media'=>$media
         ]);
     }
 
