@@ -1,10 +1,4 @@
-<div class="col-md-6" >  
-<?= \imanilchaudhari\socialshare\ShareButton::widget([
-        'style'=>'horizontal',
-        'networks' => ['facebook','googleplus','linkedin','twitter'],
-        'data_via'=>'imanilchaudhari', //twitter username (for twitter only, if exists else leave empty)
-]); ?>
-</div>
+
 <?php
 
 use yii\helpers\Html;
@@ -18,6 +12,16 @@ use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model app\models\CatEvent */
 ?>
+
+<?php if (Yii::$app->session->hasFlash('eventAdded')): ?>
+    <div class="alert alert-success">
+        Se ha agregado el evento al irinerario.
+    </div>
+<?php elseif (Yii::$app->session->hasFlash('eventNotAdded')): ?>
+    <div class="alert alert-danger">
+        Ya se tiene este evento en el itinerario.
+    </div>
+<?php endif ?>
 
 <?php if (!empty ($model->evtMaps)): ?>
 <?php
@@ -69,14 +73,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div>
-<?php $this->registerJs("
-    $('.field-itinerary-i_fktbl_user').hide();
-    $('.field-itinerary-i_fktbl_event').hide();
-    
-    $('#itinerary-i_fktbl_event').val('".$model->i_Pk_Event."');
-    "); 
-?>
-
 
 <?php if (!empty ($model->evtMaps)): ?>
 
@@ -127,12 +123,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'dc_TransportCost', 
         ],
     ]) ?>
-    
-    <?= $this->render('..\itinerary\_form', [
-        'model' => new Itinerary(),
-        'userID' =>$userID    
-    ]) ?>
-    
+
+<div>  
+<?= \imanilchaudhari\socialshare\ShareButton::widget([
+    'style'=>'horizontal',
+    'networks' => ['facebook','googleplus','linkedin','twitter'],
+    'data_via'=>'imanilchaudhari', //twitter username (for twitter only, if exists else leave empty)
+]); ?>
+</div>
+<br>
+<div>
+    <?= Html::a(Yii::t('app', 'Agregar a itinerario'), ['itinerary/create', 'id' =>$model->i_Pk_Event], ['class' => 'btn btn-primary']) ?>
+</div>  
+
 </div>
 </div>
 
@@ -164,15 +167,18 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php endif ?>
+
+</div>
+
 <div >    
 <?php
 if ($idUserComment!=null) {
     foreach ($idUserComment as $value) { 
     }
-    if ( $value!=$userID) {?>
+    if ( $value!=Yii::$app->user->getId()) {?>
      <?= $this->render('..\evt-comment\_form', [
         'model' => new EvtComment(),
-        'userID' => $userID, 
+        'userID' => Yii::$app->user->getId(), 
         'eventID'=>$model->i_Pk_Event
     ])?>  
 <?php 
@@ -201,17 +207,10 @@ if ($idUserComment!=null) {
     } else {?>
      <?= $this->render('..\evt-comment\_form', [
         'model' => new EvtComment(),
-        'userID' => $userID, 
+        'userID' => Yii::$app->user->getId(), 
         'eventID'=>$model->i_Pk_Event
     ])?>         
 <?php 
       } ?>
       
 </div>
-
-</div>
-<?php
-
-
-
-

@@ -92,35 +92,20 @@ class ItineraryController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Itinerary();
-        $searchModel = new CatEventSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
-        
-        try{
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'i_FkTbl_User' => $model->i_FkTbl_User, 'i_FkTbl_Event' => $model->i_FkTbl_Event]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    'searchModel' => $searchModel, //Datos para mostrar todos los eventos registrados
-                    'dataProvider' => $dataProvider, //Datos para mostrar todos los eventos registrados
-                    'userID'=>$userID //Paso el Id del usuario logueado
-                ]);
+        $idUser = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
+        $model->i_FkTbl_User = $idUser;
+        $model->i_FkTbl_Event = $id;
+        if (Itinerary::findOne(['i_FkTbl_User' => $idUser, 'i_FkTbl_Event' => $id])=== null) {
+            if ($model->save()) {
+                Yii::$app->session->setFlash('eventAdded');
+                return $this->redirect(['cat-event/view', 'id' => $id]);
             }
-        }  catch (\yii\db\IntegrityException $integrityException){
-        ?> 
-            <?= '<script> alert("You already have this event")</script>' ?>
-        <?php
-           return $this->render('create', [
-                    'model' => $model,
-                    'searchModel' => $searchModel, //Datos para mostrar todos los eventos registrados
-                    'dataProvider' => $dataProvider, //Datos para mostrar todos los eventos registrados
-                    'userID'=>$userID //Paso el Id del usuario logueado
-                    
-            ]);
+        } else {
+            Yii::$app->session->setFlash('eventNotAdded');
+            return $this->redirect(['cat-event/view', 'id' => $id]);
         }
     }
 
@@ -141,7 +126,7 @@ class ItineraryController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'userID'=>$userID //Paso el id del usuario logueado para que pueda realizar los cambios
+                'userID'=>$userID
             ]);
         }
     }

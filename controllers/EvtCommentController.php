@@ -65,15 +65,11 @@ class EvtCommentController extends Controller
      */
     public function actionCreate()
     {
-           $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
-           //$eventID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
-           //$eventID=CatEvent::findOne($eve->i_FkTbl_Event)->i_Pk_Event;
-          // $eventID = CatEvent::findOne(['i_Pk_Event'=>Yii::$app->user->getEvtComments()])->i_Pk_Event;
-
+        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
         $model = new EvtComment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'i_FkTbl_Event' => $model->i_FkTbl_Event, 'i_FkTbl_User' => $model->i_FkTbl_User]);
+            return $this->redirect(['cat-event/view', 'id' => $model->i_FkTbl_Event]);
         } else {
             return $this->render('create', [
                 'model' => $model,
