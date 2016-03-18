@@ -192,7 +192,7 @@ if ($idUserComment!=null) {
     if ( $value!=Yii::$app->user->getId()) {?>
      <?= $this->render('..\evt-comment\_form', [
         'model' => new EvtComment(),
-        'userID' => $userID, 
+        'userID' => Yii::$app->user->getId(), 
         'eventID'=>$model->i_Pk_Event
     ])?>  
 <?php 
