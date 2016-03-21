@@ -53,8 +53,7 @@ class ItineraryController extends Controller
     {
         $searchModel = new ItinerarySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
-        $events = Itinerary::find()->where(['i_FkTbl_User'=> $userID])->all();
+        $events = Itinerary::find()->where(['i_FkTbl_User'=> Yii::$app->user->getId()])->all();
         $tasks = [];
         
         foreach ($events as $eve){    
@@ -95,7 +94,7 @@ class ItineraryController extends Controller
     public function actionCreate($id)
     {
         $model = new Itinerary();
-        $idUser = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
+        $idUser = Yii::$app->user->getId();//CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
         $model->i_FkTbl_User = $idUser;
         $model->i_FkTbl_Event = $id;
         if (Itinerary::findOne(['i_FkTbl_User' => $idUser, 'i_FkTbl_Event' => $id])=== null) {

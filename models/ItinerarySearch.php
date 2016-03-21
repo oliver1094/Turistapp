@@ -41,33 +41,14 @@ class ItinerarySearch extends Itinerary
      */
     public function search($params)
     {
-        //Obtengo el id del usuario logueado y verifico que sea un turista
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
-        // Obtengo los eventos del turista logueado de la tabla itinerary
-        //$query = Itinerary::find()->where(['i_FkTbl_User'=> $userID]);
-        $query = Itinerary::find()->where(['i_FkTbl_User'=> $userID]);
-        
-        
-        //$query = Itinerary::find();
-
+        $query = Itinerary::find()->where(['i_FkTbl_User'=> Yii::$app->user->getId()]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
-
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
-        }
-
-        //$query->andFilterWhere([
-        //    'i_FkTbl_User' => $this->i_FkTbl_User,
-        //    'i_FkTbl_Event' => $this->i_FkTbl_Event,    
-        //]);
-        
-        
+        }    
         return $dataProvider;
     }
 }

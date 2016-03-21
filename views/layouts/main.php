@@ -31,7 +31,6 @@ AppAsset::register($this);
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
-            //'class' =>'navbar-inverse navbar-nav',
         ],
     ]);
     echo Nav::widget([
@@ -47,19 +46,9 @@ AppAsset::register($this);
                 'visible' => !Yii::$app->user->isGuest
             ],
             [
-                'label' => Yii::t('app', 'Ver reporte'),
-                'url' => ['/cat-event/report'],
-                'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
-            ],
-            [
                 'label' => Yii::t('app', 'Ver comentarios'),
                 'url' => ['/sys-comment/index'],
                 'visible' => Yii::$app->user->can('admin')
-            ],
-            [
-                'label' => Yii::t('app', 'Perfil'),
-                'url' => ['/catuser/view', 'id' => Yii::$app->user->getId()],
-                'visible' => !Yii::$app->user->isGuest
             ],
             [
                 'label' => Yii::t('app', 'Registrarse'),
