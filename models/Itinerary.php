@@ -28,7 +28,6 @@ class Itinerary extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['i_FkTbl_User', 'i_FkTbl_Event'], 'required'],
             [['i_FkTbl_User', 'i_FkTbl_Event'], 'integer']
         ];
     }

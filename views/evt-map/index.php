@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="evt-map-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Evt Map'), ['create'], ['class' => 'btn btn-success']) ?>
@@ -30,9 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'vc_Latitude',
             'vc_Longitude',
             'vc_EventTag',
-            // 'vc_TransportTag',
-            // 'vc_LatitudeTransport',
-            // 'vc_LongitudeTransport',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

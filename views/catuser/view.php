@@ -28,19 +28,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="catuser-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (Yii::$app->user->can('admin') || $model->i_Pk_User == Yii::$app->user->getId()): ?>
+
+<?php if (Yii::$app->user->can('admin') || $model->i_Pk_User == Yii::$app->user->getId()): ?>
+
     <p>
 
-        <?= Html::a(Yii::t('app', 'Cambiar información'), ['update', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Cambiar contraseña'), ['update-pass', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Cambiar permiso'), ['change-permission', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Eliminar cuenta'), ['delete', 'id' => $model->i_Pk_User], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', '¿Estas seguro de que deseas eliminar tu cuenta?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+    <?= Html::a(Yii::t('app', 'Cambiar información'), ['update', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a(Yii::t('app', 'Cambiar contraseña'), ['usr-changes/update-pass', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a(Yii::t('app', 'Cambiar permiso'), ['usr-changes/change-permission', 'id' => $model->i_Pk_User], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a(Yii::t('app', 'Eliminar cuenta'), ['delete', 'id' => $model->i_Pk_User], [
+        'class' => 'btn btn-danger',
+        'data' => [
+            'confirm' => Yii::t('app', '¿Estas seguro de que deseas eliminar la cuenta?'),
+            'method' => 'post',
+        ],
+    ]) ?>
+
     </p>
 
     <?= DetailView::widget([
@@ -61,7 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
-    <?php else: ?>
+
+<?php else: ?>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -79,4 +83,5 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 </div>
+
 <?php endif ?>

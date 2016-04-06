@@ -59,12 +59,10 @@ $(function () {
 ?>
 
 <div id="container" class="ibox-content animated fadeInDown"></div><br><br>
-
 <div style="height: 1px; width: 100%; background-color: black"></div><br><br>
 <div class="ibox-content animated fadeInDown">
-<?php
 
-echo Highcharts::widget([
+<?php echo Highcharts::widget([
     'options' => [        
         'title' => ['text' => 'Ganancias esperadas x Evento'],
         'subtitle' => ['text' => '(Esta gráfica muestra las ganancias que se esperan por cada evento, estas ganancias dependen de cuántos turistas han agregado el evento a su itininerario)'],
@@ -86,6 +84,5 @@ echo Highcharts::widget([
     ]
 ]);
 ?>
-
-<p>Ganancias totales esperadas: <strong>$<?php echo number_format((float) $totalEarnings, 2, '.', '') ?></</p>
+<p>Ganancias totales esperadas: <strong>$<?php echo number_format((float) $totalEarnings, 2, '.', '') ?></p>
 </div>

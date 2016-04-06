@@ -9,6 +9,7 @@ use app\models\CatUser;
 use app\models\Itinerary;
 use app\models\EvtMap;
 use app\models\EvtComment;
+use app\models\EvtImage;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -19,6 +20,11 @@ use yii\web\UploadedFile;
  */
 class CatEventController extends Controller
 {
+
+    /**
+     * behavoirs of the model.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [
@@ -27,7 +33,7 @@ class CatEventController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'my-events','update','delete','report'],
+                        'actions' => ['create', 'my-events','update','delete'],
                         'roles' => ['empresa','admin'],
                     ],
                     [
@@ -62,16 +68,17 @@ class CatEventController extends Controller
 
     }
 
+    /**
+     * Show the event of the user.
+     * @return mixed
+     */
     public function actionMyEvents()
     {
         $queryParams = array_merge(array(),Yii::$app->request->getQueryParams());
-        
-        //Ver solo los eventos del Organizador
         $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User;
         $queryParams["CatEventSearch"]["i_FkTbl_User"] = $userID;
         $searchModel = new CatEventSearch();
         $dataProvider = $searchModel->search($queryParams);
-        
         return $this->render('my-events', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -87,8 +94,7 @@ class CatEventController extends Controller
     {
         $itinerary=new Itinerary();
         $model = $this->findModel($id);
-        //Obtengo el id del usuario logueado y verifico que sea un turista (esto para que pueda agregar el evento al itinerario)
-        //$userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId(), 'i_Fk_UserType'=>1])->i_Pk_User;
+        $evtComments = new EvtComment();
         $images=null;
         if(!empty($model->evtImages)){
             foreach ($model->evtImages as $image) {
@@ -96,39 +102,15 @@ class CatEventController extends Controller
                     <img src="../files/' .$image->vc_DirectoryName . '"/ width="560"  height="445" style="margin:auto; max-height: 445px"></a>';
             }
         } 
-        $commentsAll=null;
-        $score=null;
-        $idUserComment=null;
-        $cont=0;
-        $plus=0;
-        $media=0;
-        $comments=$model->evtComments;
-        foreach ($comments as $value) {
-            $commentsAll[]=$value->txt_EventComment;
-            $score[]=$value->i_Score;
-            $plusStarts=$value->i_Score;
-            $plus=$plus+$plusStarts;
-            $cont=$cont+1;
-            $media=$plus/$cont;
-            $idUserComment[]=$value->i_FkTbl_User;  
-            }
-        $firstName=null;
-        $lastName=null;
-        $users=$model->iFkTblUsers;
-        foreach ($users as $name) {
-            $firstName[]=$name->vc_FirstName;
-            $lastName[]=$name->vc_LastName;   
-        }
-
+        $evtComments->getComments($model->evtComments , $model->iFkTblUsers);
         return $this->render('view', [
             'model' => $model,
             'images'=> $images,
-            'commentsAll'=>$commentsAll,
-            'score'=>$score,
-            'firstName'=>$firstName,
-            'idUserComment'=>$idUserComment,
-            'lastName'=>$lastName,
-            'media'=>$media
+            'commentsAll'=>$evtComments->commentsAll,
+            'score'=>$evtComments->score,
+            'firstName'=>$evtComments->firstName,
+            'idUserComment'=>$evtComments->idUserComment,
+            'media'=>$evtComments->media
         ]);
     }
 
@@ -140,30 +122,13 @@ class CatEventController extends Controller
     public function actionCreate()
     {
         $model = new CatEvent();
-        $evtmap = new EvtMap();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
-            $valid = true;
-            $valid = $valid && $model->validate();
-            if ($valid) {
-                $model->save(false);
-                if ($valid && !empty($model->eventFile)) {
-                        $model->upload();
-                }
-
-                if ($evtmap->load(Yii::$app->request->post()) && !empty($evtmap->vc_Latitude)) {
-                    $evtmap->i_FkTbl_Event = $model->i_Pk_Event;
-                    $evtmap->save();
-                    Yii::$app->session->setFlash('eventFormSubmitted');
-                    return $this->refresh();
-                }
-            }
+            $this->uploadImages($model);
             return $this->redirect(['view', 'id' => $model->i_Pk_Event]);
         }
-
         return $this->render('create', [
             'model' => $model,
-            'evtmap' => $evtmap,
         ]);
         
     }
@@ -181,9 +146,7 @@ class CatEventController extends Controller
         $evtmap = new EvtMap();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->eventFile = UploadedFile::getInstances($model, 'eventFile');
-            if (!empty($model->eventFile)) {
-                $model->upload();
-            }
+            $this->uploadImages($model);
             Yii::$app->session->setFlash('eventFormSubmitted');
             return $this->refresh();
         } else {
@@ -204,59 +167,10 @@ class CatEventController extends Controller
     {
         $this->allowed($id);
         $event= $this->findModel($id);
-        if (!empty($event->evtImages)) {
-            foreach ($event->evtImages as $image) {
-                unlink(getcwd().'/files/' .$image->vc_DirectoryName);
-            }
-        }
+        EvtImage::deleteImages($event->evtImages);
         $event->delete();
         return $this->redirect(['index']);
-    }
-
-    public function actionReport(){
-        $model = new CatEvent();
-        $userID = CatUser::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->i_Pk_User; 
-        $events = CatEvent::find()->where(['i_FkTbl_User'=> $userID])->all();
-        $namesEvents='';
-        $scoresEvents='';
-        $numberOfTourist='';
-        $namesEventsArray=[];
-        $earnings=[];
-        $totalEarnings=0;
-        
-        foreach($events as $element ){
-            
-            if(!$element->vc_EventName==null || $element->vc_EventName==''){
-                $namesEvents .= "'". $element->vc_EventName . "',";
-                $namesEventsArray[] = $element->vc_EventName;
-            }else{
-                $namesEvents .= 'Evento sin nombre,';
-                $namesEventsArray[] = 'Evento sin nombre';
-            }
-            
-            if(EvtComment::findOne(['i_FkTbl_Event'=>$element->i_Pk_Event])){
-                $scoresEvents .= EvtComment::findOne(['i_FkTbl_Event'=>$element->i_Pk_Event])->i_Score . ',';
-            }else{
-                $scoresEvents .= '0,';
-            }
-      
-            $earnings []= count(Itinerary::find()->where(['i_FkTbl_Event'=> $element->i_Pk_Event])->all()) * $element->dc_EventCost;
-            $totalEarnings += count(Itinerary::find()->where(['i_FkTbl_Event'=> $element->i_Pk_Event])->all()) * $element->dc_EventCost;
-            $numberOfTourist .= count(Itinerary::find()->where(['i_FkTbl_Event'=> $element->i_Pk_Event])->all()) .',';
-           
-        }
-        
-        return $this->render('report', [
-            'namesEventsArray' => $namesEventsArray,
-            'earnings' => $earnings,
-            'totalEarnings' => $totalEarnings,
-            'namesEvents' => $namesEvents,
-            'scoresEvents' => $scoresEvents,
-            'numberOfTourist' => $numberOfTourist
-        ]);
-        
-    }
-    
+    }    
     
     /**
      * Finds the CatEvent model based on its primary key value.
@@ -280,17 +194,23 @@ class CatEventController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function allowed($id){
         $event = CatEventController::findModel($id);
-        if ($event == null) {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
         if ($event->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')) {
                 return true;
         } else {
             return $this->redirect(['cat-event/view', 'id' => $id]);
+        }
+    }
+
+    /**
+     * Verify if there is images to upload and uploaded it
+     * @param event $model
+     */
+    private function uploadImages($model){
+        if (!empty($model->eventFile)) {
+            $model->upload();
         }
     }
 }

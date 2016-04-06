@@ -18,9 +18,6 @@ use yii\helpers\Url;
 } ?>
 
 <?php $this->registerJs('
-
-    
-
     function showCompanyName()
     {
         $("[name=\'Catuser[vc_CompanyName]\']").removeAttr("disabled");
@@ -46,17 +43,13 @@ use yii\helpers\Url;
     }
 
     hideCompanyName();
-     $("input[type=radio][name=\'Catuser[i_Fk_UserType]\']").change(function(){
-            toggleStudentId();
-     });
-     
-
-    
-
-
+    $("input[type=radio][name=\'Catuser[i_Fk_UserType]\']").change(function(){
+        toggleStudentId();
+    });
 '); ?>
 
-<?php if (Yii::$app->session->hasFlash('error')): ?>
+<?php /* Message of error */ 
+if (Yii::$app->session->hasFlash('error')): ?>
     <div class="alert alert-danger">
         <b>Sucedió algo inesperado:</b> No se ha podido cambiar la información correctamente, intentelo más tarde.
     </div>
@@ -71,7 +64,7 @@ use yii\helpers\Url;
             'labelOptions' => ['class' => 'col-sm-2 control-label'],
             'template' => "{label}\n<div class=\"col-sm-10\">{input}</div>\n<div class=\"col-lg-8 col-lg-offset-2\">{error}</div>",
         ],
-    ]); ?>
+    ]) ?>
 
     
 
@@ -91,7 +84,8 @@ use yii\helpers\Url;
     <?= $form->field($model, 'vc_LastName')->textInput(['maxlength' => true]) ?>
     <div class="hr-line-dashed"></div>
 
-<?php if ($model->isNewRecord): ?>
+<?php /* Puts the password fields if register or create a model user */
+ if ($model->isNewRecord): ?>
 
     <?= $form->field($model, 'vc_HashPassword')->passwordInput(['maxlength' => true]) ?>    
     <div class="hr-line-dashed"></div>
@@ -120,9 +114,7 @@ use yii\helpers\Url;
 
         </div>
 
-
     </div>
-
 
     <?php ActiveForm::end(); ?>
 

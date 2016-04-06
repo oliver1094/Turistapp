@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="evt-comment-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create evt Comment', ['create'], ['class' => 'btn btn-success']) ?>
@@ -32,4 +31,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ])?>

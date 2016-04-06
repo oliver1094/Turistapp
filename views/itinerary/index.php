@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'iFkTblEvent.dt_EventEnd',
                 ['class' => yii\grid\ActionColumn::className(), 'template' => '{delete}']
             ],
-            'emptyText' => 'You dont have events'
+            'emptyText' => 'No tienes eventos'
         ]);
     ?>
     

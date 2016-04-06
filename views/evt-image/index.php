@@ -15,16 +15,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Eliminar imágenes');
 <div class="evt-image-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        
         <?= Html::a(Yii::t('app', 'Eliminar todas'), ['delete-all', 'id' => $eventID], ['class' => 'btn btn-danger']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -36,10 +33,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Eliminar imágenes');
                     ['width' => '260px']);
                 },
             ],
-
             ['class' => yii\grid\ActionColumn::className(),'template'=>'{delete}'],
         ],
-    ]); ?>
-
+    ])?>
 
 </div>

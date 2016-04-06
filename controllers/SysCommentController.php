@@ -16,6 +16,11 @@ use yii\filters\VerbFilter;
  */
 class SysCommentController extends Controller
 {
+
+    /**
+     * Behaviors of the controller.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [

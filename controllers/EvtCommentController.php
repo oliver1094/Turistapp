@@ -18,6 +18,11 @@ use app\models\CatEventSearch;
  */
 class EvtCommentController extends Controller
 {
+
+    /**
+     * behavoirs of the model.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [

@@ -13,6 +13,11 @@ use app\models\CatEvent;
 
 class SiteController extends Controller
 {
+
+    /**
+     * behavoirs of the model.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [
@@ -36,6 +41,10 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * Lists all CatEvent models.
+     * @return mixed
+     */
     public function actions()
     {
         return [
@@ -49,25 +58,15 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * Lists important events.
+     * @return mixed
+     */
     public function actionIndex()
     {
-        //$prueba='1';
-        //$mainEvents = EvtComment::findAll(['i_Score'=>7]);
         $mainEvents = EvtComment::find()->orderBy('i_Score DESC')->limit(10)->all();
         $arrayMainEvents=[];
-        
-        //Prueba donde obtuve las 10 mejores eventos calificados
-//        foreach ($mainEvents as $event){
-//            $model = new EvtComment();
-//            $model->i_FkTbl_Event = $event->i_FkTbl_Event;
-//            //echo '<script language="javascript">alert("'.$event->i_Score.'");</script>'; 
-//            $model->i_FkTbl_User = $event->i_FkTbl_User;
-//            $model->txt_EventComment = $event->txt_EventComment;
-//            $model->i_Score = $event->i_Score;
-//            $arrayMainEvents[]=$model;
-//        }
-        //Ahora la información completa de los eventos
-         foreach ($mainEvents as $event){
+        foreach ($mainEvents as $event){
             $model = new CatEvent();
             $model->i_Pk_Event = CatEvent::findOne($event->i_FkTbl_Event)->i_Pk_Event;
             $model->i_FkTbl_User = CatEvent::findOne($event->i_FkTbl_Event)->i_FkTbl_User;
@@ -79,24 +78,20 @@ class SiteController extends Controller
             $model->dt_EventEnd = CatEvent::findOne($event->i_FkTbl_Event)->dt_EventEnd;
             $model->dc_EventCost = CatEvent::findOne($event->i_FkTbl_Event)->dc_EventCost;
             $model->dc_TransportCost = CatEvent::findOne($event->i_FkTbl_Event)->dc_TransportCost;
-            //echo '<script language="javascript">alert("'.$event->i_Score.'");</script>'; 
             $arrayMainEvents[]=$model;
         }
-        
-        return $this->render('index',[
-            //'mainEvents'=>$mainEvents,
-            //'prueba'=>$prueba,
-            'arrayMainEvents'=>$arrayMainEvents
-        ]);
-       
+        return $this->render('index',['arrayMainEvents'=>$arrayMainEvents]);
     }
 
+    /**
+     * Log in a user.
+     * @return mixed
+     */
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -106,20 +101,25 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Log out a user.
+     * @return mixed
+     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
+    /**
+     * To send an email to de administrator.
+     * @return mixed
+     */
     public function actionContact()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact($model->email)) {
-            
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         }
         return $this->render('contact', [
@@ -127,6 +127,10 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * To see the about page.
+     * @return mixed
+     */
     public function actionAbout()
     {
         return $this->render('about');

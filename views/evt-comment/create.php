@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-       'userID' => $userID, //Le paso al formulario el id del usuario logueado
+       'userID' => $userID,
     	'eventID'=>$eventID
     ]) ?>
 

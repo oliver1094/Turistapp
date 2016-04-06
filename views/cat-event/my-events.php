@@ -16,19 +16,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="cat-event-index animated fadeInDown">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Crrear evento', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear evento', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    
     <div class="ibox-content">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'vc_EventName',
-            'vc_EventAddress',
+                'vc_EventName',
+                'vc_EventAddress',
             [
                 'attribute'=>'dt_EventStart',
                 'value'=> 'dt_EventStart',

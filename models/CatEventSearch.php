@@ -60,8 +60,7 @@ class CatEventSearch extends CatEvent
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            //It's not valid
             return $dataProvider;
         }
 

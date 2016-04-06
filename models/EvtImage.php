@@ -54,4 +54,17 @@ class EvtImage extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CatEvent::className(), ['i_Pk_Event' => 'i_FkTbl_Event']);
     }
+
+    /**
+     * Deletes an existing CatEvent model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param array $evtImages
+     */
+    public function deleteImages($evtImages){
+        if (!empty($evtImages)) {
+            foreach ($evtImages as $image) {
+                unlink(getcwd().'/files/' .$image->vc_DirectoryName);
+            }
+        }
+    }
 }

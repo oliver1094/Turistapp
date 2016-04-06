@@ -16,7 +16,10 @@ use yii\helpers\ArrayHelper;
 		<div class="alert alert-success">
             Gracias por registrarse en Turistapp, se ha completado su registro y ya puede entrar al sistema con su correo y contraseña.
         </div>
-
+    <?php else : ?>
+    	<div class="alert alert-danger">
+            Error al confirmar el registro.
+        </div>
 	<?php endif ?>
 
 </div>

@@ -14,20 +14,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
 <div class="col-lg-12">
 <div class="ibox float-e-margins">
+	
 	<div class="ibox-title">
 	<h3>Crear Usuario</h3>
 	</div>
 
-		<div class="ibox-content" style="display: block;">
+	<div class="ibox-content" style="display: block;">
     
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
-				</div>
-    
-    		</div>
-    	</div>
-	</div>
+	</div> 
+</div>
+</div>
+</div>
 </div>

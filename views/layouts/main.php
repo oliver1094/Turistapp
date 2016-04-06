@@ -42,23 +42,26 @@ AppAsset::register($this);
             [
                 'label' => Yii::t('app', 'Calificar plataforma'),
                 'url' => ['/sys-comment/create'],
-
-                'visible' => !Yii::$app->user->isGuest
+                'visible' => /* Can view loged in users only */ 
+                    !Yii::$app->user->isGuest
             ],
             [
                 'label' => Yii::t('app', 'Ver comentarios'),
                 'url' => ['/sys-comment/index'],
-                'visible' => Yii::$app->user->can('admin')
+                'visible' => /* Can view admin users only */ 
+                    Yii::$app->user->can('admin')
             ],
             [
                 'label' => Yii::t('app', 'Registrarse'),
                 'url' => ['/catuser/register'],
-                'visible' => Yii::$app->user->isGuest
+                'visible' => /* Can view guest users only */ 
+                    Yii::$app->user->isGuest
             ],
              [
                 'label' => Yii::t('app', 'Usuarios'),
                 'url' => ['/catuser/index'],
-                'visible' => Yii::$app->user->can('admin')
+                'visible' => /* Can view admin users only */ 
+                    Yii::$app->user->can('admin')
             ],
             [
                 'label' => 'Eventos',
@@ -70,33 +73,37 @@ AppAsset::register($this);
                     [
                         'label' => Yii::t('app', 'Mis eventos'),
                         'url' => ['/cat-event/my-events'],
-                        'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
+                        'visible' => /* Can view admins and empresa */ 
+                            Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
                     ],
                     [
                         'label' => Yii::t('app', 'Itinerario'),
                         'url' => ['/itinerary/index'],
-                        'visible' => Yii::$app->user->can('turista') || Yii::$app->user->can('admin')
+                        'visible' => /* Can view admins and turista */ 
+                            Yii::$app->user->can('turista') || Yii::$app->user->can('admin')
                     ],
                     [
                         'label' => Yii::t('app', 'Ver reporte'),
-                        'url' => ['/cat-event/report'],
-                        'visible' => Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
+                        'url' => ['/evt-report/report'],
+                        'visible' => /* Can view admins and empresa */ 
+                            Yii::$app->user->can('empresa') || Yii::$app->user->can('admin')
                     ],
                 ],
             ],
             [
-                'label' => 'Sesión',
+                'label' => Yii::$app->user->identity->vc_Email,
                 'items' => [
                     [
                         'label' => Yii::t('app', 'Perfil'),
                         'url' => ['/catuser/view', 'id' => Yii::$app->user->getId()],
-                        'visible' => !Yii::$app->user->isGuest
+                        'visible' => /* Can view loged in users only */
+                            !Yii::$app->user->isGuest
                     ],
                      '<li class="divider"></li>',
-                     Yii::$app->user->isGuest ?
+                     Yii::$app->user->isGuest ? /* Can view guest users only */
                     ['label' => 'Login', 'url' => ['/site/login']] :
                     [
-                        'label' => 'Salir (' . Yii::$app->user->identity->vc_Email . ')',
+                        'label' => 'Cerrar sesión',
                         'url' => ['/site/logout'],
                         'linkOptions' => ['data-method' => 'post']
                     ],

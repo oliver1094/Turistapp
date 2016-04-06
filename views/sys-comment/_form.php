@@ -15,14 +15,15 @@ use kartik\rating\StarRating;
 
         <?= $form->field($model, 'i_Fk_User')->hiddenInput(['value'=> $userID])->label(false)?>
 
-        <?= $form->field($model, 'i_Score')->widget(StarRating::classname(), ['pluginOptions' => ['size'=>'md',
-                                                                                                  'step' => '1.0',
-                                                                                                  'showClear'=> false,
-                                                                                                  'animate'=> false
-                                                                                                 ],
-
-                                                                             ])
-        ?>
+        <?= $form->field($model, 'i_Score')->widget(StarRating::classname(),
+         ['pluginOptions' => 
+          [
+            'size'=>'md',
+            'step' => '1.0',
+            'showClear'=> false,
+            'animate'=> false
+          ],
+        ])?>
 
         <?= $form->field($model, 'vc_CommentSys')->textarea(['rows' => 6]) ?>
 

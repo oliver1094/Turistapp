@@ -137,6 +137,11 @@ class CatEvent extends \yii\db\ActiveRecord
         return $this->hasMany(CatUser::className(), ['i_Pk_User' => 'i_FkTbl_User'])->viaTable('usr_itinerary', ['i_FkTbl_Event' => 'i_Pk_Event']);
     }
 
+    /**
+     * Gives the event the id of the user that meka it
+     * @param string $insert
+     * @return boolean
+     */
     public function beforeSave($insert)
     {
          if(parent::beforeSave($insert)) {
@@ -147,6 +152,9 @@ class CatEvent extends \yii\db\ActiveRecord
          return false;
      }
 
+    /**
+     * Upload images to the server
+     */
     public function upload(){
         foreach ($this->eventFile as $file){
             $this->fileNameAttached = uniqid() . '.' . $file->extension;

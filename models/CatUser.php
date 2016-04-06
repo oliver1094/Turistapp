@@ -36,6 +36,9 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const SCENARIO_PASSCHANGE = 'passchange';
     const SCENARIO_UPDATE = 'update';
 
+    /**
+     * @return array
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -64,19 +67,19 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['i_Fk_UserType'], 'integer'],
             [['i_Fk_UserType','i_isActive'], 'integer'],
             [['vc_FirstName', 'vc_LastName'], 'string', 'max' => 120],
-            [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/'],
+            [['vc_FirstName', 'vc_LastName'], 'match', 'pattern' => '/^[a-zA-Záéíóú” “]+$/', 'message' => 'No se aceptan números o simbolos'],
             [['vc_HashPassword', 'vc_Email', 'vc_CompanyName'], 'string', 'max' => 100],
             [['vc_HashPassword'], 'string', 'min'=>6 ,'max' => 25],
             [['vc_NewPass'], 'string', 'min'=>6,'max' => 25, 'on' => self::SCENARIO_PASSCHANGE ],
             ['vc_ActualPass','findPasswords', 'on' => self::SCENARIO_PASSCHANGE ],
             ['vc_RepeatPass','compare','compareAttribute'=>'vc_NewPass', 'on' => self::SCENARIO_PASSCHANGE ],
-            [['vc_Email'], 'unique'],
-            [['vc_Email'], 'email'],  
+            [['vc_Email'], 'unique', 'message' => 'Este correo ya está en uso'],
+            [['vc_Email'], 'email', 'message' => 'Correo invalido'],  
             ['vc_Email', 'filter', 'filter' => 'trim'],
             [['vc_Phone'], 'string', 'min'=>10,'max' => 10],
-            [['vc_Phone'], 'integer'],
+            [['vc_Phone'], 'integer', 'message' => 'Teléfono invalido: sólo se aceptan números'],
             [['vc_Token'], 'string', 'max' => 150],
-            ['repeatpass','compare','compareAttribute'=>'vc_HashPassword'] 
+            ['repeatpass','compare','compareAttribute'=>'vc_HashPassword', 'message' => 'La contraseña no coincide'] 
         ];
     }
 
@@ -103,39 +106,30 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
+    /**
+     * Makes relations with tables of user model
+     * @param string $insert
+     * @return boolean
+     */
     public function beforeSave($insert)
     {
         if(parent::beforeSave($insert))
         {
-
             if (Yii::$app->user->isGuest) {
-                    $this->i_Fk_UserType = 1;
-            }
-                
-
-            if($this->isNewRecord)
-            {
-
-                if(Yii::$app->user->can('admin')){
+                $this->i_Fk_UserType = 1;
+            }    
+            if ($this->isNewRecord) {
+                if (Yii::$app->user->can('admin')) {
                     $this->i_isActive = 1;    
                     $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);                    
-                }else{
-                    
-                $this->i_Fk_UserType = 1;
-                $this->i_isActive = 0;
-                $this->vc_Token = Yii::$app->getSecurity()->generateRandomString();
-                $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);                    
+                } else {  
+                    $this->i_Fk_UserType = 1;
+                    $this->i_isActive = 0;
+                    $this->vc_Token = Yii::$app->getSecurity()->generateRandomString();
+                    $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_HashPassword);                    
                 }
-                
-
-                
-                //$this->auth_key = Yii::$app->getSecurity()->generatePasswordHash($this->hash_password);
-                //$this->access_token = Yii::$app->getSecurity()->generateRandomString();
-            } else {
-                //if(!empty($this->vc_HashPassword))//Ya no se debe de poder actualizar contraseña normalmente
-                if (!empty($this->vc_NewPass)) {
-                    $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_NewPass);
-                }                
+            } elseif (!empty($this->vc_NewPass)) {
+                $this->vc_HashPassword = Yii::$app->getSecurity()->generatePasswordHash($this->vc_NewPass);              
             }
             return true;
         }
@@ -190,24 +184,39 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasMany(CatEvent::className(), ['i_Pk_Event' => 'i_FkTbl_Event'])->viaTable('usr_itinerary', ['i_FkTbl_User' => 'i_Pk_User']);
     }
 
-    //metodos de la interfaz idenity
+    /**
+     * @return string
+     */
     public function getAuthKey() {
         return $this->vc_HashPassword;   
     }
 
+    /**
+     * @return string
+     */
     public function getId() {
         return $this->i_Pk_User;
     }
 
+    /**
+     * @return boolean
+     */
     public function validateAuthKey($authKey) {
         return $this->getAuthKey() === $authKey;
         
     }
 
+    /**
+     * @return CatUser
+     */
     public static function findIdentity($id) {
         return self::findOne($id);
     }
 
+    /**
+     * @param string $token, $type
+     * @return mixed
+     */
     public static function findIdentityByAccessToken($token, $type = null) 
     {
         foreach (self::$users as $user) {
@@ -218,6 +227,9 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return null;
     }
 
+    /**
+     * @return string
+     */
     public function userlastid()
     {
         $lastUsurio = self::find()    
@@ -227,29 +239,26 @@ class Catuser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $id;
     }
 
-
-
-
-  //  SELECT TOP 1 *
-//FROM Pedido
-//ORDER BY Fecha DESC
-    //fin metodos de la interfaz identity
-    
-    //--------Estos dos metodos utilice para el Login (ElÃ­as)---------
-    
-     public static function findByEmail($email){
+    /**
+     * @param string $email
+     * @return string
+     */
+    public static function findByEmail($email){
         return self::findOne(['vc_Email'=>$email,'i_isActive' => 1]);
-        
     }
     
+    /**
+     * @param string $password
+     * @return boolean
+     */
     public function validatePassword($password)
     {
-        //return $this->hash_password ===$password;
         return Yii::$app->getSecurity()->validatePassword($password,$this->vc_HashPassword);
     }
     
-    //---------------
-
+    /**
+     * @param string $attribute, $params
+     */
     public function findPasswords($attribute, $params)
     {
         $actualPass = self::findOne(['i_Pk_User'=>Yii::$app->user->getId()])->vc_HashPassword;

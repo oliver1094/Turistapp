@@ -38,7 +38,7 @@ class EvtMap extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['i_FkTbl_Event', 'vc_EventTag','vc_Latitude', 'vc_Longitude'], 'required'],
+            [['i_FkTbl_Event', 'vc_EventTag','vc_Latitude', 'vc_Longitude'], 'required', 'message' => 'Campo requerido'],
             [['i_FkTbl_Event'], 'integer'],
             [['vc_Latitude', 'vc_Longitude'], 'string', 'max' => 40],
             [['vc_EventTag', 'vc_TransportTag', 'vc_LatitudeTransport', 'vc_LongitudeTransport'], 'string', 'max' => 150]

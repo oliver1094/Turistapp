@@ -17,6 +17,10 @@ use yii\filters\VerbFilter;
 class EvtImageController extends Controller
 {
 
+    /**
+     * Behaviors of the controller.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [
@@ -125,6 +129,11 @@ class EvtImageController extends Controller
         return $this->redirect(['index', 'id' => $eventID]);
     }
 
+    /**
+     * Delete all the images from the database and folders
+     * @param string $id
+     * @return mixed
+     */
     public function actionDeleteAll($id){
         CatEventController::allowed($id);
         $images = EvtImage::findAll(['i_FkTbl_Event'=>$id]);

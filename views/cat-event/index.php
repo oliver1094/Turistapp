@@ -20,16 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="cat-event-index animated fadeInDown">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-
         <?= Html::a('Crear un Evento', ['create'], ['class' => 'btn btn-success']) ?>
-
     </p>
+
     <div class="ibox-content">
     <?= GridView::widget([
-
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions'=>['class'=>'table table-striped'],        
@@ -61,7 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     Url::to(['catuser/view','id'=> $data['i_FkTbl_User']]));
                 },
             ],
-            //'vc_EventAddress',
             [
                 'attribute'=>'dt_EventStart',
                 'value'=> 'dt_EventStart',
@@ -122,6 +117,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     </div>
- 
-
 </div>

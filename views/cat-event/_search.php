@@ -27,14 +27,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vc_EventCity') ?>
 
-    <?php // echo $form->field($model, 'dc_TransportCost') ?> 
-
-    <?php // echo $form->field($model, 'dt_EventStart') ?>
-
-    <?php // echo $form->field($model, 'dt_EventEnd') ?>
-
-    <?php // echo $form->field($model, 'dc_EventCost') ?>
-
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

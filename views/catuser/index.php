@@ -17,24 +17,24 @@ $this->params['breadcrumbs'][] = $this->title;
         Se ha eliminado correctamente al usuario.
     </div>
 <?php endif ?>
+
 <div class="catuser-index animated fadeInDown">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Crear usuario'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
     <div class="ibox-content">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions'=>['class'=>'table table-striped'],
         'columns' => [
-            
             ['class' => 'yii\grid\SerialColumn'],
-            'vc_FirstName',
-            'vc_LastName',
+                'vc_FirstName',
+                'vc_LastName',
             [
                 'attribute' => 'iFkUserType.vc_NameUserType',
                 'value' => 'iFkUserType.vc_NameUserType',
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'vc_Email:email',
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]);?>
+    ])?>
     </div>
 
 </div>

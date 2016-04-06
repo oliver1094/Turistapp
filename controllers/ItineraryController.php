@@ -18,6 +18,11 @@ use yii\helpers\Url;
  */
 class ItineraryController extends Controller
 {
+
+    /**
+     * behavoirs of the model.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [

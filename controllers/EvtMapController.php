@@ -15,6 +15,11 @@ use yii\filters\VerbFilter;
  */
 class EvtMapController extends Controller
 {
+
+    /**
+     * behavoirs of the model.
+     * @return mixed
+     */
     public function behaviors()
     {
         return [

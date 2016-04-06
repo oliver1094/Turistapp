@@ -30,7 +30,7 @@ class SysComment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['i_Fk_User', 'i_Score','vc_CommentSys'], 'required'],
+            [['i_Fk_User', 'i_Score','vc_CommentSys'], 'required', 'message' => 'Campo requerido'],
             [['i_Fk_User', 'i_Score'], 'integer'],
             [['vc_CommentSys'], 'string']
         ];

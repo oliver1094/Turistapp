@@ -19,13 +19,13 @@ use yii\helpers\Url;
 <div class="catuser-form">
 
           
-        <?php if (Yii::$app->session->hasFlash('userFormSubmitted')): ?>
+    <?php if (Yii::$app->session->hasFlash('userFormSubmitted')): ?>
 
         <div class="alert alert-success">
             Se le ha enviado un correo para confirmar su correo y poder completar el registro.
         </div>
 
-        <?php else: ?>
+    <?php else: ?>
 
     <?php $form = ActiveForm::begin([
         'options' => ['class' => 'form-horizontal'],
@@ -70,23 +70,19 @@ use yii\helpers\Url;
 
     <div class="hr-line-dashed"></div>
 
-
-    
-    
     <div class="form-group">
         <div class="col-sm-4 col-sm-offset-2">
-            
         
         <?= Html::a ( 'Cancelar', $url = Url::to('../site/login'), $options = ['class'=>'btn btn-white'] ) ?>
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Crear Cuenta') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-success']) ?>
 
         </div>
 
-
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
 <?php endif ?>
 
