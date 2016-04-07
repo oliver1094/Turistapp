@@ -55,7 +55,7 @@ if(!empty($model->evtImages)){
     <div class="cat-event-view">
     <div class="ibox-content animated fadeInDown" style="display: block;">
     <?php /* The user is allowed to change this event */ 
-    if (CatEventController:: allowed($model->i_Pk_Event)) : ?>
+    if (CatEventController:: permition($model->i_Pk_Event)) : ?>
         <p>
         <?= Html::a('Actualizar evento', 
             ['update', 'id' => $model->i_Pk_Event], ['class' => 'btn btn-primary']) 

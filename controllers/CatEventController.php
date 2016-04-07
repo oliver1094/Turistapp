@@ -99,7 +99,8 @@ class CatEventController extends Controller
         if(!empty($model->evtImages)){
             foreach ($model->evtImages as $image) {
                 $images[]= '<a href="../files/'.$image->vc_DirectoryName .'">
-                    <img src="../files/' .$image->vc_DirectoryName . '"/ width="560"  height="445" style="margin:auto; max-height: 445px"></a>';
+                    <img src="../files/' .$image->vc_DirectoryName .
+                     '"/ width="512"  height="448" style="margin:auto; max-height: 448px; min-height: 448px; max-width: 512px;"></a>';
             }
         } 
         $evtComments->getComments($model->evtComments , $model->iFkTblUsers);
@@ -189,15 +190,15 @@ class CatEventController extends Controller
     }
 
     /**
-     * Finds the CatEvent model based on its primary key value and validates
+     * Makes sure that the user have the permition to do actions
+     * if not then is redirected to the view of the event
      * that the user is the owner of the event.
-     * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
      * @return mixed
      */
-    public function allowed($id){
-        $event = CatEventController::findModel($id);
-        if ($event->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')) {
+    public function allowed($id)
+    {
+        if ($this->permition($id)) {
                 return true;
         } else {
             return $this->redirect(['cat-event/view', 'id' => $id]);
@@ -205,10 +206,28 @@ class CatEventController extends Controller
     }
 
     /**
+     * Finds the CatEvent model based on its primary key value and validates
+     * that the user is the owner of the event.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return mixed
+     */
+    public function permition($id)
+    {
+        $event = CatEventController::findModel($id);
+        if ($event->i_FkTbl_User == Yii::$app->user->getId() || Yii::$app->user->can('admin')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Verify if there is images to upload and uploaded it
      * @param event $model
      */
-    private function uploadImages($model){
+    private function uploadImages($model)
+    {
         if (!empty($model->eventFile)) {
             $model->upload();
         }

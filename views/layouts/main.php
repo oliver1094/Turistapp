@@ -37,7 +37,6 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Acerca de', 'url' => ['/site/about']],
             ['label' => 'Contáctanos', 'url' => ['/site/contact']],
             [
                 'label' => Yii::t('app', 'Calificar plataforma'),
@@ -90,6 +89,8 @@ AppAsset::register($this);
                     ],
                 ],
             ],
+            Yii::$app->user->isGuest ? /* Can view guest users only */
+            ['label' => 'Login', 'url' => ['/site/login']] :
             [
                 'label' => Yii::$app->user->identity->vc_Email,
                 'items' => [
@@ -100,8 +101,6 @@ AppAsset::register($this);
                             !Yii::$app->user->isGuest
                     ],
                      '<li class="divider"></li>',
-                     Yii::$app->user->isGuest ? /* Can view guest users only */
-                    ['label' => 'Login', 'url' => ['/site/login']] :
                     [
                         'label' => 'Cerrar sesión',
                         'url' => ['/site/logout'],
