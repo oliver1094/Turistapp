@@ -49,7 +49,7 @@ if (!empty ($model->evtMaps)): ?>
 
 <p>
     <?php /* Validates if the user is allowed to change this map */ 
-    if (CatEventController:: allowed($model->i_Pk_Event)) : ?>
+    if (CatEventController:: permition($model->i_Pk_Event)) : ?>
 
         <?= Html::a(Yii::t('app', 'Modificar mapa'), 
             ['evt-map/update', 'id' =>$model->evtMaps[0]->i_Pk_Map],

@@ -198,10 +198,10 @@ class CatEventController extends Controller
      */
     public function allowed($id)
     {
-        if ($this->permition($id)) {
+        if (CatEventController::permition($id)) {
                 return true;
         } else {
-            return $this->redirect(['cat-event/view', 'id' => $id]);
+            return CatEventController::redirect(['cat-event/view', 'id' => $id]);
         }
     }
 
