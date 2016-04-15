@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model app\models\Catuser */
 
 $this->title = Yii::t('app', 'Actualizar permisos');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lista de usuarios'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->vc_FirstName, 'url' => ['view', 'id' => $model->i_Pk_User]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lista de usuarios'), 'url' => ['catuser/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->vc_FirstName, 'url' => ['catuser/view', 'id' => $model->i_Pk_User]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catuser-update">

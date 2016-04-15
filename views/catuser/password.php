@@ -7,9 +7,9 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Cambio de contraseña de: '. ' ' . $model->vc_FirstName . ' ' . $model->vc_LastName) ;
 if(Yii::$app->user->can('admin')){
-	$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lista de usuarios'), 'url' => ['index']];
+	$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lista de usuarios'), 'url' => ['catuser/index']];
 }
-$this->params['breadcrumbs'][] = ['label' => $model->vc_FirstName, 'url' => ['view', 'id' => $model->i_Pk_User]];
+$this->params['breadcrumbs'][] = ['label' => $model->vc_FirstName, 'url' => ['catuser/view', 'id' => $model->i_Pk_User]];
 $this->params['breadcrumbs'][] = 'Cambiar contraseña';
 ?>
 <div class="catuser-update">
